@@ -15,20 +15,27 @@
 @end
 
 @implementation ClassListTests
-
-- (void)testClassGroupsIncludeBinariesForUngroupedClasses
 {
-    IKBClassList *list = [IKBClassList new];
-    BOOL hasFoundation = NO;
-    for (NSUInteger i = 0; i < [list countOfClassGroups]; i++) {
-        NSString *classGroup = [list objectInClassGroupsAtIndex:i];
-        if ([classGroup isEqualToString:@"Foundation"])
-        {
-            hasFoundation = YES;
-            break;
-        }
-    }
-    XCTAssertTrue(hasFoundation);
+    id <IKBClassList> list;
+}
+
+- (void)setUp
+{
+    list = [IKBClassList new];
+}
+
+- (void)testClassGroupsAreNamedAfterBinaryImages
+{
+    NSArray *classGroups = [list allClassGroups];
+    XCTAssertTrue([classGroups containsObject:@"Foundation"]);
+}
+
+- (void)testClassGroupsAreOrderedAlphabetically
+{
+    NSArray *classGroups = [list allClassGroups];
+    NSUInteger foundationIndex = [classGroups indexOfObject:@"Foundation"];
+    NSUInteger appkitIndex = [classGroups indexOfObject:@"AppKit"];
+    XCTAssertTrue(appkitIndex < foundationIndex);
 }
 
 @end

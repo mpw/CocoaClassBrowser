@@ -8,9 +8,7 @@
 
 #import "IKBAppDelegate.h"
 #import "IKBClassBrowserSource.h"
-
-// just for visual inspection during testing
-#import "FakeClassList.h"
+#import "IKBClassList.h"
 
 @interface IKBAppDelegate ()
 
@@ -26,10 +24,7 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
     // just for visual inspection during testing
-    FakeClassList *classList = [FakeClassList new];
-    classList.classes = @{ @"Foundation" : @[@"NSObject", @"NSData", @"NSString"],
-                           @"AppKit" : @[@"NSBrowser", @"NSCell", @"NSTableView", @"NSMatrix"],
-                           @"Isambard" : @[@"IKBCommandBus"] };
+    IKBClassList *classList = [IKBClassList new];
     self.classList = classList;
     self.browserSource = [[IKBClassBrowserSource alloc] initWithClassList:classList];
     self.classBrowser.delegate = self.browserSource;

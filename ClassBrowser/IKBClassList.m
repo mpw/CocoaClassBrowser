@@ -31,7 +31,7 @@
             NSString *imageName = imgName ? [@(imgName) lastPathComponent] : @"Uncategorized";
             [groups addObject:imageName];
         }
-        _classGroups = [[groups allObjects] retain];
+        _classGroups = [[[groups allObjects] sortedArrayUsingSelector:@selector(compare:)] retain];
     }
     return self;
 }
@@ -50,6 +50,21 @@
 - (NSString *)objectInClassGroupsAtIndex:(NSUInteger)index
 {
     return _classGroups[index];
+}
+
+- (NSArray *)allClassGroups
+{
+    return [[_classGroups retain] autorelease];
+}
+
+- (NSUInteger)countOfClasses
+{
+    return 0;
+}
+
+- (void)selectClassGroupAtIndex:(NSInteger)index
+{
+    
 }
 
 @end

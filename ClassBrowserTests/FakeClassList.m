@@ -28,6 +28,11 @@
     return self;
 }
 
+- (NSArray *)allClassGroups
+{
+    return self.classGroups;
+}
+
 - (NSUInteger)countOfClassGroups
 {
     return self.classGroups.count;
