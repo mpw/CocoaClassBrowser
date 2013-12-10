@@ -16,5 +16,6 @@
 
 - (NSUInteger)countOfClasses;
 - (NSString *)objectInClassesAtIndex:(NSUInteger)index;
+- (void)selectClassAtIndex:(NSInteger)index;
 
 @end

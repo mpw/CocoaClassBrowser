@@ -37,6 +37,12 @@
 
 @end
 
+void selectSecondClassInBrowser(IKBClassBrowserSource *source, NSBrowser *browser)
+{
+    [source browser:browser didSelectRow:0 inColumn:0];
+    [source browser:browser didSelectRow:1 inColumn:1];
+}
+
 @interface ClassBrowserTests : XCTestCase
 
 @end
@@ -110,6 +116,19 @@
     [source browser:nil didSelectRow:0 inColumn:0];
     [source browser:nil willDisplayCell:cell atRow:0 column:1];
     XCTAssertFalse([cell isLeaf]);
+}
+
+- (void)testSelectingACellInColumnOneResultsInColumnTwoBeingReloaded
+{
+    ReloadWatcher *watcher = [ReloadWatcher new];
+    selectSecondClassInBrowser(source, (NSBrowser *)watcher);
+    XCTAssertEqual(watcher.reloadedColumn, (NSInteger)2);
+}
+
+- (void)testSelectingClassInBrowserIsReflectedInDataModel
+{
+    selectSecondClassInBrowser(source, nil);
+    XCTAssertEqualObjects(list.selectedClass, @"NSCell");
 }
 
 @end

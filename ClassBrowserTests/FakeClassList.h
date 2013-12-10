@@ -14,5 +14,6 @@
 @property (nonatomic, strong) NSDictionary *classes;
 @property (nonatomic, readonly) NSArray *classGroups;
 @property (nonatomic, readonly) NSString *selectedClassGroup;
+@property (nonatomic, readonly) NSString *selectedClass;
 
 @end

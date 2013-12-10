@@ -11,6 +11,7 @@
 @implementation FakeClassList
 {
     NSInteger _selectedGroup;
+    NSInteger _selectedClass;
 }
 
 - (NSUInteger)countOfClassGroups
@@ -46,6 +47,16 @@
 - (NSString *)objectInClassesAtIndex:(NSUInteger)index
 {
     return self.classes[self.selectedClassGroup][index];
+}
+
+- (void)selectClassAtIndex:(NSInteger)index
+{
+    _selectedClass = index;
+}
+
+- (NSString *)selectedClass
+{
+    return self.classes[self.selectedClassGroup][_selectedClass];
 }
 
 @end
