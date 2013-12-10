@@ -18,4 +18,7 @@
 - (NSString *)objectInClassesAtIndex:(NSUInteger)index;
 - (void)selectClassAtIndex:(NSInteger)index;
 
+- (NSUInteger)countOfProtocols;
+- (NSString *)objectInProtocolsAtIndex:(NSUInteger)index;
+
 @end

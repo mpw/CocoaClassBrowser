@@ -12,6 +12,7 @@
 typedef NS_ENUM(NSInteger, IKBClassBrowserColumn) {
     IKBClassBrowserColumnClassGroup = 0,
     IKBClassBrowserColumnClass = 1,
+    IKBClassBrowserColumnProtocol = 2,
 };
 
 @implementation IKBClassBrowserSource
@@ -38,6 +39,9 @@ typedef NS_ENUM(NSInteger, IKBClassBrowserColumn) {
         case IKBClassBrowserColumnClass:
             return [_classList countOfClasses];
             break;
+        case IKBClassBrowserColumnProtocol:
+            return [_classList countOfProtocols];
+            break;
         default:
             return 0;
             break;
@@ -58,6 +62,12 @@ typedef NS_ENUM(NSInteger, IKBClassBrowserColumn) {
         {
             NSString *className = [_classList objectInClassesAtIndex:row];
             [cell setStringValue:className];
+            break;
+        }
+        case IKBClassBrowserColumnProtocol:
+        {
+            NSString *protocolName = [_classList objectInProtocolsAtIndex:row];
+            [cell setStringValue:protocolName];
             break;
         }
         default:

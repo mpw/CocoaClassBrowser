@@ -12,6 +12,17 @@
 {
     NSInteger _selectedGroup;
     NSInteger _selectedClass;
+    NSArray *_protocols;
+}
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self)
+    {
+        _protocols = @[@"--all--", @"uncategorized", @"NSCopying"];
+    }
+    return self;
 }
 
 - (NSUInteger)countOfClassGroups
@@ -57,6 +68,16 @@
 - (NSString *)selectedClass
 {
     return self.classes[self.selectedClassGroup][_selectedClass];
+}
+
+- (NSUInteger)countOfProtocols
+{
+    return _protocols.count;
+}
+
+- (NSString *)objectInProtocolsAtIndex:(NSUInteger)index
+{
+    return _protocols[index];
 }
 
 @end

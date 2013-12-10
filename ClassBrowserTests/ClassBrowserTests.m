@@ -131,4 +131,18 @@ void selectSecondClassInBrowser(IKBClassBrowserSource *source, NSBrowser *browse
     XCTAssertEqualObjects(list.selectedClass, @"NSCell");
 }
 
+- (void)testProtocolsAreShownInTheThirdColumn
+{
+    //the test data is expressed in FakeDataList, but @"--all--" and @"uncategorized" are always present anyway.
+    selectSecondClassInBrowser(source, nil);
+    XCTAssertEqual([source browser:nil numberOfRowsInColumn:2], (NSInteger)3);
+    [source browser:nil willDisplayCell:cell atRow:0 column:2];
+    XCTAssertEqualObjects([cell stringValue], @"--all--");
+    [source browser:nil willDisplayCell:cell atRow:1 column:2];
+    XCTAssertEqualObjects([cell stringValue], @"uncategorized");
+    [source browser:nil willDisplayCell:cell atRow:2 column:2];
+    XCTAssertEqualObjects([cell stringValue], @"NSCopying");
+    XCTAssertFalse([cell isLeaf]);
+}
+
 @end
