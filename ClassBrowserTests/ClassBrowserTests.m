@@ -80,6 +80,8 @@
 {
     [source browser:nil selectRow:0 inColumn:0];
     XCTAssertEqual([source browser:nil numberOfRowsInColumn:1], (NSInteger)4);
+    [source browser:nil willDisplayCell:cell atRow:2 column:1];
+    XCTAssertEqualObjects([cell stringValue], @"NSTableView");
 }
 
 @end

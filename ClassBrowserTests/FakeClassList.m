@@ -43,4 +43,9 @@
     return [self.classes[self.selectedClassGroup] count];
 }
 
+- (NSString *)objectInClassesAtIndex:(NSUInteger)index
+{
+    return self.classes[self.selectedClassGroup][index];
+}
+
 @end

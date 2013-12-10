@@ -46,9 +46,23 @@ typedef NS_ENUM(NSInteger, IKBClassBrowserColumn) {
 
 - (void)browser:(NSBrowser *)sender willDisplayCell:(id)cell atRow:(NSInteger)row column:(NSInteger)column
 {
-    NSString *groupName = [_classList objectInClassGroupsAtIndex:row];
-    [cell setStringValue:groupName];
     [cell setLeaf:NO];
+    switch (column) {
+        case IKBClassBrowserColumnClassGroup:
+        {
+            NSString *groupName = [_classList objectInClassGroupsAtIndex:row];
+            [cell setStringValue:groupName];
+            break;
+        }
+        case IKBClassBrowserColumnClass:
+        {
+            NSString *className = [_classList objectInClassesAtIndex:row];
+            [cell setStringValue:className];
+            break;
+        }
+        default:
+            break;
+    }
 }
 
 - (BOOL)browser:(NSBrowser *)sender selectRow:(NSInteger)row inColumn:(NSInteger)column
