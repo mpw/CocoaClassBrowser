@@ -22,6 +22,21 @@
 @implementation FakeBrowserCell
 @end
 
+@interface ReloadWatcher : NSObject
+
+@property (nonatomic, assign) NSInteger reloadedColumn;
+
+@end
+
+@implementation ReloadWatcher
+
+- (void)reloadColumn:(NSInteger)column
+{
+    self.reloadedColumn = column;
+}
+
+@end
+
 @interface ClassBrowserTests : XCTestCase
 
 @end
@@ -81,6 +96,13 @@
     XCTAssertEqual([source browser:nil numberOfRowsInColumn:1], (NSInteger)4);
     [source browser:nil willDisplayCell:cell atRow:2 column:1];
     XCTAssertEqualObjects([cell stringValue], @"NSTableView");
+}
+
+- (void)testSelectingClassGroupResultsInReloadingClassColumn
+{
+    ReloadWatcher *watcher = [ReloadWatcher new];
+    [source browser:(NSBrowser *)watcher didSelectRow:1 inColumn:0];
+    XCTAssertEqual(watcher.reloadedColumn, (NSInteger)1);
 }
 
 @end
