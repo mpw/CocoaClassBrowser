@@ -18,4 +18,6 @@
 @property (nonatomic, strong) id <IKBClassList> classList;
 @property (nonatomic, strong) IKBClassBrowserSource *browserSource;
 
+- (IBAction)browserSelectionDidChange:(NSBrowser *)sender;
+
 @end
