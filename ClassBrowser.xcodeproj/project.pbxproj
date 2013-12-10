@@ -19,7 +19,7 @@
 		98B66235185728A20045FDBD /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 98B66233185728A20045FDBD /* InfoPlist.strings */; };
 		98B66237185728A20045FDBD /* ClassBrowserTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 98B66236185728A20045FDBD /* ClassBrowserTests.m */; };
 		98B6624318574B900045FDBD /* IKBClassBrowserSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 98B6624218574B900045FDBD /* IKBClassBrowserSource.m */; };
-		98B6624618574BE90045FDBD /* FakeClassList.m in Sources */ = {isa = PBXBuildFile; fileRef = 98B6624518574BE90045FDBD /* FakeClassList.m */; };
+		98B6624718574C340045FDBD /* FakeClassList.m in Sources */ = {isa = PBXBuildFile; fileRef = 98B6624518574BE90045FDBD /* FakeClassList.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -268,6 +268,7 @@
 				98B6624318574B900045FDBD /* IKBClassBrowserSource.m in Sources */,
 				98B66219185728A20045FDBD /* main.m in Sources */,
 				98B66220185728A20045FDBD /* IKBAppDelegate.m in Sources */,
+				98B6624718574C340045FDBD /* FakeClassList.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -276,7 +277,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				98B66237185728A20045FDBD /* ClassBrowserTests.m in Sources */,
-				98B6624618574BE90045FDBD /* FakeClassList.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

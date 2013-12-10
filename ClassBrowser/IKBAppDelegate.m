@@ -7,11 +7,17 @@
 //
 
 #import "IKBAppDelegate.h"
+#import "IKBClassBrowserSource.h"
+
+// just for visual inspection during testing
+#import "FakeClassList.h"
 
 @interface IKBAppDelegate ()
 
 @property (weak) IBOutlet NSBrowser *classBrowser;
 @property (unsafe_unretained) IBOutlet NSTextView *codeText;
+@property (nonatomic, strong) id <IKBClassList> classList;
+@property (nonatomic, strong) IKBClassBrowserSource *browserSource;
 
 @end
 
@@ -19,7 +25,13 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    // Insert code here to initialize your application
+    // just for visual inspection during testing
+    FakeClassList *classList = [FakeClassList new];
+    classList.classGroups = @[ @"Foundation", @"AppKit", @"Isambard" ];
+    self.classList = classList;
+    self.browserSource = [[IKBClassBrowserSource alloc] initWithClassList:classList];
+    self.classBrowser.delegate = self.browserSource;
+    [self.classBrowser reloadColumn:0];
 }
 
 @end
