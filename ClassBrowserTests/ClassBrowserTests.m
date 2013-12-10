@@ -7,68 +7,10 @@
 //
 
 #import <XCTest/XCTest.h>
+#import "IKBClassList.h"
+#import "IKBClassBrowserSource.h"
 
-@protocol IKBClassList <NSObject>
-
-- (NSUInteger)countOfClassGroups;
-- (NSString *)objectInClassGroupsAtIndex:(NSUInteger)index;
-
-@end
-
-@interface IKBClassBrowserSource : NSObject <NSBrowserDelegate>
-
-- (instancetype)initWithClassList:(id <IKBClassList>)list;
-
-@end
-
-@implementation IKBClassBrowserSource
-{
-    id <IKBClassList> _classList;
-}
-
-- (instancetype)initWithClassList:(id)list
-{
-    self = [super init];
-    if (self)
-    {
-        _classList = list;
-    }
-    return self;
-}
-
-- (NSInteger)browser:(NSBrowser *)sender numberOfRowsInColumn:(NSInteger)column
-{
-    return [_classList countOfClassGroups];
-}
-
-- (void)browser:(NSBrowser *)sender willDisplayCell:(id)cell atRow:(NSInteger)row column:(NSInteger)column
-{
-    NSString *groupName = [_classList objectInClassGroupsAtIndex:row];
-    [cell setStringValue:groupName];
-    [cell setLeaf:NO];
-}
-
-@end
-
-@interface FakeClassList : NSObject <IKBClassList>
-
-@property (nonatomic, strong) NSArray *classGroups;
-
-@end
-
-@implementation FakeClassList
-
-- (NSUInteger)countOfClassGroups
-{
-    return self.classGroups.count;
-}
-
-- (NSString *)objectInClassGroupsAtIndex:(NSUInteger)index
-{
-    return [self.classGroups objectAtIndex:index];
-}
-
-@end
+#import "FakeClassList.h"
 
 @interface FakeBrowserCell : NSObject
 
