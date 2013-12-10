@@ -12,5 +12,6 @@
 @interface FakeClassList : NSObject <IKBClassList>
 
 @property (nonatomic, strong) NSArray *classGroups;
+@property (nonatomic, readonly) NSString *selectedClassGroup;
 
 @end

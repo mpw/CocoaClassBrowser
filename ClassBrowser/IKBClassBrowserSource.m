@@ -7,6 +7,7 @@
 //
 
 #import "IKBClassBrowserSource.h"
+#import "IKBClassList.h"
 
 @implementation IKBClassBrowserSource
 {
@@ -35,4 +36,9 @@
     [cell setLeaf:NO];
 }
 
+- (BOOL)browser:(NSBrowser *)sender selectRow:(NSInteger)row inColumn:(NSInteger)column
+{
+    [_classList selectClassGroupAtIndex:row];
+    return YES;
+}
 @end

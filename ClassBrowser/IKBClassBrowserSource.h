@@ -7,7 +7,8 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "IKBClassList.h"
+
+@protocol IKBClassList;
 
 @interface IKBClassBrowserSource : NSObject <NSBrowserDelegate>
 

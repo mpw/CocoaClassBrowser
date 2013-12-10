@@ -12,5 +12,6 @@
 
 - (NSUInteger)countOfClassGroups;
 - (NSString *)objectInClassGroupsAtIndex:(NSUInteger)index;
+- (void)selectClassGroupAtIndex:(NSInteger)index;
 
 @end

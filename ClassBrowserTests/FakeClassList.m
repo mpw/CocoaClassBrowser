@@ -9,6 +9,9 @@
 #import "FakeClassList.h"
 
 @implementation FakeClassList
+{
+    NSInteger _selectedGroup;
+}
 
 - (NSUInteger)countOfClassGroups
 {
@@ -18,6 +21,16 @@
 - (NSString *)objectInClassGroupsAtIndex:(NSUInteger)index
 {
     return [self.classGroups objectAtIndex:index];
+}
+
+- (void)selectClassGroupAtIndex:(NSInteger)index
+{
+    _selectedGroup = index;
+}
+
+- (NSString *)selectedClassGroup
+{
+    return self.classGroups[_selectedGroup];
 }
 
 @end

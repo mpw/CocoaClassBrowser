@@ -67,4 +67,11 @@
     XCTAssertFalse([cell isLeaf]);
 }
 
+- (void)testBrowserCellSelectionResultsInChoosingAClassGroupInTheDataModel
+{
+    BOOL result = [source browser:nil selectRow:1 inColumn:0];
+    XCTAssertTrue(result);
+    XCTAssertEqualObjects(list.selectedClassGroup, @"AppKit");
+}
+
 @end
