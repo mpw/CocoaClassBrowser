@@ -9,6 +9,11 @@
 #import "IKBClassBrowserSource.h"
 #import "IKBClassList.h"
 
+typedef NS_ENUM(NSInteger, IKBClassBrowserColumn) {
+    IKBClassBrowserColumnClassGroup = 0,
+    IKBClassBrowserColumnClass = 1,
+};
+
 @implementation IKBClassBrowserSource
 {
     id <IKBClassList> _classList;
@@ -26,7 +31,17 @@
 
 - (NSInteger)browser:(NSBrowser *)sender numberOfRowsInColumn:(NSInteger)column
 {
-    return [_classList countOfClassGroups];
+    switch (column) {
+        case IKBClassBrowserColumnClassGroup:
+            return [_classList countOfClassGroups];
+            break;
+        case IKBClassBrowserColumnClass:
+            return [_classList countOfClasses];
+            break;
+        default:
+            return 0;
+            break;
+    }
 }
 
 - (void)browser:(NSBrowser *)sender willDisplayCell:(id)cell atRow:(NSInteger)row column:(NSInteger)column

@@ -36,7 +36,9 @@
 - (void)setUp
 {
     list = [FakeClassList new];
-    list.classGroups = @[ @"Foundation", @"AppKit", @"Isambard" ];
+    list.classes = @{ @"Foundation" : @[@"NSObject", @"NSData", @"NSString"],
+                      @"AppKit" : @[@"NSBrowser", @"NSCell", @"NSTableView", @"NSMatrix"],
+                      @"Isambard" : @[@"IKBCommandBus"] };
     source = [[IKBClassBrowserSource alloc] initWithClassList:list];
     cell = [FakeBrowserCell new];
 }
@@ -54,9 +56,9 @@
 - (void)testColumnZeroCellsAreNamedAfterClassGroups
 {
     [source browser:nil willDisplayCell:cell atRow:0 column:0];
-    XCTAssertEqualObjects([cell stringValue], @"Foundation");
-    [source browser:nil willDisplayCell:cell atRow:1 column:0];
     XCTAssertEqualObjects([cell stringValue], @"AppKit");
+    [source browser:nil willDisplayCell:cell atRow:1 column:0];
+    XCTAssertEqualObjects([cell stringValue], @"Foundation");
     [source browser:nil willDisplayCell:cell atRow:2 column:0];
     XCTAssertEqualObjects([cell stringValue], @"Isambard");
 }
@@ -71,7 +73,13 @@
 {
     BOOL result = [source browser:nil selectRow:1 inColumn:0];
     XCTAssertTrue(result);
-    XCTAssertEqualObjects(list.selectedClassGroup, @"AppKit");
+    XCTAssertEqualObjects(list.selectedClassGroup, @"Foundation");
+}
+
+- (void)testBrowserCellsInColumnOneAreNamedAfterTheClassesInTheSelectedGroup
+{
+    [source browser:nil selectRow:0 inColumn:0];
+    XCTAssertEqual([source browser:nil numberOfRowsInColumn:1], (NSInteger)4);
 }
 
 @end

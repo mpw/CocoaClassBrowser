@@ -27,7 +27,9 @@
 {
     // just for visual inspection during testing
     FakeClassList *classList = [FakeClassList new];
-    classList.classGroups = @[ @"Foundation", @"AppKit", @"Isambard" ];
+    classList.classes = @{ @"Foundation" : @[@"NSObject", @"NSData", @"NSString"],
+                           @"AppKit" : @[@"NSBrowser", @"NSCell", @"NSTableView", @"NSMatrix"],
+                           @"Isambard" : @[@"IKBCommandBus"] };
     self.classList = classList;
     self.browserSource = [[IKBClassBrowserSource alloc] initWithClassList:classList];
     self.classBrowser.delegate = self.browserSource;

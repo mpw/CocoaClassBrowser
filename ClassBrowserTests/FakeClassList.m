@@ -33,4 +33,14 @@
     return self.classGroups[_selectedGroup];
 }
 
+- (NSArray *)classGroups
+{
+    return [self.classes.allKeys sortedArrayUsingSelector:@selector(compare:)];
+}
+
+- (NSUInteger)countOfClasses
+{
+    return [self.classes[self.selectedClassGroup] count];
+}
+
 @end
