@@ -26,3 +26,7 @@
 - (NSString *)objectInMethodsAtIndex:(NSUInteger)index;
 
 @end
+
+@interface IKBClassList : NSObject <IKBClassList>
+
+@end

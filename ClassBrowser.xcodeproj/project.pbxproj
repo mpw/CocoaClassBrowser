@@ -20,6 +20,8 @@
 		98B66237185728A20045FDBD /* ClassBrowserTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 98B66236185728A20045FDBD /* ClassBrowserTests.m */; };
 		98B6624318574B900045FDBD /* IKBClassBrowserSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 98B6624218574B900045FDBD /* IKBClassBrowserSource.m */; };
 		98B6624718574C340045FDBD /* FakeClassList.m in Sources */ = {isa = PBXBuildFile; fileRef = 98B6624518574BE90045FDBD /* FakeClassList.m */; };
+		98B66249185780320045FDBD /* ClassListTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 98B66248185780320045FDBD /* ClassListTests.m */; };
+		98B6624B185788410045FDBD /* IKBClassList.m in Sources */ = {isa = PBXBuildFile; fileRef = 98B6624A185788410045FDBD /* IKBClassList.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +59,8 @@
 		98B6624218574B900045FDBD /* IKBClassBrowserSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IKBClassBrowserSource.m; sourceTree = "<group>"; };
 		98B6624418574BE90045FDBD /* FakeClassList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FakeClassList.h; sourceTree = "<group>"; };
 		98B6624518574BE90045FDBD /* FakeClassList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FakeClassList.m; sourceTree = "<group>"; };
+		98B66248185780320045FDBD /* ClassListTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClassListTests.m; sourceTree = "<group>"; };
+		98B6624A185788410045FDBD /* IKBClassList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IKBClassList.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,12 +128,13 @@
 			children = (
 				98B6621E185728A20045FDBD /* IKBAppDelegate.h */,
 				98B6621F185728A20045FDBD /* IKBAppDelegate.m */,
-				98B6624018574B570045FDBD /* IKBClassList.h */,
 				98B66221185728A20045FDBD /* MainMenu.xib */,
 				98B66224185728A20045FDBD /* Images.xcassets */,
 				98B66213185728A20045FDBD /* Supporting Files */,
 				98B6624118574B900045FDBD /* IKBClassBrowserSource.h */,
 				98B6624218574B900045FDBD /* IKBClassBrowserSource.m */,
+				98B6624018574B570045FDBD /* IKBClassList.h */,
+				98B6624A185788410045FDBD /* IKBClassList.m */,
 			);
 			path = ClassBrowser;
 			sourceTree = "<group>";
@@ -150,6 +155,7 @@
 			isa = PBXGroup;
 			children = (
 				98B66236185728A20045FDBD /* ClassBrowserTests.m */,
+				98B66248185780320045FDBD /* ClassListTests.m */,
 				98B66231185728A20045FDBD /* Supporting Files */,
 				98B6624418574BE90045FDBD /* FakeClassList.h */,
 				98B6624518574BE90045FDBD /* FakeClassList.m */,
@@ -268,6 +274,7 @@
 				98B6624318574B900045FDBD /* IKBClassBrowserSource.m in Sources */,
 				98B66219185728A20045FDBD /* main.m in Sources */,
 				98B66220185728A20045FDBD /* IKBAppDelegate.m in Sources */,
+				98B6624B185788410045FDBD /* IKBClassList.m in Sources */,
 				98B6624718574C340045FDBD /* FakeClassList.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -276,6 +283,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				98B66249185780320045FDBD /* ClassListTests.m in Sources */,
 				98B66237185728A20045FDBD /* ClassBrowserTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
