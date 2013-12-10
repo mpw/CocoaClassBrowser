@@ -105,4 +105,11 @@
     XCTAssertEqual(watcher.reloadedColumn, (NSInteger)1);
 }
 
+- (void)testColumnOneCellsAreBranches
+{
+    [source browser:nil didSelectRow:0 inColumn:0];
+    [source browser:nil willDisplayCell:cell atRow:0 column:1];
+    XCTAssertFalse([cell isLeaf]);
+}
+
 @end
