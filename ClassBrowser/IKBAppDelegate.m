@@ -8,6 +8,13 @@
 
 #import "IKBAppDelegate.h"
 
+@interface IKBAppDelegate ()
+
+@property (weak) IBOutlet NSBrowser *classBrowser;
+@property (unsafe_unretained) IBOutlet NSTextView *codeText;
+
+@end
+
 @implementation IKBAppDelegate
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
