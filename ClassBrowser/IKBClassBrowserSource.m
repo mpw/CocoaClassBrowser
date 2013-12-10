@@ -65,9 +65,9 @@ typedef NS_ENUM(NSInteger, IKBClassBrowserColumn) {
     }
 }
 
-- (BOOL)browser:(NSBrowser *)sender selectRow:(NSInteger)row inColumn:(NSInteger)column
+- (void)browser:(NSBrowser *)browser didSelectRow:(NSInteger)row inColumn:(NSInteger)column
 {
     [_classList selectClassGroupAtIndex:row];
-    return YES;
 }
+
 @end

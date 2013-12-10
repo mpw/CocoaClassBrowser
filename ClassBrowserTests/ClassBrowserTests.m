@@ -71,14 +71,13 @@
 
 - (void)testBrowserCellSelectionResultsInChoosingAClassGroupInTheDataModel
 {
-    BOOL result = [source browser:nil selectRow:1 inColumn:0];
-    XCTAssertTrue(result);
+    [source browser:nil didSelectRow:1 inColumn:0];
     XCTAssertEqualObjects(list.selectedClassGroup, @"Foundation");
 }
 
 - (void)testBrowserCellsInColumnOneAreNamedAfterTheClassesInTheSelectedGroup
 {
-    [source browser:nil selectRow:0 inColumn:0];
+    [source browser:nil didSelectRow:0 inColumn:0];
     XCTAssertEqual([source browser:nil numberOfRowsInColumn:1], (NSInteger)4);
     [source browser:nil willDisplayCell:cell atRow:2 column:1];
     XCTAssertEqualObjects([cell stringValue], @"NSTableView");

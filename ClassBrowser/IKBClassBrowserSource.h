@@ -13,5 +13,6 @@
 @interface IKBClassBrowserSource : NSObject <NSBrowserDelegate>
 
 - (instancetype)initWithClassList:(id <IKBClassList>)list;
+- (void)browser:(NSBrowser *)browser didSelectRow:(NSInteger)row inColumn:(NSInteger)column;
 
 @end
