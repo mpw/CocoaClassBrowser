@@ -14,6 +14,7 @@
     NSInteger _selectedClass;
     NSInteger _selectedProtocol;
     NSArray *_protocols;
+    NSArray *_methods;
 }
 
 - (instancetype)init
@@ -22,6 +23,7 @@
     if (self)
     {
         _protocols = @[@"--all--", @"uncategorized", @"NSCopying"];
+        _methods = @[ @"-copyWithZone:" , @"+alloc" ];
     }
     return self;
 }
@@ -89,6 +91,16 @@
 - (NSString *)selectedProtocol
 {
     return _protocols[_selectedProtocol];
+}
+
+- (NSUInteger)countOfMethods
+{
+    return _methods.count;
+}
+
+- (NSString *)objectInMethodsAtIndex:(NSUInteger)index
+{
+    return _methods[index];
 }
 
 @end

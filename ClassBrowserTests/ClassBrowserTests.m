@@ -58,6 +58,7 @@ void selectSecondProtocolForSecondClassInBrowser(IKBClassBrowserSource *source, 
     IKBClassBrowserSource *source;
     FakeClassList *list;
     FakeBrowserCell *cell;
+    ReloadWatcher *watcher;
 }
 
 - (void)setUp
@@ -68,6 +69,8 @@ void selectSecondProtocolForSecondClassInBrowser(IKBClassBrowserSource *source, 
                       @"Isambard" : @[@"IKBCommandBus"] };
     source = [[IKBClassBrowserSource alloc] initWithClassList:list];
     cell = [FakeBrowserCell new];
+    watcher = [ReloadWatcher new];
+    watcher.reloadedColumn = NSNotFound;
 }
 
 - (void)testConformanceToBrowserDelegateProtocol
@@ -112,7 +115,6 @@ void selectSecondProtocolForSecondClassInBrowser(IKBClassBrowserSource *source, 
 
 - (void)testSelectingClassGroupResultsInReloadingClassColumn
 {
-    ReloadWatcher *watcher = [ReloadWatcher new];
     [source browser:(NSBrowser *)watcher didSelectRow:1 inColumn:0];
     XCTAssertEqual(watcher.reloadedColumn, (NSInteger)1);
 }
@@ -126,7 +128,6 @@ void selectSecondProtocolForSecondClassInBrowser(IKBClassBrowserSource *source, 
 
 - (void)testSelectingACellInColumnOneResultsInColumnTwoBeingReloaded
 {
-    ReloadWatcher *watcher = [ReloadWatcher new];
     selectSecondClassInBrowser(source, (NSBrowser *)watcher);
     XCTAssertEqual(watcher.reloadedColumn, (NSInteger)2);
 }
@@ -139,7 +140,7 @@ void selectSecondProtocolForSecondClassInBrowser(IKBClassBrowserSource *source, 
 
 - (void)testProtocolsAreShownInTheThirdColumn
 {
-    //the test data is expressed in FakeDataList, but @"--all--" and @"uncategorized" are always present anyway.
+    //the test data is expressed in FakeClassList, but @"--all--" and @"uncategorized" are always present anyway.
     selectSecondClassInBrowser(source, nil);
     XCTAssertEqual([source browser:nil numberOfRowsInColumn:2], (NSInteger)3);
     [source browser:nil willDisplayCell:cell atRow:0 column:2];
@@ -157,4 +158,25 @@ void selectSecondProtocolForSecondClassInBrowser(IKBClassBrowserSource *source, 
     XCTAssertEqualObjects(list.selectedProtocol, @"uncategorized");
 }
 
+- (void)testSelectingProtocolRefreshesMethodColumn
+{
+    selectSecondProtocolForSecondClassInBrowser(source, (NSBrowser *)watcher);
+    XCTAssertEqual(watcher.reloadedColumn, (NSInteger)3);
+}
+
+- (void)testMethodsAreShownInTheFourthColumn
+{
+    //again, the data here is in FakeClassList.
+    selectSecondProtocolForSecondClassInBrowser(source, nil);
+    XCTAssertEqual([source browser:nil numberOfRowsInColumn:3], (NSInteger)2);
+    [source browser:nil willDisplayCell:cell atRow:0 column:3];
+    XCTAssertEqualObjects([cell stringValue], @"-copyWithZone:");
+    XCTAssertTrue([cell isLeaf]);
+}
+
+- (void)testSelectingMethodDoesNotReloadAnything
+{
+    [source browser:(NSBrowser *)watcher didSelectRow:0 inColumn:3];
+    XCTAssertEqual(watcher.reloadedColumn, (NSInteger)NSNotFound);
+}
 @end

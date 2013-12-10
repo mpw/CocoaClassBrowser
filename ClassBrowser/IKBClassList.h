@@ -22,4 +22,7 @@
 - (NSString *)objectInProtocolsAtIndex:(NSUInteger)index;
 - (void)selectProtocolAtIndex:(NSInteger)index;
 
+- (NSUInteger)countOfMethods;
+- (NSString *)objectInMethodsAtIndex:(NSUInteger)index;
+
 @end
