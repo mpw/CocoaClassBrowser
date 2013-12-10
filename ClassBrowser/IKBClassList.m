@@ -208,12 +208,29 @@
 
 - (NSArray *)listUncategorizedMethods
 {
+    NSArray *allMethods = [self listAllMethods];
+    NSArray *allProtocols = [self protocolsInSelectedClass];
+    if ([allProtocols count] == 2)
+    {
+        return allMethods;
+    }
+    else
+    {
+        NSMutableArray *mutableMethods = [[allMethods mutableCopy] autorelease];
+        NSArray *realProtocols = [allProtocols subarrayWithRange:NSMakeRange(2, [allProtocols count] - 2)];
+        for (NSString *protocolName in realProtocols)
+        {
+            Protocol *protocol = NSProtocolFromString(protocolName);
+            NSArray *conformingMethods = [self methodsInProtocol:protocol];
+            [mutableMethods removeObjectsInArray:conformingMethods];
+        }
+        return mutableMethods;
+    }
     return nil;
 }
 
-- (NSArray *)listMethodsInSelectedProtocol
+- (NSArray *)methodsInProtocol:(Protocol *)protocol
 {
-    Protocol *protocol = NSProtocolFromString(_selectedProtocol);
     NSMutableArray *methodsInProtocolAndClass = [NSMutableArray array];
     unsigned int countOfClassMethods = 0;
     Method *classMethodList = class_copyMethodList(object_getClass(_selectedClass), &countOfClassMethods);
@@ -225,7 +242,7 @@
         [methodsInClass addObject:methodName];
     }
     free(classMethodList);
-
+    
     //required class methods
     unsigned int countOfProtocolMethods = 0;
     struct objc_method_description *method_list = protocol_copyMethodDescriptionList(protocol, YES, NO, &countOfProtocolMethods);
@@ -251,7 +268,7 @@
             [methodsInProtocolAndClass addObject: [NSString stringWithFormat:@"+%@", methodName]];
         }
     }
-
+    
     unsigned int countOfInstanceMethods = 0;
     Method *instanceMethodList = class_copyMethodList(_selectedClass, &countOfInstanceMethods);
     methodsInClass = [NSMutableArray array];
@@ -260,7 +277,7 @@
         Method thisMethod = instanceMethodList[i];
         NSString *methodName = NSStringFromSelector(method_getName(thisMethod));
         [methodsInClass addObject:methodName];
-
+        
     }
     free(instanceMethodList);
     
@@ -291,6 +308,12 @@
     free(method_list);
     
     return methodsInProtocolAndClass;
+}
+
+- (NSArray *)listMethodsInSelectedProtocol
+{
+    Protocol *protocol = NSProtocolFromString(_selectedProtocol);
+    return [self methodsInProtocol:protocol];
 }
 
 - (NSArray *)sortMethods:(NSArray *)unsorted

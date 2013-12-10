@@ -104,4 +104,11 @@
     XCTAssertEqualObjects([list objectInMethodsAtIndex:12], @"-window");
 }
 
+- (void)testSelectingUncategorizedMethodsLeavesOutMethodsInProtocols
+{
+    __unused NSArray *protocols = [self protocolsForIKBAppDelegate];
+    [list selectProtocolAtIndex:1];
+    XCTAssertEqual([list countOfMethods], (NSUInteger)12);
+}
+
 @end
