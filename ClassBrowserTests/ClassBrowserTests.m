@@ -8,27 +8,80 @@
 
 #import <XCTest/XCTest.h>
 
+@protocol IKBClassList <NSObject>
+
+- (NSUInteger)countOfClassGroups;
+
+@end
+
+@interface IKBClassBrowserSource : NSObject <NSBrowserDelegate>
+
+- (instancetype)initWithClassList:(id <IKBClassList>)list;
+
+@end
+
+@implementation IKBClassBrowserSource
+{
+    id <IKBClassList> _classList;
+}
+
+- (instancetype)initWithClassList:(id)list
+{
+    self = [super init];
+    if (self)
+    {
+        _classList = list;
+    }
+    return self;
+}
+
+- (NSInteger)browser:(NSBrowser *)sender numberOfRowsInColumn:(NSInteger)column
+{
+    return [_classList countOfClassGroups];
+}
+
+@end
+
+@interface FakeClassList : NSObject <IKBClassList>
+
+@property (nonatomic, strong) NSArray *classGroups;
+
+@end
+
+@implementation FakeClassList
+
+- (NSUInteger)countOfClassGroups
+{
+    return self.classGroups.count;
+}
+
+@end
+
 @interface ClassBrowserTests : XCTestCase
 
 @end
 
 @implementation ClassBrowserTests
+{
+    IKBClassBrowserSource *source;
+    FakeClassList *list;
+}
 
 - (void)setUp
 {
-    [super setUp];
-    // Put setup code here. This method is called before the invocation of each test method in the class.
+    list = [FakeClassList new];
+    source = [[IKBClassBrowserSource alloc] initWithClassList:list];
 }
 
-- (void)tearDown
+- (void)testConformanceToBrowserDelegateProtocol
 {
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
-    [super tearDown];
+    XCTAssertTrue([source conformsToProtocol:@protocol(NSBrowserDelegate)]);
 }
 
-- (void)testExample
+- (void)testColumnZeroHasOneRowForEveryClassGroup
 {
-    XCTFail(@"No implementation for \"%s\"", __PRETTY_FUNCTION__);
+    list.classGroups = @[ @"Foundation", @"AppKit", @"Isambard" ];
+    XCTAssertEqual([source browser:nil numberOfRowsInColumn:0], (NSInteger)3);
 }
 
 @end
