@@ -45,6 +45,7 @@
 {
     NSString *groupName = [_classList objectInClassGroupsAtIndex:row];
     [cell setStringValue:groupName];
+    [cell setLeaf:NO];
 }
 
 @end
@@ -72,6 +73,7 @@
 @interface FakeBrowserCell : NSObject
 
 @property (nonatomic, strong) NSString *stringValue;
+@property (nonatomic, assign, getter = isLeaf) BOOL leaf;
 
 @end
 
@@ -86,6 +88,7 @@
 {
     IKBClassBrowserSource *source;
     FakeClassList *list;
+    FakeBrowserCell *cell;
 }
 
 - (void)setUp
@@ -93,6 +96,7 @@
     list = [FakeClassList new];
     list.classGroups = @[ @"Foundation", @"AppKit", @"Isambard" ];
     source = [[IKBClassBrowserSource alloc] initWithClassList:list];
+    cell = [FakeBrowserCell new];
 }
 
 - (void)testConformanceToBrowserDelegateProtocol
@@ -107,13 +111,18 @@
 
 - (void)testColumnZeroCellsAreNamedAfterClassGroups
 {
-    FakeBrowserCell *cell = [FakeBrowserCell new];
     [source browser:nil willDisplayCell:cell atRow:0 column:0];
     XCTAssertEqualObjects([cell stringValue], @"Foundation");
     [source browser:nil willDisplayCell:cell atRow:1 column:0];
     XCTAssertEqualObjects([cell stringValue], @"AppKit");
     [source browser:nil willDisplayCell:cell atRow:2 column:0];
     XCTAssertEqualObjects([cell stringValue], @"Isambard");
+}
+
+- (void)testColumnZeroCellsAreBranches
+{
+    [source browser:nil willDisplayCell:cell atRow:0 column:0];
+    XCTAssertFalse([cell isLeaf]);
 }
 
 @end
