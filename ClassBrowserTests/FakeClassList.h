@@ -15,5 +15,6 @@
 @property (nonatomic, readonly) NSArray *classGroups;
 @property (nonatomic, readonly) NSString *selectedClassGroup;
 @property (nonatomic, readonly) NSString *selectedClass;
+@property (nonatomic, readonly) NSString *selectedProtocol;
 
 @end

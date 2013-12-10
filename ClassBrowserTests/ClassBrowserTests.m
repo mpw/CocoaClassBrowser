@@ -43,6 +43,12 @@ void selectSecondClassInBrowser(IKBClassBrowserSource *source, NSBrowser *browse
     [source browser:browser didSelectRow:1 inColumn:1];
 }
 
+void selectSecondProtocolForSecondClassInBrowser(IKBClassBrowserSource *source, NSBrowser *browser)
+{
+    selectSecondClassInBrowser(source, browser);
+    [source browser:browser didSelectRow:1 inColumn:2];
+}
+
 @interface ClassBrowserTests : XCTestCase
 
 @end
@@ -143,6 +149,12 @@ void selectSecondClassInBrowser(IKBClassBrowserSource *source, NSBrowser *browse
     [source browser:nil willDisplayCell:cell atRow:2 column:2];
     XCTAssertEqualObjects([cell stringValue], @"NSCopying");
     XCTAssertFalse([cell isLeaf]);
+}
+
+- (void)testSelectingProtocolInBrowserIsReflectedInDataModel
+{
+    selectSecondProtocolForSecondClassInBrowser(source, nil);
+    XCTAssertEqualObjects(list.selectedProtocol, @"uncategorized");
 }
 
 @end

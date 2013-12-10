@@ -84,6 +84,9 @@ typedef NS_ENUM(NSInteger, IKBClassBrowserColumn) {
         case IKBClassBrowserColumnClass:
             [_classList selectClassAtIndex:row];
             break;
+        case IKBClassBrowserColumnProtocol:
+            [_classList selectProtocolAtIndex:row];
+            break;
         default:
             break;
     }

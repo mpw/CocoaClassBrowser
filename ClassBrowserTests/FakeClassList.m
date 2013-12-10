@@ -12,6 +12,7 @@
 {
     NSInteger _selectedGroup;
     NSInteger _selectedClass;
+    NSInteger _selectedProtocol;
     NSArray *_protocols;
 }
 
@@ -78,6 +79,16 @@
 - (NSString *)objectInProtocolsAtIndex:(NSUInteger)index
 {
     return _protocols[index];
+}
+
+- (void)selectProtocolAtIndex:(NSInteger)index
+{
+    _selectedProtocol = index;
+}
+
+- (NSString *)selectedProtocol
+{
+    return _protocols[_selectedProtocol];
 }
 
 @end

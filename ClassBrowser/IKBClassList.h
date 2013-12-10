@@ -20,5 +20,6 @@
 
 - (NSUInteger)countOfProtocols;
 - (NSString *)objectInProtocolsAtIndex:(NSUInteger)index;
+- (void)selectProtocolAtIndex:(NSInteger)index;
 
 @end
