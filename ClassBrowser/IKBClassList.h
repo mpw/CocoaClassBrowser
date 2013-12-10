@@ -20,6 +20,7 @@
 - (NSString *)objectInClassesAtIndex:(NSUInteger)index;
 - (void)selectClassAtIndex:(NSInteger)index;
 
+- (NSArray *)protocolsInSelectedClass;
 - (NSUInteger)countOfProtocols;
 - (NSString *)objectInProtocolsAtIndex:(NSUInteger)index;
 - (void)selectProtocolAtIndex:(NSInteger)index;
@@ -32,3 +33,6 @@
 @interface IKBClassList : NSObject <IKBClassList>
 
 @end
+
+extern NSString const *IKBProtocolAllMethods;
+extern NSString const *IKBProtocolUncategorizedMethods;

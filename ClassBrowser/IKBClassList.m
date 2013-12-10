@@ -13,6 +13,8 @@
 {
     NSDictionary *_classesByGroup;
     NSArray *_selectedGroup;
+    Class _selectedClass;
+    NSArray *_protocolList;
 }
 
 - (instancetype)init
@@ -51,6 +53,7 @@
 - (void)dealloc
 {
     [_classesByGroup release];
+    [_protocolList release];
     [super dealloc];
 }
 
@@ -90,10 +93,54 @@
     return [[_selectedGroup retain] autorelease];
 }
 
+- (void)selectClassAtIndex:(NSInteger)index
+{
+    _selectedClass = NSClassFromString([self objectInClassesAtIndex:index]);
+    [self createProtocolList];
+}
+
+- (NSArray *)protocolsInSelectedClass
+{
+    return [[_protocolList retain] autorelease];
+}
+
+- (NSUInteger)countOfProtocols
+{
+    return [_protocolList count];
+}
+
+- (NSString *)objectInProtocolsAtIndex:(NSUInteger)index
+{
+    return _protocolList[index];
+}
+
 - (void)sortClassesInGroups
 {
     [_classesByGroup enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSMutableArray *value, BOOL *stop){
         [value sortUsingSelector:@selector(compare:)];
     }];
 }
+
+- (void)createProtocolList
+{
+    [_protocolList release];
+    _protocolList = nil;
+    unsigned int protocolCount;
+    Protocol **list = class_copyProtocolList(_selectedClass, &protocolCount);
+    NSMutableArray *protocols = [NSMutableArray array];
+    for (unsigned int i = 0; i < protocolCount; i++)
+    {
+        Protocol *protocol = list[i];
+        NSString *protocolName = @(protocol_getName(protocol));
+        [protocols addObject:protocolName];
+    }
+    free(list);
+    [protocols sortUsingSelector:@selector(compare:)];
+    NSArray *fullList = [@[IKBProtocolAllMethods, IKBProtocolUncategorizedMethods] arrayByAddingObjectsFromArray:protocols];
+    _protocolList = [fullList retain];
+}
+
 @end
+
+NSString const *IKBProtocolAllMethods = @"--all--";
+NSString const *IKBProtocolUncategorizedMethods = @"uncategorized";
