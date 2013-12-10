@@ -47,4 +47,13 @@
     XCTAssertFalse([foundationClasses containsObject:@"NSCell"]);
 }
 
+- (void)testClassesInAGroupAreOrderedAlphabetically
+{
+    [list selectClassGroupAtIndex:foundationIndex];
+    NSArray *foundationClasses = [list classesInSelectedGroup];
+    NSUInteger xmlParserIndex = [foundationClasses indexOfObject:@"NSXMLParser"];
+    NSUInteger conditionLockIndex = [foundationClasses indexOfObject:@"NSConditionLock"];
+    XCTAssertTrue(conditionLockIndex < xmlParserIndex);
+}
+
 @end

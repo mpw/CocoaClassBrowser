@@ -43,6 +43,7 @@
             }
         }
         _classesByGroup = [classesByGroup copy];
+        [self sortClassesInGroups];
     }
     return self;
 }
@@ -89,4 +90,10 @@
     return [[_selectedGroup retain] autorelease];
 }
 
+- (void)sortClassesInGroups
+{
+    [_classesByGroup enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSMutableArray *value, BOOL *stop){
+        [value sortUsingSelector:@selector(compare:)];
+    }];
+}
 @end
