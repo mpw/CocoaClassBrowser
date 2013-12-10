@@ -34,6 +34,24 @@
     return [list classesInSelectedGroup];
 }
 
+- (NSArray *)protocolsForNSConditionLock
+{
+    NSArray *foundationClasses = [self foundationClasses];
+    NSUInteger conditionLockIndex = [foundationClasses indexOfObject:@"NSConditionLock"];
+    [list selectClassAtIndex:conditionLockIndex];
+    return [list protocolsInSelectedClass];
+}
+
+- (NSArray *)protocolsForIKBAppDelegate
+{
+    NSUInteger classBrowserIndex = [classGroups indexOfObject:@"ClassBrowser"];
+    [list selectClassGroupAtIndex:classBrowserIndex];
+    NSArray *classes = [list classesInSelectedGroup];
+    NSUInteger appDIndex = [classes indexOfObject:@"IKBAppDelegate"];
+    [list selectClassAtIndex:appDIndex];
+    return [list protocolsInSelectedClass];
+}
+
 - (void)testClassGroupsAreNamedAfterBinaryImages
 {
     XCTAssertTrue([classGroups containsObject:@"Foundation"]);
@@ -62,13 +80,28 @@
 
 - (void)testSelectingAClassLetsYouInvestigateItsProtocols
 {
-    NSArray *foundationClasses = [self foundationClasses];
-    NSUInteger conditionLockIndex = [foundationClasses indexOfObject:@"NSConditionLock"];
-    [list selectClassAtIndex:conditionLockIndex];
-    NSArray *protocols = [list protocolsInSelectedClass];
+    NSArray *protocols = [self protocolsForNSConditionLock];
     XCTAssertEqualObjects(protocols[0], @"--all--");
     XCTAssertEqualObjects(protocols[1], @"uncategorized");
     XCTAssertEqualObjects(protocols[2], @"NSLocking");
+}
+
+- (void)testSelectingAProtocolLetsYouInvestigateItsMethods
+{
+    __unused NSArray *protocols = [self protocolsForNSConditionLock];
+    [list selectProtocolAtIndex:2];
+    XCTAssertEqual([list countOfMethods], (NSUInteger)2);
+    XCTAssertEqualObjects([list objectInMethodsAtIndex:0], @"-lock");
+    XCTAssertEqualObjects([list objectInMethodsAtIndex:1], @"-unlock");
+}
+
+- (void)testSelectingAllMethodsShowsAllMethods
+{
+    __unused NSArray *protocols = [self protocolsForIKBAppDelegate];
+    [list selectProtocolAtIndex:0];
+    XCTAssertEqual([list countOfMethods], (NSUInteger)13);
+    XCTAssertEqualObjects([list objectInMethodsAtIndex:0], @"-.cxx_destruct");
+    XCTAssertEqualObjects([list objectInMethodsAtIndex:12], @"-window");
 }
 
 @end

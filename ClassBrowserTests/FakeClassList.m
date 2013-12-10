@@ -113,4 +113,9 @@
     return _methods[index];
 }
 
+- (NSArray *)protocolsInSelectedClass
+{
+    return _protocols;
+}
+
 @end
