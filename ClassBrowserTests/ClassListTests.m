@@ -17,25 +17,34 @@
 @implementation ClassListTests
 {
     id <IKBClassList> list;
+    NSArray *classGroups;
+    NSUInteger foundationIndex;
 }
 
 - (void)setUp
 {
     list = [IKBClassList new];
+    classGroups = [list allClassGroups];
+    foundationIndex = [classGroups indexOfObject:@"Foundation"];
 }
 
 - (void)testClassGroupsAreNamedAfterBinaryImages
 {
-    NSArray *classGroups = [list allClassGroups];
     XCTAssertTrue([classGroups containsObject:@"Foundation"]);
 }
 
 - (void)testClassGroupsAreOrderedAlphabetically
 {
-    NSArray *classGroups = [list allClassGroups];
-    NSUInteger foundationIndex = [classGroups indexOfObject:@"Foundation"];
     NSUInteger appkitIndex = [classGroups indexOfObject:@"AppKit"];
     XCTAssertTrue(appkitIndex < foundationIndex);
+}
+
+- (void)testSelectingAClassGroupLetsYouInvestigateItsClasses
+{
+    [list selectClassGroupAtIndex:foundationIndex];
+    NSArray *foundationClasses = [list classesInSelectedGroup];
+    XCTAssertTrue([foundationClasses containsObject:@"NSXMLParser"]);
+    XCTAssertFalse([foundationClasses containsObject:@"NSCell"]);
 }
 
 @end

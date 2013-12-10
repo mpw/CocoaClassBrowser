@@ -68,6 +68,11 @@
     return self.classes[self.selectedClassGroup][index];
 }
 
+- (NSArray *)classesInSelectedGroup
+{
+    return self.classes[self.selectedClassGroup];
+}
+
 - (void)selectClassAtIndex:(NSInteger)index
 {
     _selectedClass = index;

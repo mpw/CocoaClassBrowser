@@ -11,7 +11,8 @@
 
 @implementation IKBClassList
 {
-    NSArray *_classGroups;
+    NSDictionary *_classesByGroup;
+    NSArray *_selectedGroup;
 }
 
 - (instancetype)init
@@ -24,47 +25,68 @@
         numberOfClasses = objc_getClassList(classes, numberOfClasses);
         
         NSMutableSet *groups = [NSMutableSet set];
+        NSMutableDictionary *classesByGroup = [NSMutableDictionary dictionary];
         for (int i = 0; i < numberOfClasses; i++)
         {
             Class ThisClass = classes[i];
             const char *imgName = class_getImageName(ThisClass);
             NSString *imageName = imgName ? [@(imgName) lastPathComponent] : @"Uncategorized";
-            [groups addObject:imageName];
+            NSMutableArray *classesInGroup = classesByGroup[imageName];
+            if (classesInGroup)
+            {
+                [classesInGroup addObject:NSStringFromClass(ThisClass)];
+            }
+            else
+            {
+                classesInGroup = [NSMutableArray arrayWithObject:NSStringFromClass(ThisClass)];
+                classesByGroup[imageName] = classesInGroup;
+            }
         }
-        _classGroups = [[[groups allObjects] sortedArrayUsingSelector:@selector(compare:)] retain];
+        _classesByGroup = [classesByGroup copy];
     }
     return self;
 }
 
 - (void)dealloc
 {
-    [_classGroups release];
+    [_classesByGroup release];
     [super dealloc];
 }
 
 - (NSUInteger)countOfClassGroups
 {
-    return [_classGroups count];
+    return [[self allClassGroups] count];
 }
 
 - (NSString *)objectInClassGroupsAtIndex:(NSUInteger)index
 {
-    return _classGroups[index];
+    return [self allClassGroups][index];
 }
 
 - (NSArray *)allClassGroups
 {
-    return [[_classGroups retain] autorelease];
+    return [[_classesByGroup allKeys] sortedArrayUsingSelector:@selector(compare:)];
 }
 
 - (NSUInteger)countOfClasses
 {
-    return 0;
+    return [_selectedGroup count];
 }
 
 - (void)selectClassGroupAtIndex:(NSInteger)index
 {
-    
+    NSString *selectedClassGroup = [self allClassGroups][index];
+    _selectedGroup = _classesByGroup[selectedClassGroup];
+}
+
+- (NSString *)objectInClassesAtIndex:(NSUInteger)index
+{
+    return _selectedGroup[index];
+}
+
+- (NSArray *)classesInSelectedGroup
+{
+    return [[_selectedGroup retain] autorelease];
 }
 
 @end
