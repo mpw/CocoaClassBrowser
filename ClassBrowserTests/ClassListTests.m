@@ -99,16 +99,16 @@
 {
     __unused NSArray *protocols = [self protocolsForIKBAppDelegate];
     [list selectProtocolAtIndex:0];
-    XCTAssertEqual([list countOfMethods], (NSUInteger)13);
+    XCTAssertEqual([list countOfMethods], (NSUInteger)4);
     XCTAssertEqualObjects([list objectInMethodsAtIndex:0], @"-.cxx_destruct");
-    XCTAssertEqualObjects([list objectInMethodsAtIndex:12], @"-window");
+    XCTAssertEqualObjects([list objectInMethodsAtIndex:3], @"-windowController");
 }
 
 - (void)testSelectingUncategorizedMethodsLeavesOutMethodsInProtocols
 {
     __unused NSArray *protocols = [self protocolsForIKBAppDelegate];
     [list selectProtocolAtIndex:1];
-    XCTAssertEqual([list countOfMethods], (NSUInteger)12);
+    XCTAssertEqual([list countOfMethods], (NSUInteger)3);
 }
 
 @end

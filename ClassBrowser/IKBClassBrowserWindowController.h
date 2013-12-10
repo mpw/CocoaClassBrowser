@@ -1,5 +1,5 @@
 //
-//  IKBAppDelegate.h
+//  IKBClassBrowserWindowController.h
 //  ClassBrowser
 //
 //  Created by Graham Lee on 10/12/2013.
@@ -8,6 +8,6 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface IKBAppDelegate : NSObject <NSApplicationDelegate>
+@interface IKBClassBrowserWindowController : NSWindowController
 
 @end

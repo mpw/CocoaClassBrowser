@@ -22,6 +22,9 @@
 		98B66249185780320045FDBD /* ClassListTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 98B66248185780320045FDBD /* ClassListTests.m */; };
 		98B6624B185788410045FDBD /* IKBClassList.m in Sources */ = {isa = PBXBuildFile; fileRef = 98B6624A185788410045FDBD /* IKBClassList.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		98B6624C185791510045FDBD /* FakeClassList.m in Sources */ = {isa = PBXBuildFile; fileRef = 98B6624518574BE90045FDBD /* FakeClassList.m */; };
+		98B6624E1857D3A10045FDBD /* BrowserWindowControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 98B6624D1857D3A10045FDBD /* BrowserWindowControllerTests.m */; };
+		98B662521857D7480045FDBD /* IKBClassBrowserWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98B662501857D7480045FDBD /* IKBClassBrowserWindowController.m */; };
+		98B662531857D7480045FDBD /* IKBClassBrowserWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98B662511857D7480045FDBD /* IKBClassBrowserWindowController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,6 +64,11 @@
 		98B6624518574BE90045FDBD /* FakeClassList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FakeClassList.m; sourceTree = "<group>"; };
 		98B66248185780320045FDBD /* ClassListTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClassListTests.m; sourceTree = "<group>"; };
 		98B6624A185788410045FDBD /* IKBClassList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IKBClassList.m; sourceTree = "<group>"; };
+		98B6624D1857D3A10045FDBD /* BrowserWindowControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BrowserWindowControllerTests.m; sourceTree = "<group>"; };
+		98B6624F1857D7480045FDBD /* IKBClassBrowserWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IKBClassBrowserWindowController.h; sourceTree = "<group>"; };
+		98B662501857D7480045FDBD /* IKBClassBrowserWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IKBClassBrowserWindowController.m; sourceTree = "<group>"; };
+		98B662511857D7480045FDBD /* IKBClassBrowserWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IKBClassBrowserWindowController.xib; sourceTree = "<group>"; };
+		98B662541857D9EB0045FDBD /* IKBClassBrowserWindowController_ClassExtension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IKBClassBrowserWindowController_ClassExtension.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -135,6 +143,10 @@
 				98B6624218574B900045FDBD /* IKBClassBrowserSource.m */,
 				98B6624018574B570045FDBD /* IKBClassList.h */,
 				98B6624A185788410045FDBD /* IKBClassList.m */,
+				98B6624F1857D7480045FDBD /* IKBClassBrowserWindowController.h */,
+				98B662541857D9EB0045FDBD /* IKBClassBrowserWindowController_ClassExtension.h */,
+				98B662501857D7480045FDBD /* IKBClassBrowserWindowController.m */,
+				98B662511857D7480045FDBD /* IKBClassBrowserWindowController.xib */,
 			);
 			path = ClassBrowser;
 			sourceTree = "<group>";
@@ -156,6 +168,7 @@
 			children = (
 				98B66236185728A20045FDBD /* ClassBrowserTests.m */,
 				98B66248185780320045FDBD /* ClassListTests.m */,
+				98B6624D1857D3A10045FDBD /* BrowserWindowControllerTests.m */,
 				98B66231185728A20045FDBD /* Supporting Files */,
 				98B6624418574BE90045FDBD /* FakeClassList.h */,
 				98B6624518574BE90045FDBD /* FakeClassList.m */,
@@ -252,6 +265,7 @@
 				98B66217185728A20045FDBD /* InfoPlist.strings in Resources */,
 				98B66225185728A20045FDBD /* Images.xcassets in Resources */,
 				98B6621D185728A20045FDBD /* Credits.rtf in Resources */,
+				98B662531857D7480045FDBD /* IKBClassBrowserWindowController.xib in Resources */,
 				98B66223185728A20045FDBD /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -275,6 +289,7 @@
 				98B66219185728A20045FDBD /* main.m in Sources */,
 				98B66220185728A20045FDBD /* IKBAppDelegate.m in Sources */,
 				98B6624B185788410045FDBD /* IKBClassList.m in Sources */,
+				98B662521857D7480045FDBD /* IKBClassBrowserWindowController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -282,6 +297,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				98B6624E1857D3A10045FDBD /* BrowserWindowControllerTests.m in Sources */,
 				98B66249185780320045FDBD /* ClassListTests.m in Sources */,
 				98B66237185728A20045FDBD /* ClassBrowserTests.m in Sources */,
 				98B6624C185791510045FDBD /* FakeClassList.m in Sources */,

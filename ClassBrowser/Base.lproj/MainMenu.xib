@@ -646,58 +646,7 @@
                 </menuItem>
             </items>
         </menu>
-        <window title="ClassBrowser" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="371">
-            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
-            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="335" y="390" width="867" height="466"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1440"/>
-            <view key="contentView" id="372">
-                <rect key="frame" x="0.0" y="0.0" width="867" height="466"/>
-                <autoresizingMask key="autoresizingMask"/>
-                <subviews>
-                    <browser verticalHuggingPriority="750" allowsExpansionToolTips="YES" enabled="YES" hasHorizontalScroller="YES" allowsEmptySelection="YES" defaultColumnWidth="100" minColumnWidth="100" maxVisibleColumns="4" titled="YES" separatesColumns="YES" allowsTypeSelect="YES" columnResizingType="auto" id="QO2-B2-upE">
-                        <rect key="frame" x="0.0" y="176" width="867" height="311"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES"/>
-                    </browser>
-                    <scrollView horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" id="PRA-Ea-UGX">
-                        <rect key="frame" x="0.0" y="-1" width="867" height="169"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                        <clipView key="contentView" id="SXs-Ml-IC5">
-                            <rect key="frame" x="1" y="1" width="865" height="167"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                            <subviews>
-                                <textView importsGraphics="NO" findStyle="panel" continuousSpellChecking="YES" allowsUndo="YES" usesRuler="YES" usesFontPanel="YES" verticallyResizable="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" spellingCorrection="YES" smartInsertDelete="YES" id="jbz-Ig-lYh">
-                                    <rect key="frame" x="0.0" y="0.0" width="865" height="167"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <size key="minSize" width="865" height="167"/>
-                                    <size key="maxSize" width="884" height="10000000"/>
-                                    <color key="insertionPointColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                    <size key="minSize" width="865" height="167"/>
-                                    <size key="maxSize" width="884" height="10000000"/>
-                                </textView>
-                            </subviews>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        </clipView>
-                        <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="YES" id="v3z-LR-gnV">
-                            <rect key="frame" x="-100" y="-100" width="87" height="18"/>
-                            <autoresizingMask key="autoresizingMask"/>
-                        </scroller>
-                        <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="HxT-qG-8bW">
-                            <rect key="frame" x="850" y="1" width="16" height="167"/>
-                            <autoresizingMask key="autoresizingMask"/>
-                        </scroller>
-                    </scrollView>
-                </subviews>
-            </view>
-        </window>
-        <customObject id="494" customClass="IKBAppDelegate">
-            <connections>
-                <outlet property="classBrowser" destination="QO2-B2-upE" id="qzF-AW-eAe"/>
-                <outlet property="codeText" destination="jbz-Ig-lYh" id="bvn-zU-Wae"/>
-                <outlet property="window" destination="371" id="532"/>
-            </connections>
-        </customObject>
+        <customObject id="494" customClass="IKBAppDelegate"/>
         <customObject id="420" customClass="NSFontManager"/>
     </objects>
 </document>
