@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		980AC69D185A48CD00611C26 /* ExecutionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 980AC69C185A48CD00611C26 /* ExecutionTests.m */; };
+		980AC6A1185A510000611C26 /* IKBCodeRunner.m in Sources */ = {isa = PBXBuildFile; fileRef = 980AC6A0185A510000611C26 /* IKBCodeRunner.m */; };
+		980AC6A4185A519600611C26 /* IKBCompiler.mm in Sources */ = {isa = PBXBuildFile; fileRef = 980AC6A3185A519600611C26 /* IKBCompiler.mm */; };
+		980AC6A6185A524100611C26 /* CompilerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 980AC6A5185A524100611C26 /* CompilerTests.m */; };
 		98B6620D185728A20045FDBD /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98B6620C185728A20045FDBD /* Cocoa.framework */; };
 		98B66217185728A20045FDBD /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 98B66215185728A20045FDBD /* InfoPlist.strings */; };
 		98B66219185728A20045FDBD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 98B66218185728A20045FDBD /* main.m */; };
@@ -38,6 +42,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		980AC69C185A48CD00611C26 /* ExecutionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExecutionTests.m; sourceTree = "<group>"; };
+		980AC69F185A510000611C26 /* IKBCodeRunner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IKBCodeRunner.h; path = "Code Execution/IKBCodeRunner.h"; sourceTree = "<group>"; };
+		980AC6A0185A510000611C26 /* IKBCodeRunner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IKBCodeRunner.m; path = "Code Execution/IKBCodeRunner.m"; sourceTree = "<group>"; };
+		980AC6A2185A519600611C26 /* IKBCompiler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IKBCompiler.h; path = "Code Execution/IKBCompiler.h"; sourceTree = "<group>"; };
+		980AC6A3185A519600611C26 /* IKBCompiler.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = IKBCompiler.mm; path = "Code Execution/IKBCompiler.mm"; sourceTree = "<group>"; };
+		980AC6A5185A524100611C26 /* CompilerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CompilerTests.m; sourceTree = "<group>"; };
 		98B66209185728A20045FDBD /* ClassBrowser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ClassBrowser.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		98B6620C185728A20045FDBD /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		98B6620F185728A20045FDBD /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -92,6 +102,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		980AC69E185A50DF00611C26 /* Code Execution */ = {
+			isa = PBXGroup;
+			children = (
+				980AC69F185A510000611C26 /* IKBCodeRunner.h */,
+				980AC6A0185A510000611C26 /* IKBCodeRunner.m */,
+				980AC6A2185A519600611C26 /* IKBCompiler.h */,
+				980AC6A3185A519600611C26 /* IKBCompiler.mm */,
+			);
+			name = "Code Execution";
+			sourceTree = "<group>";
+		};
 		98B66200185728A10045FDBD = {
 			isa = PBXGroup;
 			children = (
@@ -134,6 +155,7 @@
 		98B66212185728A20045FDBD /* ClassBrowser */ = {
 			isa = PBXGroup;
 			children = (
+				980AC69E185A50DF00611C26 /* Code Execution */,
 				98B6621E185728A20045FDBD /* IKBAppDelegate.h */,
 				98B6621F185728A20045FDBD /* IKBAppDelegate.m */,
 				98B66221185728A20045FDBD /* MainMenu.xib */,
@@ -169,6 +191,8 @@
 				98B66236185728A20045FDBD /* ClassBrowserTests.m */,
 				98B66248185780320045FDBD /* ClassListTests.m */,
 				98B6624D1857D3A10045FDBD /* BrowserWindowControllerTests.m */,
+				980AC69C185A48CD00611C26 /* ExecutionTests.m */,
+				980AC6A5185A524100611C26 /* CompilerTests.m */,
 				98B66231185728A20045FDBD /* Supporting Files */,
 				98B6624418574BE90045FDBD /* FakeClassList.h */,
 				98B6624518574BE90045FDBD /* FakeClassList.m */,
@@ -286,6 +310,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				98B6624318574B900045FDBD /* IKBClassBrowserSource.m in Sources */,
+				980AC6A4185A519600611C26 /* IKBCompiler.mm in Sources */,
+				980AC6A1185A510000611C26 /* IKBCodeRunner.m in Sources */,
 				98B66219185728A20045FDBD /* main.m in Sources */,
 				98B66220185728A20045FDBD /* IKBAppDelegate.m in Sources */,
 				98B6624B185788410045FDBD /* IKBClassList.m in Sources */,
@@ -298,8 +324,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				98B6624E1857D3A10045FDBD /* BrowserWindowControllerTests.m in Sources */,
+				980AC69D185A48CD00611C26 /* ExecutionTests.m in Sources */,
 				98B66249185780320045FDBD /* ClassListTests.m in Sources */,
 				98B66237185728A20045FDBD /* ClassBrowserTests.m in Sources */,
+				980AC6A6185A524100611C26 /* CompilerTests.m in Sources */,
 				98B6624C185791510045FDBD /* FakeClassList.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -503,6 +531,7 @@
 				98B6623C185728A20045FDBD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		98B6623D185728A20045FDBD /* Build configuration list for PBXNativeTarget "ClassBrowserTests" */ = {
 			isa = XCConfigurationList;
@@ -511,6 +540,7 @@
 				98B6623F185728A20045FDBD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
