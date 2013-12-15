@@ -18,7 +18,7 @@
 
 - (NSArray *)compilerArguments
 {
-    return @[@"-fsyntax-only", @"-x", @"objective-c"];
+    return @[@"-fsyntax-only"];
 }
 
 - (IKBCompiler *)compilerWithArguments:(NSArray *)arguments error:(NSError *__autoreleasing *)error

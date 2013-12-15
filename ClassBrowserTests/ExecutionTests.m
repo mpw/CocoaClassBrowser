@@ -23,14 +23,10 @@
     _runner = [IKBCodeRunner new];
 }
 
-- (void)testDefaultCompilerArgumentsSpecifySyntaxOnlyObjectiveCCompilation
+- (void)testDefaultCompilerArgumentsSpecifySyntaxOnly
 {
     NSArray *arguments = [_runner compilerArguments];
     XCTAssertTrue([arguments containsObject:@"-fsyntax-only"]);
-    XCTAssertTrue([arguments containsObject:@"-x"]);
-    NSUInteger x = [arguments indexOfObject:@"-x"];
-    id language = arguments[x+1];
-    XCTAssertEqualObjects(language, @"objective-c");
 }
 
 - (void)testBuildingACompilerWithTheDefaultArgumentsResultsInAnObjectiveCCompilerFrontEnd
