@@ -10,11 +10,12 @@
 
 @interface IKBCompiler : NSObject
 
-+ (instancetype)compilerWithArguments:(NSArray *)arguments error:(NSError **)error;
++ (instancetype)compilerWithFilename:(NSString *)path arguments:(NSArray *)arguments error:(NSError **)error;
 
 @end
 
 extern NSString *IKBCompilerErrorDomain;
 typedef NS_ENUM(NSInteger, IKBCompilerErrorCode) {
     IKBCompilerErrorBadArguments = 1,
+    IKBCompilerErrorNoClangJob,
 };

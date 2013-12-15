@@ -8,7 +8,10 @@
 
 #import "IKBCompiler.h"
 #include "clang/Basic/DiagnosticOptions.h"
+#include "clang/Driver/Compilation.h"
 #include "clang/Driver/Driver.h"
+#include "clang/Driver/Tool.h"
+#include "clang/Frontend/FrontendDiagnostic.h"
 #include "clang/Frontend/TextDiagnosticPrinter.h"
 #include "llvm/Support/Host.h"
 #include "llvm/Support/raw_ostream.h"
@@ -16,11 +19,26 @@
 using namespace clang;
 using namespace clang::driver;
 
-@implementation IKBCompiler
+BOOL canUseCompilerJobs (const driver::JobList& Jobs, DiagnosticsEngine &Diags)
 {
+    BOOL result = YES;
+    if (Jobs.size() != 1 || !isa<driver::Command>(*Jobs.begin())) {
+        SmallString<256> Msg;
+        llvm::raw_svector_ostream OS(Msg);
+        OS << "size: " << Jobs.size();
+        Jobs.Print(OS, "; ", true);
+        Diags.Report(diag::err_fe_expected_compiler_job) << OS.str();
+        result = NO;
+    }
+    return result;
 }
 
-+ (instancetype)compilerWithArguments:(NSArray *)arguments error:(NSError *__autoreleasing *)error
+@implementation IKBCompiler
+{
+    DiagnosticsEngine *diagnostics;
+}
+
++ (instancetype)compilerWithFilename:(NSString *)path arguments:(NSArray *)arguments error:(NSError *__autoreleasing *)error;
 {
     if (![arguments count])
     {
@@ -30,10 +48,10 @@ using namespace clang::driver;
         }
         return nil;
     }
-    return [[self alloc] initWithArguments:arguments error:error];
+    return [[self alloc] initWithFilename:path arguments:arguments error:error];
 }
 
-- (instancetype)initWithArguments:(NSArray *)arguments error:(NSError *__autoreleasing *)error
+- (instancetype)initWithFilename:(NSString *)path arguments:(NSArray *)arguments error:(NSError *__autoreleasing *)error
 {
     self = [super init];
     if (self)
@@ -46,13 +64,48 @@ using namespace clang::driver;
         IntrusiveRefCntPtr<DiagnosticOptions> options = new DiagnosticOptions;
         TextDiagnosticPrinter *diagnosticClient = new TextDiagnosticPrinter(ostream, &*options);
         IntrusiveRefCntPtr<DiagnosticIDs> diagnosticIDs(new DiagnosticIDs());
-        DiagnosticsEngine diagnostics(diagnosticIDs, &*options, diagnosticClient);
-        Driver driver(executable_name, llvm::sys::getProcessTriple(), "IKBCompiler", diagnostics);
-        driver.setTitle("IKBCompiler");
+        diagnostics = new DiagnosticsEngine(diagnosticIDs, &*options, diagnosticClient);
+        Driver driver(executable_name, llvm::sys::getProcessTriple(), "a.out", *diagnostics);
+        driver.setTitle("clang");
         //I _think_ that all of the above could be statics, or could be in a singleton CompilerBuilder or something.
+        // the trick is getting all of the ownership correct.
+        SmallVector<const char *, 16> Args;
+        // yes, I'm ignoring the arguments for now
+        Args.push_back("-fsyntax-only");
+        Args.push_back("-x");
+        Args.push_back("objective-c");
+        Args.push_back("-c");
+        Args.push_back([path UTF8String]);
+        OwningPtr<Compilation> C(driver.BuildCompilation(Args));
+        if (!C)
+        {
+            if (error)
+            {
+                NSString *description = @(diagnostic_output.c_str());
+                *error = [NSError errorWithDomain:IKBCompilerErrorDomain code:IKBCompilerErrorBadArguments userInfo: @{NSLocalizedDescriptionKey : description}];
+            }
+            return nil;
+        }
+        // we should now be able to extract the list of jobs from that
+        const driver::JobList &Jobs = C->getJobs();
+        if (!canUseCompilerJobs(Jobs, *diagnostics))
+        {
+            if (error)
+            {
+                NSString *description = @(diagnostic_output.c_str());
+                *error = [NSError errorWithDomain:IKBCompilerErrorDomain code:IKBCompilerErrorNoClangJob userInfo: @{NSLocalizedDescriptionKey : description}];
+            }
+            return nil;
+        }
         
+       
     }
     return self;
+}
+
+- (void)dealloc
+{
+    delete diagnostics;
 }
 
 @end
