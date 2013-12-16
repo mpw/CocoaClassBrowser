@@ -11,6 +11,7 @@
 @interface IKBCompiler : NSObject
 
 + (instancetype)compilerWithFilename:(NSString *)path arguments:(NSArray *)arguments error:(NSError **)error;
+- (id)compile:(NSError **)error;
 
 @end
 
@@ -18,4 +19,7 @@ extern NSString *IKBCompilerErrorDomain;
 typedef NS_ENUM(NSInteger, IKBCompilerErrorCode) {
     IKBCompilerErrorBadArguments = 1,
     IKBCompilerErrorNoClangJob,
+    IKBCompilerErrorNotAClangInvocation,
+    IKBCompilerErrorCouldNotReportUnderlyingErrors,
+    IKBCompilerErrorInSourceCode,
 };

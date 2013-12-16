@@ -24,7 +24,7 @@
     filename = malloc(strlen(fileTemplate) + 1);
     strncpy(filename, fileTemplate, strlen(fileTemplate) + 1);
     int fd = mkstemp(filename);
-    const char *src = "#include <stdio.h>\nint main(){}";
+    const char *src = "#include <stdio.h>\nint main(){printf(\"Hello, world!\\n\");}";
     write(fd, src, strlen(src));
     close(fd);
 }
@@ -53,5 +53,16 @@
     NSError *constructionError = nil;
     NSArray *arguments = @[ @"-fsyntax-only" ];
     XCTAssertNotNil([IKBCompiler compilerWithFilename:path arguments:arguments error:&constructionError], @"I expected success but got this error: %@", constructionError);
+}
+
+- (void)testCompilerCanRun
+{
+    NSString *path = @(filename);
+    NSError *constructionError = nil;
+    NSArray *arguments = @[ @"-fsyntax-only" ];
+    IKBCompiler *compiler = [IKBCompiler compilerWithFilename:path arguments:arguments error:&constructionError];
+    NSError *compilerError = nil;
+    id module = [compiler compile:&compilerError];
+    XCTAssertNotNil(module, @"I wanted to compile my module but I got this error: %@", compilerError);
 }
 @end
