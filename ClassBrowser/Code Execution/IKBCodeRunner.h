@@ -8,12 +8,19 @@
 
 #import <Foundation/Foundation.h>
 
-@class IKBCompiler;
-
 @interface IKBCodeRunner : NSObject
 
 - (id)doIt:(NSString *)objectiveCSource;
 - (NSArray *)compilerArguments;
-- (IKBCompiler *)compilerWithArguments:(NSArray *)arguments error:(NSError **)error;
+- (int)resultOfRunningSource:(NSString *)source error:(NSError **)error;
 
 @end
+
+extern NSString *IKBCompilerErrorDomain;
+typedef NS_ENUM(NSInteger, IKBCompilerErrorCode) {
+    IKBCompilerErrorBadArguments = 1,
+    IKBCompilerErrorNoClangJob,
+    IKBCompilerErrorNotAClangInvocation,
+    IKBCompilerErrorCouldNotReportUnderlyingErrors,
+    IKBCompilerErrorInSourceCode,
+};

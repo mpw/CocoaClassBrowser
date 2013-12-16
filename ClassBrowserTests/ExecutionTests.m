@@ -29,11 +29,11 @@
     XCTAssertTrue([arguments containsObject:@"-fsyntax-only"]);
 }
 
-- (void)testBuildingACompilerWithTheDefaultArgumentsResultsInAnObjectiveCCompilerFrontEnd
+- (void)testICanRunHelloWorld
 {
-    NSError *compilerConstructionError = nil;
-    IKBCompiler *compiler = [_runner compilerWithArguments:[_runner compilerArguments] error:&compilerConstructionError];
-    XCTAssertNotNil(compiler, @"I wanted to make a compiler but instead I got %@", compilerConstructionError);
+    NSString *source = @"#include <stdio.h>\nint main(){printf(\"Hello, world!\\n\");}";
+    NSError *error = nil;
+    int result = [_runner resultOfRunningSource:source error:&error];
+    XCTAssertEqual(result, 0, @"I wanted the compiler to work but this happened: %@", error);
 }
-
 @end
