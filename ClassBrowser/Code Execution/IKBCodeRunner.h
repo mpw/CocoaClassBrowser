@@ -10,7 +10,7 @@
 
 @interface IKBCodeRunner : NSObject
 
-- (id)doIt:(NSString *)objectiveCSource;
+- (id)doIt:(NSString *)objectiveCSource error:(NSError **)error;
 - (NSArray *)compilerArguments;
 - (int)resultOfRunningSource:(NSString *)source error:(NSError **)error;
 

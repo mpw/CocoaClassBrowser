@@ -36,4 +36,12 @@
     int result = [_runner resultOfRunningSource:source error:&error];
     XCTAssertEqual(result, 0, @"I wanted the compiler to work but this happened: %@", error);
 }
+
+- (void)testICanUseAFoundationFunction
+{
+    NSString *source = @"NSLog(@\"Hello, world!\"); return 1;";
+    NSError *error = nil;
+    XCTAssertEqualObjects([_runner doIt:source error:&error], @(1), @"I wanted to run some Foundation code but got this: %@", error);
+}
+
 @end

@@ -47,9 +47,18 @@ BOOL canUseCompilerJobs (const driver::JobList& Jobs, DiagnosticsEngine &Diags)
 
 @implementation IKBCodeRunner
 
-- (id)doIt:(NSString *)objectiveCSource
+static const NSString *objcMainWrapper = @"#import <Cocoa/Cocoa.h>\n"
+@"int main()\n"
+@"{\n"
+@"@autoreleasepool {\n"
+@"%@\n"
+@"}}\n";
+
+- (id)doIt:(NSString *)objectiveCSource error:(NSError *__autoreleasing *)error
 {
-    return nil;
+    NSString *mainProgram = [NSString stringWithFormat:(NSString *)objcMainWrapper,objectiveCSource];
+    int returnValue = [self resultOfRunningSource:mainProgram error:error];
+    return @(returnValue);
 }
 
 - (NSArray *)compilerArguments
@@ -87,8 +96,15 @@ BOOL canUseCompilerJobs (const driver::JobList& Jobs, DiagnosticsEngine &Diags)
     Args.push_back("-fsyntax-only");
     Args.push_back("-x");
     Args.push_back("objective-c");
-    // next one should rely on some SDK_ROOT setting
-    Args.push_back("-I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk/usr/include");
+    Args.push_back("-isysroot");
+    //we should find the SDK_ROOT from a preference (and maybe use xcode-select's path)
+    Args.push_back("/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk");
+    //not sure why this isn't picked up, but again it should be discovered
+    Args.push_back("-I");
+    Args.push_back("/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/5.0/include");
+    Args.push_back("-fobjc-arc");
+    Args.push_back("-framework");
+    Args.push_back("Cocoa");
     Args.push_back("-c");
     Args.push_back([sourcePath UTF8String]);
     OwningPtr<Compilation> C(driver.BuildCompilation(Args));
@@ -181,9 +197,6 @@ BOOL canUseCompilerJobs (const driver::JobList& Jobs, DiagnosticsEngine &Diags)
     jitArguments.push_back(mod->getModuleIdentifier());
     
     int result = EE->runFunctionAsMain(EntryFn, jitArguments, nullptr);
-
-    llvm::llvm_shutdown();
-
     return result;
 }
 
