@@ -31,9 +31,6 @@
     [self.classBrowser setAction:@selector(browserSelectionDidChange:)];
     
     _runner = [[IKBCodeRunner alloc] init];
-    
-    NSMenu *menu = [self.codeText menu];
-    [menu addItem:self.doItItem];
 }
 
 - (IBAction)browserSelectionDidChange:(NSBrowser *)sender

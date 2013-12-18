@@ -8,7 +8,6 @@
             <connections>
                 <outlet property="classBrowser" destination="p4C-os-s26" id="Ig7-fK-ouk"/>
                 <outlet property="codeText" destination="U7W-yH-sut" id="fP6-WC-xrz"/>
-                <outlet property="doItItem" destination="pJn-f4-UPO" id="bsJ-RH-zE0"/>
                 <outlet property="window" destination="1" id="3"/>
             </connections>
         </customObject>
@@ -62,11 +61,5 @@
                 <outlet property="delegate" destination="-2" id="4"/>
             </connections>
         </window>
-        <menuItem title="Print It" id="pJn-f4-UPO">
-            <modifierMask key="keyEquivalentModifierMask"/>
-            <connections>
-                <action selector="printIt:" target="-2" id="doS-0q-BE4"/>
-            </connections>
-        </menuItem>
     </objects>
 </document>
