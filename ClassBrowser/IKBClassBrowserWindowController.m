@@ -43,7 +43,7 @@
     [self.browserSource browser:sender didSelectRow:row inColumn:column];
 }
 
-- (IBAction)doIt:(id)sender
+- (IBAction)printIt:(id)sender
 {
     NSRange textRange = [self.codeText selectedRange];
     NSString *source = [self.codeText.textStorage.string substringWithRange:textRange];

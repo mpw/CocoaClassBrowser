@@ -62,10 +62,10 @@
                 <outlet property="delegate" destination="-2" id="4"/>
             </connections>
         </window>
-        <menuItem title="Do It" id="pJn-f4-UPO">
+        <menuItem title="Print It" id="pJn-f4-UPO">
             <modifierMask key="keyEquivalentModifierMask"/>
             <connections>
-                <action selector="doIt:" target="-2" id="cqT-pH-c6s"/>
+                <action selector="printIt:" target="-2" id="doS-0q-BE4"/>
             </connections>
         </menuItem>
     </objects>
