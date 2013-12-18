@@ -49,6 +49,7 @@ BOOL canUseCompilerJobs (const driver::JobList& Jobs, DiagnosticsEngine &Diags)
 
 static const NSString *objcMainWrapper = @"#import <Cocoa/Cocoa.h>\n"
 @"#import <objc/runtime.h>\n"
+@"#import <objc/message.h>\n"
 @"int main()\n"
 @"{\n"
 @"@autoreleasepool {\n"
