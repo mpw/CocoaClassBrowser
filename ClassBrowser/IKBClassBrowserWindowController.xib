@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
     </dependencies>
@@ -8,6 +8,7 @@
             <connections>
                 <outlet property="classBrowser" destination="p4C-os-s26" id="Ig7-fK-ouk"/>
                 <outlet property="codeText" destination="U7W-yH-sut" id="fP6-WC-xrz"/>
+                <outlet property="doItItem" destination="pJn-f4-UPO" id="bsJ-RH-zE0"/>
                 <outlet property="window" destination="1" id="3"/>
             </connections>
         </customObject>
@@ -61,5 +62,11 @@
                 <outlet property="delegate" destination="-2" id="4"/>
             </connections>
         </window>
+        <menuItem title="Do It" id="pJn-f4-UPO">
+            <modifierMask key="keyEquivalentModifierMask"/>
+            <connections>
+                <action selector="doIt:" target="-2" id="cqT-pH-c6s"/>
+            </connections>
+        </menuItem>
     </objects>
 </document>

@@ -14,10 +14,10 @@
 @interface IKBClassBrowserWindowController ()
 
 @property (weak) IBOutlet NSBrowser *classBrowser;
+@property (weak) IBOutlet NSMenuItem *doItItem;
 @property (unsafe_unretained) IBOutlet NSTextView *codeText;
 @property (nonatomic, strong) id <IKBClassList> classList;
 @property (nonatomic, strong) IKBClassBrowserSource *browserSource;
-
 - (IBAction)browserSelectionDidChange:(NSBrowser *)sender;
 
 @end
