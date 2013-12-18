@@ -44,4 +44,11 @@
     XCTAssertEqualObjects([_runner doIt:source error:&error], @(1), @"I wanted to run some Foundation code but got this: %@", error);
 }
 
+#pragma message("Skipped test")
+- (void)skipICanUseAnObject
+{
+    NSString *source = @"id obj = [NSObject new]; obj = nil; return 2;";
+    NSError *error = nil;
+    XCTAssertEqualObjects([_runner doIt:source error:&error], @(2), @"I got this error: %@", error);
+}
 @end
