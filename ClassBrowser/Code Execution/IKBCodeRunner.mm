@@ -48,6 +48,7 @@ BOOL canUseCompilerJobs (const driver::JobList& Jobs, DiagnosticsEngine &Diags)
 @implementation IKBCodeRunner
 
 static const NSString *objcMainWrapper = @"#import <Cocoa/Cocoa.h>\n"
+@"#import <objc/runtime.h>\n"
 @"int main()\n"
 @"{\n"
 @"@autoreleasepool {\n"
