@@ -13,7 +13,7 @@
 - (id)doIt:(NSString *)objectiveCSource error:(NSError **)error
 {
     self.ranSource = objectiveCSource;
-    return nil;
+    return self.runResult;
 }
 
 @end

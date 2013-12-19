@@ -24,6 +24,8 @@
 {
     _vc = [IKBCodeEditorViewController new];
     _view = [_vc view];
+    _vc.textView.textStorage.attributedString = [[NSAttributedString alloc] initWithString:@"Hello, world"];
+    [_vc.textView setSelectedRange:(NSRange){.location = 0, .length = 5}];
 }
 
 - (void)testTheViewIsATextViewThatAutoresizesToItsParent
@@ -52,9 +54,18 @@
 {
     FakeCodeRunner *runner = [FakeCodeRunner new];
     _vc.codeRunner = (IKBCodeRunner *)runner;
-    _vc.textView.textStorage.attributedString = [[NSAttributedString alloc] initWithString:@"Hello, world"];
-    [_vc.textView setSelectedRange:(NSRange){.location = 0, .length = 5}];
     [_vc printIt:self];
     XCTAssertEqualObjects(runner.ranSource, @"Hello");
 }
+
+- (void)testPrintItPlacesTheResultAfterTheCompiledSource
+{
+    FakeCodeRunner *runner = [FakeCodeRunner new];
+    runner.runResult = @"PASS";
+    _vc.codeRunner = (IKBCodeRunner *)runner;
+    [_vc printIt:self];
+    NSRange resultRange = [_vc.textView.textStorage.string rangeOfString:@"PASS"];
+    XCTAssertEqual(resultRange.location, (NSUInteger)5);
+}
+
 @end

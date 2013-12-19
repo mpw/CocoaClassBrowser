@@ -11,6 +11,7 @@
 @interface FakeCodeRunner : NSObject
 
 @property (nonatomic, copy) NSString *ranSource;
+@property (nonatomic, strong) id runResult;
 
 - (id)doIt:(NSString *)objectiveCSource error:(NSError **)error;
 

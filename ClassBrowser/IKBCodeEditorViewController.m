@@ -43,7 +43,7 @@
     NSError *error = nil;
     __unused id returnValue = [self.codeRunner doIt:source error:&error];
     //work out how this error will propagate back up
-    //[self.textView.textStorage insertAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", returnValue]] atIndex:textRange.location + textRange.length];
+    [self.textView.textStorage insertAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", returnValue]] atIndex:textRange.location + textRange.length];
 }
 
 @end
