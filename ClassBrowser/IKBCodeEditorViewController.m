@@ -9,6 +9,12 @@
 #import "IKBCodeEditorViewController.h"
 #import "IKBCodeRunner.h"
 
+@interface IKBCodeEditorViewController ()
+
+@property (nonatomic, weak, readwrite) NSTextView *textView;
+
+@end
+
 @implementation IKBCodeEditorViewController
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -23,17 +29,19 @@
 
 - (void)loadView
 {
-    NSTextView *textView = [[NSTextView alloc] initWithFrame:(NSRect){0}];
-    textView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable | NSViewMaxYMargin;
+    NSScrollView *scrollView = [[NSScrollView alloc] initWithFrame: NSMakeRect(0, 0, 100, 100)];
+    scrollView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable | NSViewMaxYMargin;
+
+    NSTextView *textView = [[NSTextView alloc] initWithFrame:scrollView.contentView.bounds];
+    textView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
     
     NSMenuItem *printItItem = [[NSMenuItem alloc] initWithTitle:@"Print It" action:@selector(printIt:) keyEquivalent:@""];
     [textView.menu addItem:printItItem];
-    self.view = textView;
-}
-
-- (NSTextView *)textView
-{
-    return (NSTextView *)self.view;
+    self.textView = textView;
+    [scrollView.contentView addSubview:textView];
+    scrollView.contentView.documentView = textView;
+    
+    self.view = scrollView;
 }
 
 - (void)printIt:(id)sender

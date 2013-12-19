@@ -28,10 +28,18 @@
     [_vc.textView setSelectedRange:(NSRange){.location = 0, .length = 5}];
 }
 
-- (void)testTheViewIsATextViewThatAutoresizesToItsParent
+- (void)testTheViewIsAScrollViewThatAutoresizesToItsParent
 {
-    XCTAssertTrue([_view isKindOfClass:[NSTextView class]]);
+    XCTAssertTrue([_view isKindOfClass:[NSScrollView class]]);
     XCTAssertEqual([_view autoresizingMask], (NSUInteger)(NSViewWidthSizable | NSViewHeightSizable | NSViewMaxYMargin));
+}
+
+- (void)testTheViewControllerClipViewHasATextViewAsItsDocument
+{
+    XCTAssertNotNil([_vc textView]);
+    NSScrollView *scrollView = (NSScrollView *)_vc.view;
+    XCTAssertEqualObjects(_vc.textView.superview, scrollView.contentView);
+    XCTAssertEqualObjects(scrollView.contentView.documentView, _vc.textView);
 }
 
 - (void)testThatWhenTheViewIsReadyTheControllerHasACodeRunner
