@@ -40,14 +40,4 @@
     [self.browserSource browser:sender didSelectRow:row inColumn:column];
 }
 
-- (IBAction)printIt:(id)sender
-{
-    NSRange textRange = [self.codeText selectedRange];
-    NSString *source = [self.codeText.textStorage.string substringWithRange:textRange];
-    NSError *error = nil;
-    id returnValue = [_runner doIt:source error:&error];
-    //work out how this error will propagate back up
-    [self.codeText.textStorage insertAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", returnValue]] atIndex:textRange.location + textRange.length];
-}
-
 @end

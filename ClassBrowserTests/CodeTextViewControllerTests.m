@@ -7,37 +7,8 @@
 //
 
 #import <XCTest/XCTest.h>
-
-@interface IKBCodeEditorViewController : NSViewController
-
-@property (nonatomic, readonly) NSTextView *textView;
-- (void)printIt:(id)sender;
-
-@end
-
-@implementation IKBCodeEditorViewController
-
-- (void)loadView
-{
-    NSTextView *textView = [[NSTextView alloc] initWithFrame:(NSRect){0}];
-    textView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable | NSViewMaxYMargin;
-    
-    NSMenuItem *printItItem = [[NSMenuItem alloc] initWithTitle:@"Print It" action:@selector(printIt:) keyEquivalent:@""];
-    [textView.menu addItem:printItItem];
-    self.view = textView;
-}
-
-- (NSTextView *)textView
-{
-    return (NSTextView *)self.view;
-}
-
-- (void)printIt:(id)sender
-{
-    
-}
-
-@end
+#import "IKBCodeEditorViewController.h"
+#import "FakeCodeRunner.h"
 
 @interface CodeTextViewControllerTests : XCTestCase
 
@@ -61,6 +32,11 @@
     XCTAssertEqual([_view autoresizingMask], (NSUInteger)(NSViewWidthSizable | NSViewHeightSizable | NSViewMaxYMargin));
 }
 
+- (void)testThatWhenTheViewIsReadyTheControllerHasACodeRunner
+{
+    XCTAssertNotNil(_vc.codeRunner);
+}
+
 - (void)testTextViewHasAMenuItemToExecuteCodeAndPrintTheResult
 {
     NSMenu *menu = _vc.textView.menu;
@@ -72,4 +48,13 @@
     XCTAssertEqual(printItItem.action, @selector(printIt:));
 }
 
+- (void)testPrintItSendsTheTextSelectionToTheCodeRunner
+{
+    FakeCodeRunner *runner = [FakeCodeRunner new];
+    _vc.codeRunner = (IKBCodeRunner *)runner;
+    _vc.textView.textStorage.attributedString = [[NSAttributedString alloc] initWithString:@"Hello, world"];
+    [_vc.textView setSelectedRange:(NSRange){.location = 0, .length = 5}];
+    [_vc printIt:self];
+    XCTAssertEqualObjects(runner.ranSource, @"Hello");
+}
 @end
