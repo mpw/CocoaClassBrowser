@@ -9,6 +9,7 @@
 #import "IKBClassBrowserWindowController.h"
 
 @class IKBClassBrowserSource;
+@class IKBCodeEditorViewController;
 @protocol IKBClassList;
 
 @interface IKBClassBrowserWindowController ()
@@ -17,6 +18,8 @@
 @property (unsafe_unretained) IBOutlet NSTextView *codeText;
 @property (nonatomic, strong) id <IKBClassList> classList;
 @property (nonatomic, strong) IKBClassBrowserSource *browserSource;
+@property (nonatomic, readonly) IKBCodeEditorViewController *codeEditorViewController;
+
 - (IBAction)browserSelectionDidChange:(NSBrowser *)sender;
 
 @end

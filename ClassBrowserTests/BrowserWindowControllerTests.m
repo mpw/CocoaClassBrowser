@@ -9,6 +9,7 @@
 #import <XCTest/XCTest.h>
 #import "IKBClassBrowserWindowController.h"
 #import "IKBClassBrowserWindowController_ClassExtension.h"
+#import "IKBCodeEditorViewController.h"
 #import "IKBClassBrowserSource.h"
 #import "FakeClassList.h"
 
@@ -88,6 +89,13 @@
     XCTAssertEqualObjects(source.actionedBrowser, browser);
     XCTAssertEqual(source.selectedRow, browser.selectedRow);
     XCTAssertEqual(source.selectedColumn, browser.selectedColumn);
+}
+
+- (void)testCodeEditorVCLoadedAndViewAddedToWindow
+{
+    [controller windowDidLoad];
+    XCTAssertNotNil(controller.codeEditorViewController);
+    XCTAssertEqualObjects(controller.codeEditorViewController.view.superview, controller.window.contentView);
 }
 
 @end

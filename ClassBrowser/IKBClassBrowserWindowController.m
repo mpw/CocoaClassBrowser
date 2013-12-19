@@ -11,12 +11,9 @@
 
 #import "IKBClassBrowserSource.h"
 #import "IKBClassList.h"
-#import "IKBCodeRunner.h"
+#import "IKBCodeEditorViewController.h"
 
 @implementation IKBClassBrowserWindowController
-{
-    IKBCodeRunner *_runner;
-}
 
 - (void)windowDidLoad
 {
@@ -30,7 +27,10 @@
     [self.classBrowser setTarget:self];
     [self.classBrowser setAction:@selector(browserSelectionDidChange:)];
     
-    _runner = [[IKBCodeRunner alloc] init];
+    _codeEditorViewController = [IKBCodeEditorViewController new];
+    NSView *editorView = self.codeEditorViewController.view;
+    editorView.frame = (NSRect){ .origin = {0,0}, .size = {.width = 878, .height = 412 }};
+    [self.window.contentView addSubview:editorView];
 }
 
 - (IBAction)browserSelectionDidChange:(NSBrowser *)sender

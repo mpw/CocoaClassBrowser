@@ -7,7 +7,6 @@
         <customObject id="-2" userLabel="File's Owner" customClass="IKBClassBrowserWindowController">
             <connections>
                 <outlet property="classBrowser" destination="p4C-os-s26" id="Ig7-fK-ouk"/>
-                <outlet property="codeText" destination="U7W-yH-sut" id="fP6-WC-xrz"/>
                 <outlet property="window" destination="1" id="3"/>
             </connections>
         </customObject>
@@ -26,35 +25,6 @@
                         <rect key="frame" x="0.0" y="420" width="878" height="311"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES"/>
                     </browser>
-                    <scrollView horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" id="Rxi-Cm-Zsd">
-                        <rect key="frame" x="-1" y="-1" width="879" height="413"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                        <clipView key="contentView" id="uha-ux-9bf">
-                            <rect key="frame" x="1" y="1" width="877" height="411"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                            <subviews>
-                                <textView importsGraphics="NO" findStyle="panel" continuousSpellChecking="YES" allowsUndo="YES" usesRuler="YES" usesFontPanel="YES" verticallyResizable="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" spellingCorrection="YES" smartInsertDelete="YES" id="U7W-yH-sut">
-                                    <rect key="frame" x="0.0" y="0.0" width="877" height="411"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <size key="minSize" width="877" height="411"/>
-                                    <size key="maxSize" width="884" height="10000000"/>
-                                    <color key="insertionPointColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                    <size key="minSize" width="877" height="411"/>
-                                    <size key="maxSize" width="884" height="10000000"/>
-                                </textView>
-                            </subviews>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        </clipView>
-                        <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="YES" id="0fM-9j-fu9">
-                            <rect key="frame" x="-100" y="-100" width="87" height="18"/>
-                            <autoresizingMask key="autoresizingMask"/>
-                        </scroller>
-                        <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="7ap-33-Ec4">
-                            <rect key="frame" x="862" y="1" width="16" height="411"/>
-                            <autoresizingMask key="autoresizingMask"/>
-                        </scroller>
-                    </scrollView>
                 </subviews>
             </view>
             <connections>
