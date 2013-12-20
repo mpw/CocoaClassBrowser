@@ -69,10 +69,10 @@ static const NSString *objcMainWrapper = @"#import <Cocoa/Cocoa.h>\n"
              @"-x",
              @"objective-c",
              @"-isysroot",
-             //we should find the SDK_ROOT from a preference (and maybe use xcode-select's path)
-             @"/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk",
+             // the particular SDK to use should still be configurable
+             @"/usr/share/xcode-select/xcode_dir_link/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk",
              @"-I",
-             @"/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/5.0/include",
+             @"/usr/share/xcode-select/xcode_dir_link/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/5.0/include",
              @"-fobjc-arc",
              @"-framework",
              @"Cocoa",
