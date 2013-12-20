@@ -65,7 +65,18 @@ static const NSString *objcMainWrapper = @"#import <Cocoa/Cocoa.h>\n"
 
 - (NSArray *)compilerArguments
 {
-    return @[@"-fsyntax-only"];
+    return @[@"-fsyntax-only",
+             @"-x",
+             @"objective-c",
+             @"-isysroot",
+             //we should find the SDK_ROOT from a preference (and maybe use xcode-select's path)
+             @"/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk",
+             @"-I",
+             @"/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/5.0/include",
+             @"-fobjc-arc",
+             @"-framework",
+             @"Cocoa",
+             @"-c"];
 }
 
 - (int)resultOfRunningSource:(NSString *)source error:(NSError *__autoreleasing *)error
@@ -94,20 +105,10 @@ static const NSString *objcMainWrapper = @"#import <Cocoa/Cocoa.h>\n"
     //I _think_ that all of the above could be statics, or could be in a singleton CompilerBuilder or something.
     // the trick is getting all of the ownership correct.
     SmallVector<const char *, 16> Args;
-    // yes, I'm ignoring the arguments for now
-    Args.push_back("-fsyntax-only");
-    Args.push_back("-x");
-    Args.push_back("objective-c");
-    Args.push_back("-isysroot");
-    //we should find the SDK_ROOT from a preference (and maybe use xcode-select's path)
-    Args.push_back("/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk");
-    //not sure why this isn't picked up, but again it should be discovered
-    Args.push_back("-I");
-    Args.push_back("/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/5.0/include");
-    Args.push_back("-fobjc-arc");
-    Args.push_back("-framework");
-    Args.push_back("Cocoa");
-    Args.push_back("-c");
+    for(NSString *arg in [self compilerArguments])
+    {
+        Args.push_back([arg UTF8String]);
+    }
     Args.push_back([sourcePath UTF8String]);
     OwningPtr<Compilation> C(driver.BuildCompilation(Args));
     if (!C)
