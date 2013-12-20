@@ -34,6 +34,10 @@
 
     NSTextView *textView = [[NSTextView alloc] initWithFrame:scrollView.contentView.bounds];
     textView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
+    [textView setAutomaticDashSubstitutionEnabled:NO];
+    [textView setAutomaticQuoteSubstitutionEnabled:NO];
+    [textView setAutomaticSpellingCorrectionEnabled:NO];
+    [textView setAutomaticTextReplacementEnabled:NO];
     
     NSMenuItem *printItItem = [[NSMenuItem alloc] initWithTitle:@"Print It" action:@selector(printIt:) keyEquivalent:@""];
     [textView.menu addItem:printItItem];

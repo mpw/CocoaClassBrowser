@@ -76,4 +76,13 @@
     XCTAssertEqual(resultRange.location, (NSUInteger)5);
 }
 
+- (void)testTextViewDoesNotHaveRichTextOrAnyKindOfSubstitution
+{
+    NSTextView *textView = _vc.textView;
+    XCTAssertFalse([textView isAutomaticDashSubstitutionEnabled]);
+    XCTAssertFalse([textView isAutomaticQuoteSubstitutionEnabled]);
+    XCTAssertFalse([textView isAutomaticSpellingCorrectionEnabled]);
+    XCTAssertFalse([textView isAutomaticTextReplacementEnabled]);
+}
+
 @end
