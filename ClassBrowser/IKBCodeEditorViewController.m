@@ -8,6 +8,7 @@
 
 #import "IKBCodeEditorViewController.h"
 #import "IKBCodeRunner.h"
+#import "IKBViewControllerOwnedView.h"
 
 @interface IKBCodeEditorViewController ()
 
@@ -29,8 +30,13 @@
 
 - (void)loadView
 {
-    NSScrollView *scrollView = [[NSScrollView alloc] initWithFrame: NSMakeRect(0, 0, 100, 100)];
-    scrollView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable | NSViewMaxYMargin;
+    NSRect initialRect = NSMakeRect(0, 0, 100, 100);
+    IKBViewControllerOwnedView *view = [[IKBViewControllerOwnedView alloc] initWithFrame:initialRect];
+    view.viewController = self;
+    view.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable | NSViewMaxYMargin;
+    
+    NSScrollView *scrollView = [[NSScrollView alloc] initWithFrame: initialRect];
+    scrollView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
 
     NSTextView *textView = [[NSTextView alloc] initWithFrame:scrollView.contentView.bounds];
     textView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
@@ -44,8 +50,9 @@
     self.textView = textView;
     [scrollView.contentView addSubview:textView];
     scrollView.contentView.documentView = textView;
+    [view addSubview:scrollView];
     
-    self.view = scrollView;
+    self.view = view;
 }
 
 - (void)printIt:(id)sender

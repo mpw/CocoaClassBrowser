@@ -28,18 +28,31 @@
     [_vc.textView setSelectedRange:(NSRange){.location = 0, .length = 5}];
 }
 
-- (void)testTheViewIsAScrollViewThatAutoresizesToItsParent
+- (void)testTheViewHasTheViewControllerAsItsNextResponder
 {
-    XCTAssertTrue([_view isKindOfClass:[NSScrollView class]]);
-    XCTAssertEqual([_view autoresizingMask], (NSUInteger)(NSViewWidthSizable | NSViewHeightSizable | NSViewMaxYMargin));
+    XCTAssertEqualObjects(_view.nextResponder, _vc);
+}
+
+- (void)testTheViewKeepsTheViewControllerAsItsNextResponder
+{
+    NSView *emptyView = [[NSView alloc] initWithFrame:NSZeroRect];
+    [emptyView addSubview:_view];
+    XCTAssertEqualObjects(_view.nextResponder, _vc);
+}
+
+- (void)testTheViewContainsAScrollViewThatAutoresizesToItsParent
+{
+    NSScrollView *subview = [[_view subviews] lastObject];
+    XCTAssertTrue([subview isKindOfClass:[NSScrollView class]]);
+    XCTAssertEqual([subview autoresizingMask], (NSUInteger)(NSViewWidthSizable | NSViewHeightSizable));
 }
 
 - (void)testTheViewControllerClipViewHasATextViewAsItsDocument
 {
     XCTAssertNotNil([_vc textView]);
-    NSScrollView *scrollView = (NSScrollView *)_vc.view;
-    XCTAssertEqualObjects(_vc.textView.superview, scrollView.contentView);
-    XCTAssertEqualObjects(scrollView.contentView.documentView, _vc.textView);
+    NSScrollView *subview = [[_view subviews] lastObject];
+    XCTAssertEqualObjects(_vc.textView.superview, subview.contentView);
+    XCTAssertEqualObjects(subview.contentView.documentView, _vc.textView);
 }
 
 - (void)testThatWhenTheViewIsReadyTheControllerHasACodeRunner

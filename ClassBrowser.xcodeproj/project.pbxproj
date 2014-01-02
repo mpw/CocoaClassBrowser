@@ -80,6 +80,7 @@
 		98B811D718621EF5004FF75F /* CodeTextViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 98B811D618621EF5004FF75F /* CodeTextViewControllerTests.m */; };
 		98B811DA186230AD004FF75F /* FakeCodeRunner.m in Sources */ = {isa = PBXBuildFile; fileRef = 98B811D9186230AD004FF75F /* FakeCodeRunner.m */; };
 		98B811DD186232C6004FF75F /* IKBCodeEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98B811DC186232C6004FF75F /* IKBCodeEditorViewController.m */; };
+		98D7836418760BBD00C9137E /* IKBViewControllerOwnedView.m in Sources */ = {isa = PBXBuildFile; fileRef = 98D7836318760BBD00C9137E /* IKBViewControllerOwnedView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -182,6 +183,8 @@
 		98B811D9186230AD004FF75F /* FakeCodeRunner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FakeCodeRunner.m; sourceTree = "<group>"; };
 		98B811DB186232C6004FF75F /* IKBCodeEditorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IKBCodeEditorViewController.h; sourceTree = "<group>"; };
 		98B811DC186232C6004FF75F /* IKBCodeEditorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IKBCodeEditorViewController.m; sourceTree = "<group>"; };
+		98D7836218760BBD00C9137E /* IKBViewControllerOwnedView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IKBViewControllerOwnedView.h; sourceTree = "<group>"; };
+		98D7836318760BBD00C9137E /* IKBViewControllerOwnedView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IKBViewControllerOwnedView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -372,6 +375,8 @@
 				98B662511857D7480045FDBD /* IKBClassBrowserWindowController.xib */,
 				98B811DB186232C6004FF75F /* IKBCodeEditorViewController.h */,
 				98B811DC186232C6004FF75F /* IKBCodeEditorViewController.m */,
+				98D7836218760BBD00C9137E /* IKBViewControllerOwnedView.h */,
+				98D7836318760BBD00C9137E /* IKBViewControllerOwnedView.m */,
 			);
 			path = ClassBrowser;
 			sourceTree = "<group>";
@@ -518,6 +523,7 @@
 				980AC6A1185A510000611C26 /* IKBCodeRunner.mm in Sources */,
 				98B66219185728A20045FDBD /* main.m in Sources */,
 				98B66220185728A20045FDBD /* IKBAppDelegate.m in Sources */,
+				98D7836418760BBD00C9137E /* IKBViewControllerOwnedView.m in Sources */,
 				98B6624B185788410045FDBD /* IKBClassList.m in Sources */,
 				98B662521857D7480045FDBD /* IKBClassBrowserWindowController.m in Sources */,
 				98B811DD186232C6004FF75F /* IKBCodeEditorViewController.m in Sources */,
