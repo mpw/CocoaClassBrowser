@@ -1,10 +1,4 @@
-//
-//  FakeCodeRunner.h
-//  ClassBrowser
-//
-//  Created by Graham Lee on 18/12/2013.
-//  Copyright (c) 2013 Project Isambard. All rights reserved.
-//
+//See COPYING for licence details.
 
 #import <Foundation/Foundation.h>
 #import "IKBCodeRunner.h"

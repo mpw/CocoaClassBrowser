@@ -1,10 +1,4 @@
-//
-//  XcodeClangArgumentBuilderTests.m
-//  ClassBrowser
-//
-//  Created by Graham Lee on 06/01/2014.
-//  Copyright (c) 2014 Project Isambard. All rights reserved.
-//
+//See COPYING for licence details.
 
 #import <XCTest/XCTest.h>
 #import "Xcode-Async/XCTest+Async.h"
