@@ -59,10 +59,10 @@
 {
     NSRange textRange = [self.textView selectedRange];
     NSString *source = [self.textView.textStorage.string substringWithRange:textRange];
-    NSError *error = nil;
-    __unused id returnValue = [self.codeRunner doIt:source error:&error];
-    //work out how this error will propagate back up
-    [self.textView.textStorage insertAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", returnValue]] atIndex:textRange.location + textRange.length];
+    [self.codeRunner doIt:source completion:^(id returnValue, NSString *compilerTranscript, NSError *error){
+        //work out how the error and transcript will propagate back up
+        [self.textView.textStorage insertAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", returnValue]] atIndex:textRange.location + textRange.length];
+    }];
 }
 
 @end
