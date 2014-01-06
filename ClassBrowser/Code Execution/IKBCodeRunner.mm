@@ -7,6 +7,7 @@
 //
 
 #import "IKBCodeRunner.h"
+#import "IKBXcodeClangArgumentBuilder.h"
 
 #include "clang/Basic/DiagnosticOptions.h"
 #include "clang/CodeGen/CodeGenAction.h"
@@ -47,6 +48,21 @@ BOOL canUseCompilerJobs (const driver::JobList& Jobs, DiagnosticsEngine &Diags)
 
 @implementation IKBCodeRunner
 
+- (instancetype)init
+{
+    return [self initWithCompilerArgumentBuilder:[IKBXcodeClangArgumentBuilder new]];
+}
+
+- (instancetype)initWithCompilerArgumentBuilder:(id <IKBCompilerArgumentBuilder>)builder
+{
+    self = [super init];
+    if (self)
+    {
+        _compilerArgumentBuilder = builder;
+    }
+    return self;
+}
+
 static const NSString *objcMainWrapper = @"#import <Cocoa/Cocoa.h>\n"
 @"#import <objc/runtime.h>\n"
 @"#import <objc/message.h>\n"
@@ -56,30 +72,41 @@ static const NSString *objcMainWrapper = @"#import <Cocoa/Cocoa.h>\n"
 @"%@\n"
 @"}}\n";
 
-- (id)doIt:(NSString *)objectiveCSource error:(NSError *__autoreleasing *)error
+- (void)doIt:(NSString *)objectiveCSource completion:(IKBCodeRunnerCompletionHandler)completion
 {
     NSString *mainProgram = [NSString stringWithFormat:(NSString *)objcMainWrapper,objectiveCSource];
-    int returnValue = [self resultOfRunningSource:mainProgram error:error];
-    return @(returnValue);
+    [self runSource:mainProgram completion:completion];
 }
 
-- (NSArray *)compilerArguments
+- (void)reportCompileError:(NSInteger)code withCompilerOutput:(std::string&)output toCompletionHandler:(IKBCodeRunnerCompletionHandler)completion
 {
-    return @[@"-fsyntax-only",
-             @"-x",
-             @"objective-c",
-             @"-isysroot",
-             // the particular SDK to use should still be configurable
-             @"/usr/share/xcode-select/xcode_dir_link/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk",
-             @"-I",
-             @"/usr/share/xcode-select/xcode_dir_link/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/5.0/include",
-             @"-fobjc-arc",
-             @"-framework",
-             @"Cocoa",
-             @"-c"];
+    NSString *description = @(output.c_str());
+    NSError *error = [NSError errorWithDomain:IKBCompilerErrorDomain code:code userInfo: @{NSLocalizedDescriptionKey : description}];
+    completion(nil, description, error);
 }
 
-- (int)resultOfRunningSource:(NSString *)source error:(NSError *__autoreleasing *)error
+- (void)reportJITError:(NSInteger)code withCompilerOutput:(std::string&)output reportedError:(std::string&)errorText toCompletionHandler:(IKBCodeRunnerCompletionHandler)completion
+{
+    llvm::errs() << errorText << "\n";
+    NSString *description = @(errorText.c_str());
+    NSError *error = [NSError errorWithDomain:IKBCodeRunnerErrorDomain code:code userInfo: @{NSLocalizedDescriptionKey : description}];
+    completion(nil, @(output.c_str()), error);
+}
+
+- (void)runSource:(NSString *)source completion:(IKBCodeRunnerCompletionHandler)completion
+{
+    __weak typeof(self) weakSelf = self;
+    [self.compilerArgumentBuilder constructCompilerArgumentsWithCompletion:^(NSArray *arguments, NSError *error){
+        typeof(self) strongSelf = weakSelf;
+        if (arguments) {
+            [strongSelf compileAndRunSource:source compilerArguments:arguments completion:completion];
+        } else {
+            completion(nil, nil, error);
+        }
+    }];
+}
+
+- (void)compileAndRunSource:(NSString *)source compilerArguments:(NSArray *)compilerArguments completion:(IKBCodeRunnerCompletionHandler)completion
 {
     const char * fileTemplate = "/tmp/IKBCodeRunner.XXXXXX";
     char *filename = static_cast<char *>(malloc(strlen(fileTemplate) + 1));
@@ -105,7 +132,7 @@ static const NSString *objcMainWrapper = @"#import <Cocoa/Cocoa.h>\n"
     //I _think_ that all of the above could be statics, or could be in a singleton CompilerBuilder or something.
     // the trick is getting all of the ownership correct.
     SmallVector<const char *, 16> Args;
-    for(NSString *arg in [self compilerArguments])
+    for(NSString *arg in compilerArguments)
     {
         Args.push_back([arg UTF8String]);
     }
@@ -113,33 +140,22 @@ static const NSString *objcMainWrapper = @"#import <Cocoa/Cocoa.h>\n"
     OwningPtr<Compilation> C(driver.BuildCompilation(Args));
     if (!C)
     {
-        if (error)
-        {
-            NSString *description = @(diagnostic_output.c_str());
-            *error = [NSError errorWithDomain:IKBCompilerErrorDomain code:IKBCompilerErrorBadArguments userInfo: @{NSLocalizedDescriptionKey : description}];
-        }
-        return 0;
+        [self reportCompileError:IKBCompilerErrorBadArguments withCompilerOutput:diagnostic_output toCompletionHandler:completion];
+        return;
     }
     // we should now be able to extract the list of jobs from that
     const driver::JobList &Jobs = C->getJobs();
     if (!canUseCompilerJobs(Jobs, diagnostics))
     {
-        if (error)
-        {
-            NSString *description = @(diagnostic_output.c_str());
-            *error = [NSError errorWithDomain:IKBCompilerErrorDomain code:IKBCompilerErrorNoClangJob userInfo: @{NSLocalizedDescriptionKey : description}];
-        }
-        return 0;
+        [self reportCompileError:IKBCompilerErrorNoClangJob withCompilerOutput:diagnostic_output toCompletionHandler:completion];
+        return;
     }
     //and pull the clang invocation from the list of jobs
     driver::Command *command = cast<driver::Command>(*Jobs.begin());
     if (llvm::StringRef(command->getCreator().getName()) != "clang") {
         diagnostics.Report(diag::err_fe_expected_clang_command);
-        if (error)
-        {
-            *error = [NSError errorWithDomain:IKBCompilerErrorDomain code:IKBCompilerErrorNotAClangInvocation userInfo: @{NSLocalizedDescriptionKey : @(diagnostic_output.c_str())}];
-        }
-        return 0;
+        [self reportCompileError:IKBCompilerErrorNotAClangInvocation withCompilerOutput:diagnostic_output toCompletionHandler:completion];
+        return;
     }
     const driver::ArgStringList &CCArgs = command->getArguments();
     OwningPtr<CompilerInvocation> CI(new CompilerInvocation);
@@ -155,11 +171,8 @@ static const NSString *objcMainWrapper = @"#import <Cocoa/Cocoa.h>\n"
     Clang.createDiagnostics();
     if (!Clang.hasDiagnostics())
     {
-        if (error)
-        {
-            *error = [NSError errorWithDomain:IKBCompilerErrorDomain code:IKBCompilerErrorCouldNotReportUnderlyingErrors userInfo: @{NSLocalizedDescriptionKey : @(diagnostic_output.c_str())}];
-        }
-        return 0;
+        [self reportCompileError:IKBCompilerErrorCouldNotReportUnderlyingErrors withCompilerOutput:diagnostic_output toCompletionHandler:completion];
+        return;
     }
     
     // Infer the builtin include path if unspecified.
@@ -173,11 +186,8 @@ static const NSString *objcMainWrapper = @"#import <Cocoa/Cocoa.h>\n"
     OwningPtr<CodeGenAction> Act(new EmitLLVMOnlyAction());
     if (!Clang.ExecuteAction(*Act))
     {
-        if (error)
-        {
-            *error = [NSError errorWithDomain:IKBCompilerErrorDomain code:IKBCompilerErrorInSourceCode userInfo: @{NSLocalizedDescriptionKey : @(diagnostic_output.c_str())}];
-        }
-        return 0;
+        [self reportCompileError:IKBCompilerErrorInSourceCode withCompilerOutput:diagnostic_output toCompletionHandler:completion];
+        return;
     }
     llvm::Module *mod = Act->takeModule();
 
@@ -185,14 +195,17 @@ static const NSString *objcMainWrapper = @"#import <Cocoa/Cocoa.h>\n"
     std::string Error;
     OwningPtr<llvm::ExecutionEngine> EE(llvm::ExecutionEngine::createJIT(mod, &Error));
     if (!EE) {
-        llvm::errs() << "unable to make execution engine: " << Error << "\n";
-        return -1;
+        std::string llvmError("unable to make execution engine: ");
+        llvmError += Error;
+        [self reportJITError:IKBCodeRunnerErrorCouldNotConstructRuntime withCompilerOutput:diagnostic_output reportedError:llvmError toCompletionHandler:completion];
+        return;
     }
     
     llvm::Function *EntryFn = mod->getFunction("main");
     if (!EntryFn) {
-        llvm::errs() << "'main' function not found in module.\n";
-        return 255;
+        std::string llvmError("'main' function not found in module.");
+        [self reportJITError:IKBCodeRunnerErrorCouldNotFindFunctionToRun withCompilerOutput:diagnostic_output reportedError:llvmError toCompletionHandler:completion];
+        return;
     }
     
     // FIXME: Support passing arguments.
@@ -200,9 +213,11 @@ static const NSString *objcMainWrapper = @"#import <Cocoa/Cocoa.h>\n"
     jitArguments.push_back(mod->getModuleIdentifier());
     
     int result = EE->runFunctionAsMain(EntryFn, jitArguments, nullptr);
-    return result;
+    NSString *transcript = @(diagnostic_output.c_str());
+    completion(@(result), transcript, nil);
 }
 
 @end
 
 NSString *IKBCompilerErrorDomain = @"IKBCompilerErrorDomain";
+NSString *IKBCodeRunnerErrorDomain = @"IKBCodeRunnerErrorDomain";

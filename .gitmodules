@@ -1,0 +1,3 @@
+[submodule "ClassBrowserTests/Xcode-Async"]
+	path = ClassBrowserTests/Xcode-Async
+	url = https://github.com/iamleeg/XCTest-Async.git

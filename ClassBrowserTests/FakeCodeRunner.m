@@ -10,10 +10,10 @@
 
 @implementation FakeCodeRunner
 
-- (id)doIt:(NSString *)objectiveCSource error:(NSError **)error
+- (void)doIt:(NSString *)objectiveCSource completion:(IKBCodeRunnerCompletionHandler)completion
 {
     self.ranSource = objectiveCSource;
-    return self.runResult;
+    completion(self.runResult, nil, nil);
 }
 
 @end

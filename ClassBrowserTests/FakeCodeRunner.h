@@ -7,12 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "IKBCodeRunner.h"
 
 @interface FakeCodeRunner : NSObject
 
 @property (nonatomic, copy) NSString *ranSource;
 @property (nonatomic, strong) id runResult;
 
-- (id)doIt:(NSString *)objectiveCSource error:(NSError **)error;
+- (void)doIt:(NSString *)objectiveCSource completion:(IKBCodeRunnerCompletionHandler)completion;
 
 @end
