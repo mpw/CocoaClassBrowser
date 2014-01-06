@@ -8,11 +8,17 @@
 
 #import <Foundation/Foundation.h>
 
+@protocol IKBCompilerArgumentBuilder;
+
+typedef void(^IKBCodeRunnerCompletionHandler)(id returnValue, NSString *compilerTranscript, NSError *compilationError);
+
 @interface IKBCodeRunner : NSObject
 
-- (id)doIt:(NSString *)objectiveCSource error:(NSError **)error;
-- (NSArray *)compilerArguments;
-- (int)resultOfRunningSource:(NSString *)source error:(NSError **)error;
+- (instancetype)initWithCompilerArgumentBuilder:(id <IKBCompilerArgumentBuilder>)builder;
+- (void)doIt:(NSString *)objectiveCSource completion:(IKBCodeRunnerCompletionHandler)completion;
+- (void)runSource:(NSString *)source completion:(IKBCodeRunnerCompletionHandler)completion;
+
+@property (nonatomic, readonly) id <IKBCompilerArgumentBuilder> compilerArgumentBuilder;
 
 @end
 
@@ -23,4 +29,10 @@ typedef NS_ENUM(NSInteger, IKBCompilerErrorCode) {
     IKBCompilerErrorNotAClangInvocation,
     IKBCompilerErrorCouldNotReportUnderlyingErrors,
     IKBCompilerErrorInSourceCode,
+};
+
+extern NSString *IKBCodeRunnerErrorDomain;
+typedef NS_ENUM(NSInteger, IKBCodeRunnerErrorCode) {
+    IKBCodeRunnerErrorCouldNotConstructRuntime,
+    IKBCodeRunnerErrorCouldNotFindFunctionToRun,
 };

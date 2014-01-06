@@ -8,6 +8,8 @@
 
 #import <XCTest/XCTest.h>
 #import "IKBCodeRunner.h"
+#import "IKBXcodeClangArgumentBuilder.h"
+#import "HumbleCompilerArgumentBuilder.h"
 
 @interface ExecutionTests : XCTestCase
 
@@ -20,28 +22,39 @@
 
 - (void)setUp
 {
-    _runner = [IKBCodeRunner new];
+    _runner = [[IKBCodeRunner alloc] initWithCompilerArgumentBuilder:[HumbleCompilerArgumentBuilder new]];
 }
 
 - (void)testICanRunHelloWorld
 {
     NSString *source = @"#include <stdio.h>\nint main(){printf(\"Hello, world!\\n\");}";
-    NSError *error = nil;
-    int result = [_runner resultOfRunningSource:source error:&error];
-    XCTAssertEqual(result, 0, @"I wanted the compiler to work but this happened: %@", error);
+    [_runner runSource:source completion:^(id result, NSString *compilerTranscript, NSError *error) {
+        XCTAssertNil(error, @"I wanted the compiler to work but this happened: %@", error);
+        XCTAssertEqualObjects(result, @0, @"An unexpected value (%@) was returned.", result);
+    }];
 }
 
 - (void)testICanUseAFoundationFunction
 {
     NSString *source = @"NSLog(@\"Hello, world!\"); return 1;";
-    NSError *error = nil;
-    XCTAssertEqualObjects([_runner doIt:source error:&error], @(1), @"I wanted to run some Foundation code but got this: %@", error);
+    [_runner doIt:source completion:^(id result, NSString *compilerTranscript, NSError *error) {
+        XCTAssertEqualObjects(result, @(1), @"Transcript: %@\nError: %@", compilerTranscript, error);
+    }];
 }
 
 - (void)testICanUseAnObject
 {
     NSString *source = @"SEL newSelector = sel_registerName(\"new\"); id obj = objc_msgSend(objc_getClass(\"NSObject\"), newSelector); obj = nil; return 2;";
-    NSError *error = nil;
-    XCTAssertEqualObjects([_runner doIt:source error:&error], @(2), @"I got this error: %@", error);
+    [_runner doIt:source completion:^(id result, NSString *compilerTranscript, NSError *error) {
+        XCTAssertEqualObjects(result, @(2), @"Transcript: %@\nError: %@", compilerTranscript, error);
+    }];
 }
+
+- (void)testDefaultCompilerArgumentBuilderIsForClangAndXcode
+{
+    IKBCodeRunner *runner = [IKBCodeRunner new];
+    id <IKBCompilerArgumentBuilder> builder = runner.compilerArgumentBuilder;
+    XCTAssertEqualObjects([builder class], [IKBXcodeClangArgumentBuilder class]);
+}
+
 @end

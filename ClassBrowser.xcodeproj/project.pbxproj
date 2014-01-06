@@ -61,6 +61,7 @@
 		980EA4E7185E7D680027A50E /* libLLVMObjCARCOpts.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 980EA4E6185E7D680027A50E /* libLLVMObjCARCOpts.a */; };
 		9883068B187AB05200A4325C /* XcodeClangArgumentBuilderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9883068A187AB05200A4325C /* XcodeClangArgumentBuilderTests.m */; };
 		9883068F187ABA1D00A4325C /* IKBXcodeClangArgumentBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 9883068E187ABA1D00A4325C /* IKBXcodeClangArgumentBuilder.m */; };
+		98830692187ABD5100A4325C /* HumbleCompilerArgumentBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 98830691187ABD5100A4325C /* HumbleCompilerArgumentBuilder.m */; };
 		98B6620D185728A20045FDBD /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98B6620C185728A20045FDBD /* Cocoa.framework */; };
 		98B66217185728A20045FDBD /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 98B66215185728A20045FDBD /* InfoPlist.strings */; };
 		98B66219185728A20045FDBD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 98B66218185728A20045FDBD /* main.m */; };
@@ -154,6 +155,8 @@
 		9883068C187AB99000A4325C /* XCTest+Async.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "XCTest+Async.h"; path = "Xcode-Async/XCTest+Async.h"; sourceTree = "<group>"; };
 		9883068D187ABA1D00A4325C /* IKBXcodeClangArgumentBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IKBXcodeClangArgumentBuilder.h; path = "Code Execution/IKBXcodeClangArgumentBuilder.h"; sourceTree = "<group>"; };
 		9883068E187ABA1D00A4325C /* IKBXcodeClangArgumentBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IKBXcodeClangArgumentBuilder.m; path = "Code Execution/IKBXcodeClangArgumentBuilder.m"; sourceTree = "<group>"; };
+		98830690187ABD5100A4325C /* HumbleCompilerArgumentBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HumbleCompilerArgumentBuilder.h; sourceTree = "<group>"; };
+		98830691187ABD5100A4325C /* HumbleCompilerArgumentBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HumbleCompilerArgumentBuilder.m; sourceTree = "<group>"; };
 		98B66209185728A20045FDBD /* ClassBrowser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ClassBrowser.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		98B6620C185728A20045FDBD /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		98B6620F185728A20045FDBD /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -417,6 +420,8 @@
 				98B6624518574BE90045FDBD /* FakeClassList.m */,
 				98B811D8186230AD004FF75F /* FakeCodeRunner.h */,
 				98B811D9186230AD004FF75F /* FakeCodeRunner.m */,
+				98830690187ABD5100A4325C /* HumbleCompilerArgumentBuilder.h */,
+				98830691187ABD5100A4325C /* HumbleCompilerArgumentBuilder.m */,
 			);
 			path = ClassBrowserTests;
 			sourceTree = "<group>";
@@ -554,6 +559,7 @@
 				98B811DA186230AD004FF75F /* FakeCodeRunner.m in Sources */,
 				98B66249185780320045FDBD /* ClassListTests.m in Sources */,
 				98B66237185728A20045FDBD /* ClassBrowserTests.m in Sources */,
+				98830692187ABD5100A4325C /* HumbleCompilerArgumentBuilder.m in Sources */,
 				98B6624C185791510045FDBD /* FakeClassList.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
