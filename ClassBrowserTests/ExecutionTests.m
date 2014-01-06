@@ -23,18 +23,6 @@
     _runner = [IKBCodeRunner new];
 }
 
-- (void)testDefaultCompilerArgumentsSpecifySyntaxOnlyObjCArc
-{
-    NSArray *arguments = [_runner compilerArguments];
-    XCTAssertTrue([arguments containsObject:@"-fsyntax-only"]);
-    XCTAssertTrue([arguments containsObject:@"-fobjc-arc"]);
-    NSInteger indexOfDashX = [arguments indexOfObject:@"-x"];
-    NSInteger indexOfObjC = [arguments indexOfObject:@"objective-c"];
-    XCTAssertNotEqual(indexOfDashX, NSNotFound);
-    XCTAssertNotEqual(indexOfObjC, NSNotFound);
-    XCTAssertEqual(indexOfObjC - indexOfDashX, (NSInteger)1);
-}
-
 - (void)testICanRunHelloWorld
 {
     NSString *source = @"#include <stdio.h>\nint main(){printf(\"Hello, world!\\n\");}";
