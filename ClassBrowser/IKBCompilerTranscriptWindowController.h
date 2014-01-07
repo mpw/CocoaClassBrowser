@@ -5,5 +5,6 @@
 @interface IKBCompilerTranscriptWindowController : NSWindowController
 
 @property (nonatomic, copy) NSString *transcriptText;
+@property (unsafe_unretained) IBOutlet NSTextView *transcriptView;
 
 @end
