@@ -59,6 +59,8 @@
 		980EA4E3185E7D150027A50E /* libLLVMAsmParser.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 980EA4E2185E7D150027A50E /* libLLVMAsmParser.a */; };
 		980EA4E5185E7D3A0027A50E /* libLLVMInstrumentation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 980EA4E4185E7D3A0027A50E /* libLLVMInstrumentation.a */; };
 		980EA4E7185E7D680027A50E /* libLLVMObjCARCOpts.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 980EA4E6185E7D680027A50E /* libLLVMObjCARCOpts.a */; };
+		981613F8187C1F1400A0BEDD /* IKBCompilerTranscriptWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 981613F6187C1F1400A0BEDD /* IKBCompilerTranscriptWindowController.m */; };
+		981613F9187C1F1400A0BEDD /* IKBCompilerTranscriptWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 981613F7187C1F1400A0BEDD /* IKBCompilerTranscriptWindowController.xib */; };
 		9883068B187AB05200A4325C /* XcodeClangArgumentBuilderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9883068A187AB05200A4325C /* XcodeClangArgumentBuilderTests.m */; };
 		9883068F187ABA1D00A4325C /* IKBXcodeClangArgumentBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 9883068E187ABA1D00A4325C /* IKBXcodeClangArgumentBuilder.m */; };
 		98830692187ABD5100A4325C /* HumbleCompilerArgumentBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 98830691187ABD5100A4325C /* HumbleCompilerArgumentBuilder.m */; };
@@ -150,6 +152,9 @@
 		980EA4E2185E7D150027A50E /* libLLVMAsmParser.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libLLVMAsmParser.a; path = /usr/local/lib/libLLVMAsmParser.a; sourceTree = "<absolute>"; };
 		980EA4E4185E7D3A0027A50E /* libLLVMInstrumentation.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libLLVMInstrumentation.a; path = /usr/local/lib/libLLVMInstrumentation.a; sourceTree = "<absolute>"; };
 		980EA4E6185E7D680027A50E /* libLLVMObjCARCOpts.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libLLVMObjCARCOpts.a; path = /usr/local/lib/libLLVMObjCARCOpts.a; sourceTree = "<absolute>"; };
+		981613F5187C1F1400A0BEDD /* IKBCompilerTranscriptWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IKBCompilerTranscriptWindowController.h; sourceTree = "<group>"; };
+		981613F6187C1F1400A0BEDD /* IKBCompilerTranscriptWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IKBCompilerTranscriptWindowController.m; sourceTree = "<group>"; };
+		981613F7187C1F1400A0BEDD /* IKBCompilerTranscriptWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IKBCompilerTranscriptWindowController.xib; sourceTree = "<group>"; };
 		98830689187AAEE400A4325C /* IKBCompilerArgumentBuilder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = IKBCompilerArgumentBuilder.h; path = "Code Execution/IKBCompilerArgumentBuilder.h"; sourceTree = "<group>"; };
 		9883068A187AB05200A4325C /* XcodeClangArgumentBuilderTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XcodeClangArgumentBuilderTests.m; sourceTree = "<group>"; };
 		9883068C187AB99000A4325C /* XCTest+Async.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "XCTest+Async.h"; path = "Xcode-Async/XCTest+Async.h"; sourceTree = "<group>"; };
@@ -390,6 +395,9 @@
 				98B811DC186232C6004FF75F /* IKBCodeEditorViewController.m */,
 				98D7836218760BBD00C9137E /* IKBViewControllerOwnedView.h */,
 				98D7836318760BBD00C9137E /* IKBViewControllerOwnedView.m */,
+				981613F5187C1F1400A0BEDD /* IKBCompilerTranscriptWindowController.h */,
+				981613F6187C1F1400A0BEDD /* IKBCompilerTranscriptWindowController.m */,
+				981613F7187C1F1400A0BEDD /* IKBCompilerTranscriptWindowController.xib */,
 			);
 			path = ClassBrowser;
 			sourceTree = "<group>";
@@ -518,6 +526,7 @@
 				98B6621D185728A20045FDBD /* Credits.rtf in Resources */,
 				98B662531857D7480045FDBD /* IKBClassBrowserWindowController.xib in Resources */,
 				98B66223185728A20045FDBD /* MainMenu.xib in Resources */,
+				981613F9187C1F1400A0BEDD /* IKBCompilerTranscriptWindowController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -545,6 +554,7 @@
 				98B662521857D7480045FDBD /* IKBClassBrowserWindowController.m in Sources */,
 				9883068F187ABA1D00A4325C /* IKBXcodeClangArgumentBuilder.m in Sources */,
 				98B811DD186232C6004FF75F /* IKBCodeEditorViewController.m in Sources */,
+				981613F8187C1F1400A0BEDD /* IKBCompilerTranscriptWindowController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

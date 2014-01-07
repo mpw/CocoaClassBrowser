@@ -2,6 +2,7 @@
 
 #import "IKBCodeEditorViewController.h"
 #import "IKBCodeRunner.h"
+#import "IKBCompilerTranscriptWindowController.h"
 #import "IKBViewControllerOwnedView.h"
 
 @interface IKBCodeEditorViewController ()
@@ -54,8 +55,13 @@
     NSRange textRange = [self.textView selectedRange];
     NSString *source = [self.textView.textStorage.string substringWithRange:textRange];
     [self.codeRunner doIt:source completion:^(id returnValue, NSString *compilerTranscript, NSError *error){
-        //work out how the error and transcript will propagate back up
         [self.textView.textStorage insertAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", returnValue]] atIndex:textRange.location + textRange.length];
+        if (compilerTranscript.length > 0) {
+            self.transcriptWindowController.transcriptText = compilerTranscript;
+            [self.transcriptWindowController.window orderFront:self];
+        } else {
+            [self.transcriptWindowController.window orderOut:self];
+        }
     }];
 }
 
