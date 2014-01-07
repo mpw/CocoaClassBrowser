@@ -19,6 +19,7 @@
     if (self)
     {
         self.codeRunner = [IKBCodeRunner new];
+        self.transcriptWindowController = [[IKBCompilerTranscriptWindowController alloc] initWithWindowNibName:NSStringFromClass([IKBCompilerTranscriptWindowController class])];
     }
     return self;
 }

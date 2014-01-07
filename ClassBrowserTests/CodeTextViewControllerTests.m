@@ -110,6 +110,12 @@
     XCTAssertEqual(resultRange.location, (NSUInteger)5);
 }
 
+- (void)testCompilerTranscriptControllerIsAvailableByDefault
+{
+    IKBCodeEditorViewController *viewController = [IKBCodeEditorViewController new];
+    XCTAssertNotNil(viewController.transcriptWindowController);
+}
+
 - (void)testCompilerTranscriptIsShownWhenItHasSomethingToSay
 {
     _vc.codeRunner = (IKBCodeRunner *)_runner;
