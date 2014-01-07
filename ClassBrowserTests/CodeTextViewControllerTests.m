@@ -110,6 +110,21 @@
     XCTAssertEqual(resultRange.location, (NSUInteger)5);
 }
 
+- (void)testPrintItPlacesTheErrorDescriptionAfterTheCompiledSourceOnFailure
+{
+    _runner.runResult = nil;
+    NSError *buildError = [NSError errorWithDomain:@"IKBTestErrorDomain"
+                                              code:99
+                                          userInfo:@{ NSLocalizedDescriptionKey: @"Error Description" }];
+    _runner.error = buildError;
+    _vc.codeRunner = (IKBCodeRunner *)_runner;
+    [_vc printIt:self];
+    NSRange resultRange = [_vc.textView.textStorage.string rangeOfString:[NSString stringWithFormat:@"%@", nil]];
+    XCTAssertEqual(resultRange.location, NSNotFound);
+    NSRange errorRange = [_vc.textView.textStorage.string rangeOfString:@"Error Description"];
+    XCTAssertEqual(errorRange.location, (NSUInteger)5);
+}
+
 - (void)testCompilerTranscriptControllerIsAvailableByDefault
 {
     IKBCodeEditorViewController *viewController = [IKBCodeEditorViewController new];
