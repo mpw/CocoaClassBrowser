@@ -47,6 +47,7 @@
     _vc.textView.textStorage.attributedString = [[NSAttributedString alloc] initWithString:@"Hello, world"];
     [_vc.textView setSelectedRange:(NSRange){.location = 0, .length = 5}];
     _runner = [FakeCodeRunner new];
+    _vc.codeRunner = (id)_runner;
     _transcriptController = [TranscriptController new];
     _vc.transcriptWindowController = (id)_transcriptController;
 }
@@ -80,7 +81,9 @@
 
 - (void)testThatWhenTheViewIsReadyTheControllerHasACodeRunner
 {
-    XCTAssertNotNil(_vc.codeRunner);
+    IKBCodeEditorViewController *viewController = [IKBCodeEditorViewController new];
+    __unused NSView *view = viewController.view;
+    XCTAssertNotNil(viewController.codeRunner);
 }
 
 - (void)testTextViewHasAMenuItemToExecuteCodeAndPrintTheResult
@@ -96,7 +99,6 @@
 
 - (void)testPrintItSendsTheTextSelectionToTheCodeRunner
 {
-    _vc.codeRunner = (IKBCodeRunner *)_runner;
     [_vc printIt:self];
     XCTAssertEqualObjects(_runner.ranSource, @"Hello");
 }
@@ -104,9 +106,8 @@
 - (void)testPrintItPlacesTheResultAfterTheCompiledSource
 {
     _runner.runResult = @"PASS";
-    _vc.codeRunner = (IKBCodeRunner *)_runner;
     [_vc printIt:self];
-    NSRange resultRange = [_vc.textView.textStorage.string rangeOfString:@"PASS"];
+    NSRange resultRange = [_vc.textView.string rangeOfString:@"PASS"];
     XCTAssertEqual(resultRange.location, (NSUInteger)5);
 }
 
@@ -117,11 +118,10 @@
                                               code:99
                                           userInfo:@{ NSLocalizedDescriptionKey: @"Error Description" }];
     _runner.error = buildError;
-    _vc.codeRunner = (IKBCodeRunner *)_runner;
     [_vc printIt:self];
-    NSRange resultRange = [_vc.textView.textStorage.string rangeOfString:[NSString stringWithFormat:@"%@", nil]];
+    NSRange resultRange = [_vc.textView.string rangeOfString:[NSString stringWithFormat:@"%@", nil]];
     XCTAssertEqual(resultRange.location, NSNotFound);
-    NSRange errorRange = [_vc.textView.textStorage.string rangeOfString:@"Error Description"];
+    NSRange errorRange = [_vc.textView.string rangeOfString:@"Error Description"];
     XCTAssertEqual(errorRange.location, (NSUInteger)5);
 }
 
@@ -133,7 +133,6 @@
 
 - (void)testCompilerTranscriptIsShownWhenItHasSomethingToSay
 {
-    _vc.codeRunner = (IKBCodeRunner *)_runner;
     _runner.compilerTranscript = @"Danger Will Robinson";
     [_vc printIt:self];
     XCTAssertTrue([_transcriptController isWindowOrderedFront]);
@@ -142,7 +141,6 @@
 
 - (void)testCompilerTranscriptIsHiddenWhenItHasNothingToSay
 {
-    _vc.codeRunner = (IKBCodeRunner *)_runner;
     _runner.compilerTranscript = @"";
     [_transcriptController.window orderFront:self];
     [_vc printIt:self];
