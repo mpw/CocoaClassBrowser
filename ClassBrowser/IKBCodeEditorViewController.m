@@ -57,11 +57,12 @@
     NSString *source = [self.textView.textStorage.string substringWithRange:textRange];
     [self.codeRunner doIt:source completion:^(id returnValue, NSString *compilerTranscript, NSError *error){
         [self.textView.textStorage insertAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", returnValue]] atIndex:textRange.location + textRange.length];
+        NSWindow *transcriptWindow = self.transcriptWindowController.window;
         if (compilerTranscript.length > 0) {
             self.transcriptWindowController.transcriptText = compilerTranscript;
-            [self.transcriptWindowController.window orderFront:self];
+            [transcriptWindow orderFront:self];
         } else {
-            [self.transcriptWindowController.window orderOut:self];
+            [transcriptWindow orderOut:self];
         }
     }];
 }
