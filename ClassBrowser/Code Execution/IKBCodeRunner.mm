@@ -72,18 +72,41 @@ static const NSString *objcMainWrapper = @"#import <Cocoa/Cocoa.h>\n"
     [self runSource:mainProgram completion:completion];
 }
 
+- (NSString *)localizedDescriptionForCompileErrorWithCode:(NSInteger)code
+{
+    id errorCode = @(code);
+    NSDictionary *map = @{@(IKBCompilerErrorBadArguments): NSLocalizedString(@"The arguments passed to the compiler were not recognized.", @"Error message on bad compiler arguments"),
+                          @(IKBCompilerErrorNoClangJob): NSLocalizedString(@"The compiler driver did not create a compiler front-end task.", @"Error message on no clang job"),
+                          @(IKBCompilerErrorNotAClangInvocation): NSLocalizedString(@"The compiler driver created a front-end task that was not for the C front-end.", @"Error message on not a clang task"),
+                          @(IKBCompilerErrorCouldNotReportUnderlyingErrors): NSLocalizedString(@"The compiler was cancelled because it would not be able to report further errors.", @"Error message on not being able to report underlying errors"),
+                          @(IKBCompilerErrorInSourceCode): NSLocalizedString(@"An error in the source code stopped the compiler from producing output.", @"Error on compiler failure"),
+                          };
+    return map[errorCode]?:[NSString stringWithFormat:@"An unknown compiler error (code %@) occurred.", errorCode];
+}
+
+- (NSString *)localizedDescriptionForJITErrorWithCode:(NSInteger)code
+{
+    id errorCode = @(code);
+    NSDictionary *map = @{@(IKBCodeRunnerErrorCouldNotConstructRuntime): NSLocalizedString(@"LLVM could not create an execution environment.", @"Error on not building a JIT"),
+                          @(IKBCodeRunnerErrorCouldNotFindFunctionToRun): NSLocalizedString(@"LLVM could not find the main() function.", @"Error on not finding the function to run")};
+    return map[errorCode]?:[NSString stringWithFormat:@"An unknown llvm JIT error (code %@) occurred.", errorCode];
+}
+
 - (void)reportCompileError:(NSInteger)code withCompilerOutput:(std::string&)output toCompletionHandler:(IKBCodeRunnerCompletionHandler)completion
 {
-    NSString *description = @(output.c_str());
-    NSError *error = [NSError errorWithDomain:IKBCompilerErrorDomain code:code userInfo: @{NSLocalizedDescriptionKey : description}];
-    completion(nil, description, error);
+    NSString *transcript = @(output.c_str());
+    NSString *errorDescription = [self localizedDescriptionForCompileErrorWithCode:code];
+    NSError *error = [NSError errorWithDomain:IKBCompilerErrorDomain code:code userInfo: @{NSLocalizedDescriptionKey : errorDescription}];
+    completion(nil, transcript, error);
 }
 
 - (void)reportJITError:(NSInteger)code withCompilerOutput:(std::string&)output reportedError:(std::string&)errorText toCompletionHandler:(IKBCodeRunnerCompletionHandler)completion
 {
     llvm::errs() << errorText << "\n";
-    NSString *description = @(errorText.c_str());
-    NSError *error = [NSError errorWithDomain:IKBCodeRunnerErrorDomain code:code userInfo: @{NSLocalizedDescriptionKey : description}];
+    NSString *failureReason = @(errorText.c_str());
+    NSString *errorDescription = [self localizedDescriptionForJITErrorWithCode:code];
+    NSError *error = [NSError errorWithDomain:IKBCodeRunnerErrorDomain code:code userInfo: @{NSLocalizedDescriptionKey : errorDescription,
+                                                                                             NSLocalizedFailureReasonErrorKey : failureReason}];
     completion(nil, @(output.c_str()), error);
 }
 

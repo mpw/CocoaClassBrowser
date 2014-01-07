@@ -2,6 +2,7 @@
 
 #import "IKBCodeEditorViewController.h"
 #import "IKBCodeRunner.h"
+#import "IKBCompilerTranscriptWindowController.h"
 #import "IKBViewControllerOwnedView.h"
 
 @interface IKBCodeEditorViewController ()
@@ -18,6 +19,7 @@
     if (self)
     {
         self.codeRunner = [IKBCodeRunner new];
+        self.transcriptWindowController = [[IKBCompilerTranscriptWindowController alloc] initWithWindowNibName:NSStringFromClass([IKBCompilerTranscriptWindowController class])];
     }
     return self;
 }
@@ -54,8 +56,16 @@
     NSRange textRange = [self.textView selectedRange];
     NSString *source = [self.textView.textStorage.string substringWithRange:textRange];
     [self.codeRunner doIt:source completion:^(id returnValue, NSString *compilerTranscript, NSError *error){
-        //work out how the error and transcript will propagate back up
-        [self.textView.textStorage insertAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", returnValue]] atIndex:textRange.location + textRange.length];
+        NSString *formattedResult = [NSString stringWithFormat:@"%@", returnValue?:[error localizedDescription]];
+        [self.textView.textStorage insertAttributedString:[[NSAttributedString alloc] initWithString:formattedResult]
+                                                  atIndex:textRange.location + textRange.length];
+        NSWindow *transcriptWindow = self.transcriptWindowController.window;
+        if (compilerTranscript.length > 0) {
+            self.transcriptWindowController.transcriptText = compilerTranscript;
+            [transcriptWindow orderFront:self];
+        } else {
+            [transcriptWindow orderOut:self];
+        }
     }];
 }
 
