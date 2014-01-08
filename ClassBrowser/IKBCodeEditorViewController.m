@@ -21,7 +21,7 @@
     {
         self.codeRunner = [IKBCodeRunner new];
         self.transcriptWindowController = [[IKBCompilerTranscriptWindowController alloc] initWithWindowNibName:NSStringFromClass([IKBCompilerTranscriptWindowController class])];
-		self.defaultFont = [NSFont userFixedPitchFontOfSize:[NSFont systemFontSize]];
+        self.defaultFont = [NSFont userFixedPitchFontOfSize:[NSFont systemFontSize]];
     }
     return self;
 }
@@ -42,7 +42,7 @@
     [textView setAutomaticQuoteSubstitutionEnabled:NO];
     [textView setAutomaticSpellingCorrectionEnabled:NO];
     [textView setAutomaticTextReplacementEnabled:NO];
-	[textView setTypingAttributes:@{NSFontAttributeName: self.defaultFont}];
+    [textView setTypingAttributes:@{NSFontAttributeName: self.defaultFont}];
     
     NSMenuItem *printItItem = [[NSMenuItem alloc] initWithTitle:@"Print It" action:@selector(printIt:) keyEquivalent:@""];
     [textView.menu addItem:printItItem];
@@ -60,7 +60,7 @@
     NSString *source = [self.textView.textStorage.string substringWithRange:textRange];
     [self.codeRunner doIt:source completion:^(id returnValue, NSString *compilerTranscript, NSError *error){
         NSString *formattedResult = [NSString stringWithFormat:@"%@", returnValue?:[error localizedDescription]];
-		NSAttributedString *attributedResult = [[NSAttributedString alloc] initWithString:formattedResult attributes:@{NSFontAttributeName: self.defaultFont}];
+        NSAttributedString *attributedResult = [[NSAttributedString alloc] initWithString:formattedResult attributes:@{NSFontAttributeName: self.defaultFont}];
         [self.textView.textStorage insertAttributedString:attributedResult atIndex:textRange.location + textRange.length];
         NSWindow *transcriptWindow = self.transcriptWindowController.window;
         if (compilerTranscript.length > 0) {
