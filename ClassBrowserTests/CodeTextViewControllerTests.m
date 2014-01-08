@@ -44,7 +44,7 @@
 {
     _vc = [IKBCodeEditorViewController new];
     _view = [_vc view];
-    _vc.textView.textStorage.attributedString = [[NSAttributedString alloc] initWithString:@"Hello, world"];
+    [_vc.textView insertText:@"Hello, world"];
     [_vc.textView setSelectedRange:(NSRange){.location = 0, .length = 5}];
     _runner = [FakeCodeRunner new];
     _vc.codeRunner = (id)_runner;
@@ -154,6 +154,13 @@
     XCTAssertFalse([textView isAutomaticQuoteSubstitutionEnabled]);
     XCTAssertFalse([textView isAutomaticSpellingCorrectionEnabled]);
     XCTAssertFalse([textView isAutomaticTextReplacementEnabled]);
+}
+
+- (void)testTextViewUsesFixedWidthFont
+{
+    NSFont *font = _vc.textView.typingAttributes[NSFontAttributeName];
+    XCTAssertTrue([font isFixedPitch],
+                  @"expected %@ to be a fixed-pitch font", font);
 }
 
 @end

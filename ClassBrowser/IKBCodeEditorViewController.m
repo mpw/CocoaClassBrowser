@@ -7,7 +7,6 @@
 
 @interface IKBCodeEditorViewController ()
 
-@property (nonatomic, strong) NSFont *defaultFont;
 @property (nonatomic, weak, readwrite) NSTextView *textView;
 
 @end
@@ -21,7 +20,6 @@
     {
         self.codeRunner = [IKBCodeRunner new];
         self.transcriptWindowController = [[IKBCompilerTranscriptWindowController alloc] initWithWindowNibName:NSStringFromClass([IKBCompilerTranscriptWindowController class])];
-		self.defaultFont = [NSFont userFixedPitchFontOfSize:12];
     }
     return self;
 }
@@ -42,8 +40,11 @@
     [textView setAutomaticQuoteSubstitutionEnabled:NO];
     [textView setAutomaticSpellingCorrectionEnabled:NO];
     [textView setAutomaticTextReplacementEnabled:NO];
-	[textView setTypingAttributes:@{NSFontAttributeName: self.defaultFont}];
     
+    CGFloat fontSize = [NSFont systemFontSize];
+    NSFont *font = [NSFont userFixedPitchFontOfSize:fontSize];
+    textView.font = font;
+
     NSMenuItem *printItItem = [[NSMenuItem alloc] initWithTitle:@"Print It" action:@selector(printIt:) keyEquivalent:@""];
     [textView.menu addItem:printItItem];
     self.textView = textView;
@@ -60,8 +61,8 @@
     NSString *source = [self.textView.textStorage.string substringWithRange:textRange];
     [self.codeRunner doIt:source completion:^(id returnValue, NSString *compilerTranscript, NSError *error){
         NSString *formattedResult = [NSString stringWithFormat:@"%@", returnValue?:[error localizedDescription]];
-		NSAttributedString *attributedResult = [[NSAttributedString alloc] initWithString:formattedResult attributes:@{NSFontAttributeName: self.defaultFont}];
-        [self.textView.textStorage insertAttributedString:attributedResult atIndex:textRange.location + textRange.length];
+        [self.textView.textStorage insertAttributedString:[[NSAttributedString alloc] initWithString:formattedResult]
+                                                  atIndex:textRange.location + textRange.length];
         NSWindow *transcriptWindow = self.transcriptWindowController.window;
         if (compilerTranscript.length > 0) {
             self.transcriptWindowController.transcriptText = compilerTranscript;
