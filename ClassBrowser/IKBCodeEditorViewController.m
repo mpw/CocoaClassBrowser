@@ -40,7 +40,11 @@
     [textView setAutomaticQuoteSubstitutionEnabled:NO];
     [textView setAutomaticSpellingCorrectionEnabled:NO];
     [textView setAutomaticTextReplacementEnabled:NO];
-    
+
+    CGFloat fontSize = [NSFont systemFontSize];
+    NSFont *font = [NSFont userFixedPitchFontOfSize:fontSize];
+    textView.font = font;
+
     NSMenuItem *printItItem = [[NSMenuItem alloc] initWithTitle:@"Print It" action:@selector(printIt:) keyEquivalent:@""];
     [textView.menu addItem:printItItem];
     self.textView = textView;
