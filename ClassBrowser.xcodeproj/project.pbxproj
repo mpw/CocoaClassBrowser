@@ -87,6 +87,7 @@
 		98B811DA186230AD004FF75F /* FakeCodeRunner.m in Sources */ = {isa = PBXBuildFile; fileRef = 98B811D9186230AD004FF75F /* FakeCodeRunner.m */; };
 		98B811DD186232C6004FF75F /* IKBCodeEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98B811DC186232C6004FF75F /* IKBCodeEditorViewController.m */; };
 		98D7836418760BBD00C9137E /* IKBViewControllerOwnedView.m in Sources */ = {isa = PBXBuildFile; fileRef = 98D7836318760BBD00C9137E /* IKBViewControllerOwnedView.m */; };
+		98FFC98A187DA4FD00FE1659 /* IKBCommandBus.m in Sources */ = {isa = PBXBuildFile; fileRef = 98FFC987187DA4FD00FE1659 /* IKBCommandBus.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -203,6 +204,11 @@
 		98B811DC186232C6004FF75F /* IKBCodeEditorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IKBCodeEditorViewController.m; sourceTree = "<group>"; };
 		98D7836218760BBD00C9137E /* IKBViewControllerOwnedView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IKBViewControllerOwnedView.h; sourceTree = "<group>"; };
 		98D7836318760BBD00C9137E /* IKBViewControllerOwnedView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IKBViewControllerOwnedView.m; sourceTree = "<group>"; };
+		98FFC985187DA4FD00FE1659 /* IKBCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IKBCommand.h; path = ikbcommandbus/IKBCommand.h; sourceTree = "<group>"; };
+		98FFC986187DA4FD00FE1659 /* IKBCommandBus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IKBCommandBus.h; path = ikbcommandbus/IKBCommandBus.h; sourceTree = "<group>"; };
+		98FFC987187DA4FD00FE1659 /* IKBCommandBus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IKBCommandBus.m; path = ikbcommandbus/IKBCommandBus.m; sourceTree = "<group>"; };
+		98FFC988187DA4FD00FE1659 /* IKBCommandBus+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "IKBCommandBus+Extension.h"; path = "ikbcommandbus/IKBCommandBus+Extension.h"; sourceTree = "<group>"; };
+		98FFC989187DA4FD00FE1659 /* IKBCommandHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IKBCommandHandler.h; path = ikbcommandbus/IKBCommandHandler.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -380,6 +386,7 @@
 		98B66212185728A20045FDBD /* ClassBrowser */ = {
 			isa = PBXGroup;
 			children = (
+				98FFC984187DA4DD00FE1659 /* IKBCommandBus */,
 				980AC69E185A50DF00611C26 /* Code Execution */,
 				98B6621E185728A20045FDBD /* IKBAppDelegate.h */,
 				98B6621F185728A20045FDBD /* IKBAppDelegate.m */,
@@ -447,6 +454,18 @@
 				98B66233185728A20045FDBD /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		98FFC984187DA4DD00FE1659 /* IKBCommandBus */ = {
+			isa = PBXGroup;
+			children = (
+				98FFC985187DA4FD00FE1659 /* IKBCommand.h */,
+				98FFC986187DA4FD00FE1659 /* IKBCommandBus.h */,
+				98FFC987187DA4FD00FE1659 /* IKBCommandBus.m */,
+				98FFC988187DA4FD00FE1659 /* IKBCommandBus+Extension.h */,
+				98FFC989187DA4FD00FE1659 /* IKBCommandHandler.h */,
+			);
+			name = IKBCommandBus;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -559,6 +578,7 @@
 				98B662521857D7480045FDBD /* IKBClassBrowserWindowController.m in Sources */,
 				9883068F187ABA1D00A4325C /* IKBXcodeClangArgumentBuilder.m in Sources */,
 				98B811DD186232C6004FF75F /* IKBCodeEditorViewController.m in Sources */,
+				98FFC98A187DA4FD00FE1659 /* IKBCommandBus.m in Sources */,
 				981613F8187C1F1400A0BEDD /* IKBCompilerTranscriptWindowController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

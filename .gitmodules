@@ -1,3 +1,6 @@
 [submodule "ClassBrowserTests/Xcode-Async"]
 	path = ClassBrowserTests/Xcode-Async
 	url = https://github.com/iamleeg/XCTest-Async.git
+[submodule "ClassBrowser/ikbcommandbus"]
+	path = ClassBrowser/ikbcommandbus
+	url = https://bitbucket.org/iamleeg/ikbcommandbus.git
