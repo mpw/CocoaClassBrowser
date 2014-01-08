@@ -55,6 +55,8 @@
     self.view = view;
 }
 
+#pragma mark - menu items
+
 - (void)printIt:(id)sender
 {
     NSRange textRange = [self.textView selectedRange];
@@ -71,6 +73,11 @@
             [transcriptWindow orderOut:self];
         }
     }];
+}
+
+- (BOOL)validateMenuItem:(NSMenuItem *)menuItem
+{
+    return ([self.textView selectedRange].length > 0);
 }
 
 @end
