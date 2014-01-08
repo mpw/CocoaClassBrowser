@@ -156,4 +156,11 @@
     XCTAssertFalse([textView isAutomaticTextReplacementEnabled]);
 }
 
+- (void)testTextViewUsesFixedWidthFont
+{
+    NSFont *font = _vc.textView.typingAttributes[NSFontAttributeName];
+    XCTAssertTrue([font isFixedPitch],
+                  @"expected %@ to be a fixed-pitch font", font);
+}
+
 @end
