@@ -62,16 +62,7 @@
     NSRange textRange = [self.textView selectedRange];
     NSString *source = [self.textView.textStorage.string substringWithRange:textRange];
     [self.codeRunner doIt:source completion:^(id returnValue, NSString *compilerTranscript, NSError *error){
-        NSString *formattedResult = [NSString stringWithFormat:@"%@", returnValue?:[error localizedDescription]];
-        [self.textView.textStorage insertAttributedString:[[NSAttributedString alloc] initWithString:formattedResult]
-                                                  atIndex:textRange.location + textRange.length];
-        NSWindow *transcriptWindow = self.transcriptWindowController.window;
-        if (compilerTranscript.length > 0) {
-            self.transcriptWindowController.transcriptText = compilerTranscript;
-            [transcriptWindow orderFront:self];
-        } else {
-            [transcriptWindow orderOut:self];
-        }
+        [self updateSourceViewWithResult:returnValue ofSourceInRange:textRange compilerOutput:compilerTranscript error:error];
     }];
 }
 
@@ -80,4 +71,18 @@
     return ([self.textView selectedRange].length > 0);
 }
 
+- (void)updateSourceViewWithResult:(id)returnValue ofSourceInRange:(NSRange)textRange compilerOutput:(NSString *)transcript error:(NSError *)error
+{
+    NSString *formattedResult = [NSString stringWithFormat:@"%@", returnValue?:[error localizedDescription]];
+    [self.textView.textStorage insertAttributedString:[[NSAttributedString alloc] initWithString:formattedResult]
+                                              atIndex:textRange.location + textRange.length];
+    NSWindow *transcriptWindow = self.transcriptWindowController.window;
+    if (transcript.length > 0) {
+        self.transcriptWindowController.transcriptText = transcript;
+        [transcriptWindow orderFront:self];
+    } else {
+        [transcriptWindow orderOut:self];
+    }
+
+}
 @end
