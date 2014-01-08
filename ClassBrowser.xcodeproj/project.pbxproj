@@ -157,6 +157,7 @@
 		981613F6187C1F1400A0BEDD /* IKBCompilerTranscriptWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IKBCompilerTranscriptWindowController.m; sourceTree = "<group>"; };
 		981613F7187C1F1400A0BEDD /* IKBCompilerTranscriptWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IKBCompilerTranscriptWindowController.xib; sourceTree = "<group>"; };
 		981613FA187C22F200A0BEDD /* CompilerTranscriptTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CompilerTranscriptTests.m; sourceTree = "<group>"; };
+		9819D721187D969600485A57 /* IKBCodeEditorViewController_ClassExtension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IKBCodeEditorViewController_ClassExtension.h; sourceTree = "<group>"; };
 		98830689187AAEE400A4325C /* IKBCompilerArgumentBuilder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = IKBCompilerArgumentBuilder.h; path = "Code Execution/IKBCompilerArgumentBuilder.h"; sourceTree = "<group>"; };
 		9883068A187AB05200A4325C /* XcodeClangArgumentBuilderTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XcodeClangArgumentBuilderTests.m; sourceTree = "<group>"; };
 		9883068C187AB99000A4325C /* XCTest+Async.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "XCTest+Async.h"; path = "Xcode-Async/XCTest+Async.h"; sourceTree = "<group>"; };
@@ -394,6 +395,7 @@
 				98B662501857D7480045FDBD /* IKBClassBrowserWindowController.m */,
 				98B662511857D7480045FDBD /* IKBClassBrowserWindowController.xib */,
 				98B811DB186232C6004FF75F /* IKBCodeEditorViewController.h */,
+				9819D721187D969600485A57 /* IKBCodeEditorViewController_ClassExtension.h */,
 				98B811DC186232C6004FF75F /* IKBCodeEditorViewController.m */,
 				98D7836218760BBD00C9137E /* IKBViewControllerOwnedView.h */,
 				98D7836318760BBD00C9137E /* IKBViewControllerOwnedView.m */,
