@@ -38,6 +38,7 @@
     NSView *_view;
     FakeCodeRunner *_runner;
     TranscriptController *_transcriptController;
+    NSMenuItem *_printItItem;
 }
 
 - (void)setUp
@@ -50,6 +51,9 @@
     _vc.codeRunner = (id)_runner;
     _transcriptController = [TranscriptController new];
     _vc.transcriptWindowController = (id)_transcriptController;
+    _printItItem = [[NSMenuItem alloc] initWithTitle:@"Print It"
+                                                         action:@selector(printIt:)
+                                                  keyEquivalent:@""];
 }
 
 - (void)testTheViewHasTheViewControllerAsItsNextResponder
@@ -177,4 +181,14 @@
                   @"expected %@ to be a fixed-pitch font", font);
 }
 
+- (void)testPrintItMenuItemIsDisabledWhenNoTextIsSelected
+{
+    [_vc.textView setSelectedRange:NSMakeRange(0, 0)];
+    XCTAssertFalse([_vc validateMenuItem:_printItItem]);
+}
+
+- (void)testPrintItMenuItemIsEnabledWhenTextIsSelected
+{
+    XCTAssertTrue([_vc validateMenuItem:_printItItem]);
+}
 @end
