@@ -125,6 +125,20 @@
     XCTAssertEqual(errorRange.location, (NSUInteger)5);
 }
 
+- (void)testPrintItResultUsesFixedWidthFont
+{
+    _runner.runResult = @"PASS";
+    [_vc printIt:self];
+    NSRange attributesEffectiveRange = NSMakeRange(NSNotFound, 0);
+	NSDictionary *attributes = [_vc.textView.textStorage attributesAtIndex:0 effectiveRange:&attributesEffectiveRange];
+	XCTAssertTrue([[attributes allKeys] containsObject:NSFontAttributeName],
+				  @"expected font attribute in result string");
+	XCTAssertTrue([attributes[NSFontAttributeName] isFixedPitch],
+				  @"expected %@ to be a fixed-pitch font", attributes[NSFontAttributeName]);
+    XCTAssertEqual(attributesEffectiveRange.length, [_vc.textView.string length],
+				   @"expected attributes' effective range to match length of result string");
+}
+
 - (void)testCompilerTranscriptControllerIsAvailableByDefault
 {
     IKBCodeEditorViewController *viewController = [IKBCodeEditorViewController new];
