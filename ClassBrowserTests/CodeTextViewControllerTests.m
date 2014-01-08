@@ -2,6 +2,7 @@
 
 #import <XCTest/XCTest.h>
 #import "IKBCodeEditorViewController.h"
+#import "IKBCodeEditorViewController_ClassExtension.h"
 #import "FakeCodeRunner.h"
 
 @interface TranscriptController : NSObject
@@ -107,22 +108,19 @@
     XCTAssertEqualObjects(_runner.ranSource, @"Hello");
 }
 
-- (void)testPrintItPlacesTheResultAfterTheCompiledSource
+- (void)testPrintItCompletionPlacesTheResultAfterTheCompiledSource
 {
-    _runner.runResult = @"PASS";
-    [_vc printIt:self];
+    [_vc updateSourceViewWithResult:@"PASS" ofSourceInRange:_vc.textView.selectedRange compilerOutput:nil error:nil];
     NSRange resultRange = [_vc.textView.string rangeOfString:@"PASS"];
     XCTAssertEqual(resultRange.location, (NSUInteger)5);
 }
 
-- (void)testPrintItPlacesTheErrorDescriptionAfterTheCompiledSourceOnFailure
+- (void)testPrintItCompletionPlacesTheErrorDescriptionAfterTheCompiledSourceOnFailure
 {
-    _runner.runResult = nil;
     NSError *buildError = [NSError errorWithDomain:@"IKBTestErrorDomain"
                                               code:99
                                           userInfo:@{ NSLocalizedDescriptionKey: @"Error Description" }];
-    _runner.error = buildError;
-    [_vc printIt:self];
+    [_vc updateSourceViewWithResult:nil ofSourceInRange:_vc.textView.selectedRange compilerOutput:nil error:buildError];
     NSRange resultRange = [_vc.textView.string rangeOfString:[NSString stringWithFormat:@"%@", nil]];
     XCTAssertEqual(resultRange.location, NSNotFound);
     NSRange errorRange = [_vc.textView.string rangeOfString:@"Error Description"];
@@ -137,17 +135,15 @@
 
 - (void)testCompilerTranscriptIsShownWhenItHasSomethingToSay
 {
-    _runner.compilerTranscript = @"Danger Will Robinson";
-    [_vc printIt:self];
+    [_vc updateSourceViewWithResult:nil ofSourceInRange:_vc.textView.selectedRange compilerOutput:@"Danger Will Robinson" error:nil];
     XCTAssertTrue([_transcriptController isWindowOrderedFront]);
     XCTAssertEqualObjects(_transcriptController.transcriptText, @"Danger Will Robinson");
 }
 
 - (void)testCompilerTranscriptIsHiddenWhenItHasNothingToSay
 {
-    _runner.compilerTranscript = @"";
     [_transcriptController.window orderFront:self];
-    [_vc printIt:self];
+    [_vc updateSourceViewWithResult:nil ofSourceInRange:_vc.textView.selectedRange compilerOutput:@"" error:nil];
     XCTAssertFalse([_transcriptController isWindowOrderedFront]);
 }
 
