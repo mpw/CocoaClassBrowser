@@ -134,7 +134,7 @@
     _runner.runResult = @"PASS";
     [_vc printIt:self];
     NSRange attributesEffectiveRange = NSMakeRange(NSNotFound, 0);
-	NSDictionary *attributes = [_vc.textView.textStorage attributesAtIndex:0 effectiveRange:&attributesEffectiveRange];
+    NSDictionary *attributes = [_vc.textView.textStorage attributesAtIndex:0 effectiveRange:&attributesEffectiveRange];
     XCTAssertTrue([[attributes allKeys] containsObject:NSFontAttributeName],
                   @"expected font attribute in result string");
     XCTAssertTrue([attributes[NSFontAttributeName] isFixedPitch],
