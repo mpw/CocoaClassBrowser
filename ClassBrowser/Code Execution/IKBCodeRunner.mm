@@ -3,6 +3,8 @@
 #import "IKBCodeRunner.h"
 #import "IKBXcodeClangArgumentBuilder.h"
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wconversion"
 #include "clang/Basic/DiagnosticOptions.h"
 #include "clang/CodeGen/CodeGenAction.h"
 #include "clang/Driver/Compilation.h"
@@ -22,6 +24,7 @@
 #include "llvm/Support/Path.h"
 #include "llvm/Support/TargetSelect.h"
 #include "llvm/Support/raw_ostream.h"
+#pragma clang diagnostic pop
 
 using namespace clang;
 using namespace clang::driver;
