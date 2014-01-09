@@ -29,7 +29,11 @@
 
 - (void)executeCommand:(IKBCompileAndRunCodeCommand *)command
 {
-    [self.codeRunner doIt:command.source completion:command.completion];
+    [self.codeRunner doIt:command.source completion:^(id result, NSString *transcript, NSError *error){
+        dispatch_async(dispatch_get_main_queue(), ^{
+            command.completion(result, transcript, error);
+        });
+    }];
 }
 
 @end

@@ -21,9 +21,7 @@
 @implementation HumbleCodeRunner
 
 - (void)doIt:(NSString *)objectiveCSource completion:(IKBCodeRunnerCompletionHandler)completion {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        completion(nil, nil, nil);
-    });
+    completion(nil, nil, nil);
 }
 
 @end
@@ -61,7 +59,7 @@
 - (void)testExecutionInvolvesRunningTheCode
 {
     id mockRunner = [OCMockObject mockForClass:[IKBCodeRunner class]];
-    [[mockRunner expect] doIt:_command.source completion:_command.completion];
+    [[mockRunner expect] doIt:_command.source completion:OCMOCK_ANY];
     _handler.codeRunner = mockRunner;
     [_handler executeCommand:_command];
     [mockRunner verify];
