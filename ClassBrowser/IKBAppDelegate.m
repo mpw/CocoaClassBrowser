@@ -2,6 +2,8 @@
 
 #import "IKBAppDelegate.h"
 #import "IKBClassBrowserWindowController.h"
+#import "IKBCommandBus.h"
+#import "IKBCompileAndRunCodeCommandHandler.h"
 
 @interface IKBAppDelegate ()
 
@@ -15,6 +17,7 @@
 {
     self.windowController = [[IKBClassBrowserWindowController alloc] initWithWindowNibName:@"IKBClassBrowserWindowController"];
     [self.windowController.window makeKeyAndOrderFront:self];
+    [self.commandBus registerCommandHandler:[IKBCompileAndRunCodeCommandHandler new]];
 }
 
 @end

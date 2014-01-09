@@ -13,36 +13,7 @@
 #import "IKBCodeRunner.h"
 #import "IKBCommandHandler.h"
 #import "IKBCompileAndRunCodeCommand.h"
-
-@interface IKBCompileAndRunCodeCommandHandler : NSObject <IKBCommandHandler>
-
-@property (nonatomic, strong) IKBCodeRunner *codeRunner;
-
-@end
-
-@implementation IKBCompileAndRunCodeCommandHandler
-
-- (instancetype)init
-{
-    self = [super init];
-    if (self)
-    {
-        self.codeRunner = [IKBCodeRunner new];
-    }
-    return self;
-}
-
-- (BOOL)canHandleCommand:(id<IKBCommand>)command
-{
-    return [command isKindOfClass:[IKBCompileAndRunCodeCommand class]];
-}
-
-- (void)executeCommand:(IKBCompileAndRunCodeCommand *)command
-{
-    [self.codeRunner doIt:command.source completion:command.completion];
-}
-
-@end
+#import "IKBCompileAndRunCodeCommandHandler.h"
 
 @interface HumbleCodeRunner : IKBCodeRunner
 @end
