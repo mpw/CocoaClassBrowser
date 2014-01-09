@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Project Isambard. All rights reserved.
 //
 
-#import "IKBCompileAndRunSourceCommand.h"
+#import "IKBCompileAndRunCodeCommand.h"
 
 @implementation IKBCompileAndRunCodeCommand
 

@@ -3,7 +3,7 @@
 #import "IKBCodeEditorViewController.h"
 #import "IKBCodeRunner.h"
 #import "IKBCommandBus.h"
-#import "IKBCompileAndRunSourceCommand.h"
+#import "IKBCompileAndRunCodeCommand.h"
 #import "IKBCompilerTranscriptWindowController.h"
 #import "IKBViewControllerOwnedView.h"
 

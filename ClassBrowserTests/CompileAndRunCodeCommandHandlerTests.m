@@ -8,7 +8,7 @@
 
 #import <XCTest/XCTest.h>
 #import "IKBCommandHandler.h"
-#import "IKBCompileAndRunSourceCommand.h"
+#import "IKBCompileAndRunCodeCommand.h"
 
 @interface IKBCompileAndRunCodeCommandHandler : NSObject <IKBCommandHandler>
 
@@ -28,11 +28,11 @@
 
 @end
 
-@interface CompileAndRunSourceCommandHandlerTests : XCTestCase
+@interface CompileAndRunCodeCommandHandlerTests : XCTestCase
 
 @end
 
-@implementation CompileAndRunSourceCommandHandlerTests
+@implementation CompileAndRunCodeCommandHandlerTests
 
 - (void)testTheHandlerWillAcceptCompileAndRunSourceCommands
 {
