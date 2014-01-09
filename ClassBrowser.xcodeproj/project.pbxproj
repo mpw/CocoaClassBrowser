@@ -812,7 +812,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 					"$(inherited)",
-					/Users/leeg/Documents/Isambard/ikbclassbrowser/ClassBrowserTests,
+					"$(PROJECT_DIR)/ClassBrowserTests",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ClassBrowser/ClassBrowser-Prefix.pch";
@@ -836,7 +836,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 					"$(inherited)",
-					/Users/leeg/Documents/Isambard/ikbclassbrowser/ClassBrowserTests,
+					"$(PROJECT_DIR)/ClassBrowserTests",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ClassBrowser/ClassBrowser-Prefix.pch";
