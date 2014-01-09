@@ -18,18 +18,30 @@
 @end
 
 @implementation AppDelegateTests
+{
+    IKBAppDelegate *_appDelegate;
+}
+
+- (void)setUp
+{
+    _appDelegate = [IKBAppDelegate new];
+}
 
 - (void)testAppDelegateRegistersCommandHandlers
 {
-    IKBAppDelegate *appDelegate = [IKBAppDelegate new];
     id mockBus = [OCMockObject mockForClass:[IKBCommandBus class]];
     [[mockBus expect] registerCommandHandler:[OCMArg checkWithBlock:^(id handler){
         return [handler isKindOfClass:[IKBCompileAndRunCodeCommandHandler class]];
     }]];
-    appDelegate.commandBus = mockBus;
+    _appDelegate.commandBus = mockBus;
 
-    [appDelegate applicationDidFinishLaunching:nil];
+    [_appDelegate applicationDidFinishLaunching:nil];
     [mockBus verify];
+}
+
+- (void)testAppDelegateHasTheAppCommandBusByDefault
+{
+    XCTAssertEqualObjects(_appDelegate.commandBus, [IKBCommandBus applicationCommandBus]);
 }
 
 @end

@@ -13,6 +13,16 @@
 
 @implementation IKBAppDelegate
 
+- (instancetype)init
+{
+    self = [super init];
+    if (self)
+    {
+        self.commandBus = [IKBCommandBus applicationCommandBus];
+    }
+    return self;
+}
+
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
     self.windowController = [[IKBClassBrowserWindowController alloc] initWithWindowNibName:@"IKBClassBrowserWindowController"];
