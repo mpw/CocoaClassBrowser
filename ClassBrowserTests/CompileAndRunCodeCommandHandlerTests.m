@@ -109,7 +109,9 @@
         ASYNC_TEST_DONE;
     };
     _handler.codeRunner = [HumbleCodeRunner new];
-    [_handler executeCommand:_command];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [_handler executeCommand:_command];
+    });
     ASYNC_TEST_END;
 }
 @end
