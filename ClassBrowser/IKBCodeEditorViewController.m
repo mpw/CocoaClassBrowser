@@ -2,6 +2,8 @@
 
 #import "IKBCodeEditorViewController.h"
 #import "IKBCodeRunner.h"
+#import "IKBCommandBus.h"
+#import "IKBCompileAndRunCodeCommand.h"
 #import "IKBCompilerTranscriptWindowController.h"
 #import "IKBViewControllerOwnedView.h"
 
@@ -19,9 +21,9 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self)
     {
-        self.codeRunner = [IKBCodeRunner new];
         self.transcriptWindowController = [[IKBCompilerTranscriptWindowController alloc] initWithWindowNibName:NSStringFromClass([IKBCompilerTranscriptWindowController class])];
         self.defaultFont = [NSFont userFixedPitchFontOfSize:[NSFont systemFontSize]];
+        self.commandBus = [IKBCommandBus applicationCommandBus];
     }
     return self;
 }
@@ -60,18 +62,12 @@
 {
     NSRange textRange = [self.textView selectedRange];
     NSString *source = [self.textView.textStorage.string substringWithRange:textRange];
-    [self.codeRunner doIt:source completion:^(id returnValue, NSString *compilerTranscript, NSError *error){
-        NSString *formattedResult = [NSString stringWithFormat:@"%@", returnValue?:[error localizedDescription]];
-        NSAttributedString *attributedResult = [[NSAttributedString alloc] initWithString:formattedResult attributes:@{NSFontAttributeName: self.defaultFont}];
-        [self.textView.textStorage insertAttributedString:attributedResult atIndex:textRange.location + textRange.length];
-        NSWindow *transcriptWindow = self.transcriptWindowController.window;
-        if (compilerTranscript.length > 0) {
-            self.transcriptWindowController.transcriptText = compilerTranscript;
-            [transcriptWindow orderFront:self];
-        } else {
-            [transcriptWindow orderOut:self];
-        }
-    }];
+    IKBCompileAndRunCodeCommand *command = [IKBCompileAndRunCodeCommand new];
+    command.source = source;
+    command.completion = ^(id returnValue, NSString *compilerTranscript, NSError *error){
+        [self updateSourceViewWithResult:returnValue ofSourceInRange:textRange compilerOutput:compilerTranscript error:error];
+    };
+    [self.commandBus execute:command];
 }
 
 - (BOOL)validateMenuItem:(NSMenuItem *)menuItem
@@ -79,4 +75,18 @@
     return ([self.textView selectedRange].length > 0);
 }
 
+- (void)updateSourceViewWithResult:(id)returnValue ofSourceInRange:(NSRange)textRange compilerOutput:(NSString *)transcript error:(NSError *)error
+{
+    NSString *formattedResult = [NSString stringWithFormat:@"%@", returnValue?:[error localizedDescription]];
+    [self.textView.textStorage insertAttributedString:[[NSAttributedString alloc] initWithString:formattedResult attributes:@{NSFontAttributeName: self.defaultFont}]
+                                              atIndex:textRange.location + textRange.length];
+    NSWindow *transcriptWindow = self.transcriptWindowController.window;
+    if (transcript.length > 0) {
+        self.transcriptWindowController.transcriptText = transcript;
+        [transcriptWindow orderFront:self];
+    } else {
+        [transcriptWindow orderOut:self];
+    }
+
+}
 @end
