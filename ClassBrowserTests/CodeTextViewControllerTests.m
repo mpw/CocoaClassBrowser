@@ -1,9 +1,10 @@
 //See COPYING for licence details.
 
 #import <XCTest/XCTest.h>
+#import <OCMock/OCMock.h>
+
 #import "IKBCodeEditorViewController.h"
 #import "IKBCodeEditorViewController_ClassExtension.h"
-#import "FakeCodeRunner.h"
 
 @interface TranscriptController : NSObject
 
@@ -37,7 +38,6 @@
 {
     IKBCodeEditorViewController *_vc;
     NSView *_view;
-    FakeCodeRunner *_runner;
     TranscriptController *_transcriptController;
     NSMenuItem *_printItItem;
 }
@@ -48,8 +48,6 @@
     _view = [_vc view];
     [_vc.textView insertText:@"Hello, world"];
     [_vc.textView setSelectedRange:(NSRange){.location = 0, .length = 5}];
-    _runner = [FakeCodeRunner new];
-    _vc.codeRunner = (id)_runner;
     _transcriptController = [TranscriptController new];
     _vc.transcriptWindowController = (id)_transcriptController;
     _printItItem = [[NSMenuItem alloc] initWithTitle:@"Print It"
@@ -104,8 +102,11 @@
 
 - (void)testPrintItSendsTheTextSelectionToTheCodeRunner
 {
+    id mockRunner = [OCMockObject mockForClass:[IKBCodeRunner class]];
+    [[mockRunner expect] doIt:@"Hello" completion:OCMOCK_ANY];
+    _vc.codeRunner = mockRunner;
     [_vc printIt:self];
-    XCTAssertEqualObjects(_runner.ranSource, @"Hello");
+    [mockRunner verify];
 }
 
 - (void)testPrintItCompletionPlacesTheResultAfterTheCompiledSource
