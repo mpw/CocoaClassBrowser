@@ -5,6 +5,7 @@
 
 #import "IKBCodeEditorViewController.h"
 #import "IKBCodeEditorViewController_ClassExtension.h"
+#import "IKBCodeRunner.h"
 
 @interface TranscriptController : NSObject
 
