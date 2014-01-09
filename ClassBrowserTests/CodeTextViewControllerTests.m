@@ -1,8 +1,12 @@
 //See COPYING for licence details.
 
 #import <XCTest/XCTest.h>
+#import <OCMock/OCMock.h>
+
 #import "IKBCodeEditorViewController.h"
-#import "FakeCodeRunner.h"
+#import "IKBCodeEditorViewController_ClassExtension.h"
+#import "IKBCommandBus.h"
+#import "IKBCompileAndRunCodeCommand.h"
 
 @interface TranscriptController : NSObject
 
@@ -36,7 +40,6 @@
 {
     IKBCodeEditorViewController *_vc;
     NSView *_view;
-    FakeCodeRunner *_runner;
     TranscriptController *_transcriptController;
     NSMenuItem *_printItItem;
 }
@@ -47,8 +50,6 @@
     _view = [_vc view];
     [_vc.textView insertText:@"Hello, world"];
     [_vc.textView setSelectedRange:(NSRange){.location = 0, .length = 5}];
-    _runner = [FakeCodeRunner new];
-    _vc.codeRunner = (id)_runner;
     _transcriptController = [TranscriptController new];
     _vc.transcriptWindowController = (id)_transcriptController;
     _printItItem = [[NSMenuItem alloc] initWithTitle:@"Print It"
@@ -83,11 +84,11 @@
     XCTAssertEqualObjects(subview.contentView.documentView, _vc.textView);
 }
 
-- (void)testThatWhenTheViewIsReadyTheControllerHasACodeRunner
+- (void)testThatWhenTheViewIsReadyTheControllerHasACommandBus
 {
     IKBCodeEditorViewController *viewController = [IKBCodeEditorViewController new];
     __unused NSView *view = viewController.view;
-    XCTAssertNotNil(viewController.codeRunner);
+    XCTAssertEqualObjects(viewController.commandBus, [IKBCommandBus applicationCommandBus]);
 }
 
 - (void)testTextViewHasAMenuItemToExecuteCodeAndPrintTheResult
@@ -101,28 +102,30 @@
     XCTAssertEqual(printItItem.action, @selector(printIt:));
 }
 
-- (void)testPrintItSendsTheTextSelectionToTheCodeRunner
+- (void)testPrintItSchedulesACompileCommandContainingTheSourceCode
 {
+    id mockCommandBus = [OCMockObject mockForClass:[IKBCommandBus class]];
+    [[mockCommandBus expect] execute:[OCMArg checkWithBlock:^(IKBCompileAndRunCodeCommand *command){
+        return (BOOL)(command.completion != nil && [command.source isEqualToString:@"Hello"]);
+    }]];
+    _vc.commandBus = mockCommandBus;
     [_vc printIt:self];
-    XCTAssertEqualObjects(_runner.ranSource, @"Hello");
+    [mockCommandBus verify];
 }
 
-- (void)testPrintItPlacesTheResultAfterTheCompiledSource
+- (void)testPrintItCompletionPlacesTheResultAfterTheCompiledSource
 {
-    _runner.runResult = @"PASS";
-    [_vc printIt:self];
+    [_vc updateSourceViewWithResult:@"PASS" ofSourceInRange:_vc.textView.selectedRange compilerOutput:nil error:nil];
     NSRange resultRange = [_vc.textView.string rangeOfString:@"PASS"];
     XCTAssertEqual(resultRange.location, (NSUInteger)5);
 }
 
-- (void)testPrintItPlacesTheErrorDescriptionAfterTheCompiledSourceOnFailure
+- (void)testPrintItCompletionPlacesTheErrorDescriptionAfterTheCompiledSourceOnFailure
 {
-    _runner.runResult = nil;
     NSError *buildError = [NSError errorWithDomain:@"IKBTestErrorDomain"
                                               code:99
                                           userInfo:@{ NSLocalizedDescriptionKey: @"Error Description" }];
-    _runner.error = buildError;
-    [_vc printIt:self];
+    [_vc updateSourceViewWithResult:nil ofSourceInRange:_vc.textView.selectedRange compilerOutput:nil error:buildError];
     NSRange resultRange = [_vc.textView.string rangeOfString:[NSString stringWithFormat:@"%@", nil]];
     XCTAssertEqual(resultRange.location, NSNotFound);
     NSRange errorRange = [_vc.textView.string rangeOfString:@"Error Description"];
@@ -131,8 +134,7 @@
 
 - (void)testPrintItResultUsesFixedWidthFont
 {
-    _runner.runResult = @"PASS";
-    [_vc printIt:self];
+    [_vc updateSourceViewWithResult:@"PASS" ofSourceInRange:_vc.textView.selectedRange compilerOutput:nil error:nil];
     NSRange attributesEffectiveRange = NSMakeRange(NSNotFound, 0);
     NSDictionary *attributes = [_vc.textView.textStorage attributesAtIndex:0 effectiveRange:&attributesEffectiveRange];
     XCTAssertTrue([[attributes allKeys] containsObject:NSFontAttributeName],
@@ -151,17 +153,15 @@
 
 - (void)testCompilerTranscriptIsShownWhenItHasSomethingToSay
 {
-    _runner.compilerTranscript = @"Danger Will Robinson";
-    [_vc printIt:self];
+    [_vc updateSourceViewWithResult:nil ofSourceInRange:_vc.textView.selectedRange compilerOutput:@"Danger Will Robinson" error:nil];
     XCTAssertTrue([_transcriptController isWindowOrderedFront]);
     XCTAssertEqualObjects(_transcriptController.transcriptText, @"Danger Will Robinson");
 }
 
 - (void)testCompilerTranscriptIsHiddenWhenItHasNothingToSay
 {
-    _runner.compilerTranscript = @"";
     [_transcriptController.window orderFront:self];
-    [_vc printIt:self];
+    [_vc updateSourceViewWithResult:nil ofSourceInRange:_vc.textView.selectedRange compilerOutput:@"" error:nil];
     XCTAssertFalse([_transcriptController isWindowOrderedFront]);
 }
 
