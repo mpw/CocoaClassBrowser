@@ -8,10 +8,11 @@
 
 #import <Foundation/Foundation.h>
 #import "IKBCommand.h"
+#import "IKBCodeRunner.h"
 
 @interface IKBCompileAndRunCodeCommand : NSObject <IKBCommand>
 
 @property (nonatomic, copy) NSString *source;
-@property (nonatomic, copy) void(^completion)(NSString *source, NSString *compilerTranscript, NSError *error);
+@property (nonatomic, copy) IKBCodeRunnerCompletionHandler completion;
 
 @end
