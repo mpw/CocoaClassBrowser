@@ -18,7 +18,7 @@
 
 - (BOOL)canHandleCommand:(id<IKBCommand>)command
 {
-    return YES;
+    return [command isKindOfClass:[IKBCompileAndRunCodeCommand class]];
 }
 
 - (void)executeCommand:(id<IKBCommand>)command
@@ -29,16 +29,28 @@
 @end
 
 @interface CompileAndRunCodeCommandHandlerTests : XCTestCase
+{
+    IKBCompileAndRunCodeCommandHandler *_handler;
+}
 
 @end
 
 @implementation CompileAndRunCodeCommandHandlerTests
 
+- (void)setUp
+{
+    _handler = [IKBCompileAndRunCodeCommandHandler new];
+}
+
 - (void)testTheHandlerWillAcceptCompileAndRunSourceCommands
 {
     IKBCompileAndRunCodeCommand *command = [IKBCompileAndRunCodeCommand new];
-    IKBCompileAndRunCodeCommandHandler *handler = [IKBCompileAndRunCodeCommandHandler new];
-    XCTAssertTrue([handler canHandleCommand:command]);
+    XCTAssertTrue([_handler canHandleCommand:command]);
+}
+
+- (void)testHandlerDoesNotAcceptAnyOldCommand
+{
+    XCTAssertFalse([_handler canHandleCommand:(id)@"Not the expected command"]);
 }
 
 @end
