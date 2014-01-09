@@ -64,6 +64,7 @@
 		981613F9187C1F1400A0BEDD /* IKBCompilerTranscriptWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 981613F7187C1F1400A0BEDD /* IKBCompilerTranscriptWindowController.xib */; };
 		981613FB187C22F200A0BEDD /* CompilerTranscriptTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 981613FA187C22F200A0BEDD /* CompilerTranscriptTests.m */; };
 		9828F186187EBEAF003F1DC6 /* OCMock.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 98147993187EBBF1009B8F04 /* OCMock.framework */; };
+		9828F189187EC515003F1DC6 /* IKBCompileAndRunSourceCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 9828F188187EC515003F1DC6 /* IKBCompileAndRunSourceCommand.m */; };
 		9883068B187AB05200A4325C /* XcodeClangArgumentBuilderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9883068A187AB05200A4325C /* XcodeClangArgumentBuilderTests.m */; };
 		9883068F187ABA1D00A4325C /* IKBXcodeClangArgumentBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 9883068E187ABA1D00A4325C /* IKBXcodeClangArgumentBuilder.m */; };
 		98830692187ABD5100A4325C /* HumbleCompilerArgumentBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 98830691187ABD5100A4325C /* HumbleCompilerArgumentBuilder.m */; };
@@ -174,6 +175,8 @@
 		981613F7187C1F1400A0BEDD /* IKBCompilerTranscriptWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IKBCompilerTranscriptWindowController.xib; sourceTree = "<group>"; };
 		981613FA187C22F200A0BEDD /* CompilerTranscriptTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CompilerTranscriptTests.m; sourceTree = "<group>"; };
 		9819D721187D969600485A57 /* IKBCodeEditorViewController_ClassExtension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IKBCodeEditorViewController_ClassExtension.h; sourceTree = "<group>"; };
+		9828F187187EC515003F1DC6 /* IKBCompileAndRunSourceCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IKBCompileAndRunSourceCommand.h; path = "Code Execution/IKBCompileAndRunSourceCommand.h"; sourceTree = "<group>"; };
+		9828F188187EC515003F1DC6 /* IKBCompileAndRunSourceCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IKBCompileAndRunSourceCommand.m; path = "Code Execution/IKBCompileAndRunSourceCommand.m"; sourceTree = "<group>"; };
 		98830689187AAEE400A4325C /* IKBCompilerArgumentBuilder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = IKBCompilerArgumentBuilder.h; path = "Code Execution/IKBCompilerArgumentBuilder.h"; sourceTree = "<group>"; };
 		9883068A187AB05200A4325C /* XcodeClangArgumentBuilderTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XcodeClangArgumentBuilderTests.m; sourceTree = "<group>"; };
 		9883068C187AB99000A4325C /* XCTest+Async.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "XCTest+Async.h"; path = "Xcode-Async/XCTest+Async.h"; sourceTree = "<group>"; };
@@ -301,6 +304,8 @@
 			children = (
 				980AC69F185A510000611C26 /* IKBCodeRunner.h */,
 				980AC6A0185A510000611C26 /* IKBCodeRunner.mm */,
+				9828F187187EC515003F1DC6 /* IKBCompileAndRunSourceCommand.h */,
+				9828F188187EC515003F1DC6 /* IKBCompileAndRunSourceCommand.m */,
 				98830689187AAEE400A4325C /* IKBCompilerArgumentBuilder.h */,
 				9883068D187ABA1D00A4325C /* IKBXcodeClangArgumentBuilder.h */,
 				9883068E187ABA1D00A4325C /* IKBXcodeClangArgumentBuilder.m */,
@@ -595,6 +600,7 @@
 				98B662521857D7480045FDBD /* IKBClassBrowserWindowController.m in Sources */,
 				9883068F187ABA1D00A4325C /* IKBXcodeClangArgumentBuilder.m in Sources */,
 				98B811DD186232C6004FF75F /* IKBCodeEditorViewController.m in Sources */,
+				9828F189187EC515003F1DC6 /* IKBCompileAndRunSourceCommand.m in Sources */,
 				98FFC98A187DA4FD00FE1659 /* IKBCommandBus.m in Sources */,
 				981613F8187C1F1400A0BEDD /* IKBCompilerTranscriptWindowController.m in Sources */,
 			);

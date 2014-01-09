@@ -6,6 +6,8 @@
 #import "IKBCodeEditorViewController.h"
 #import "IKBCodeEditorViewController_ClassExtension.h"
 #import "IKBCodeRunner.h"
+#import "IKBCommandBus.h"
+#import "IKBCompileAndRunSourceCommand.h"
 
 @interface TranscriptController : NSObject
 
@@ -101,13 +103,15 @@
     XCTAssertEqual(printItItem.action, @selector(printIt:));
 }
 
-- (void)testPrintItSendsTheTextSelectionToTheCodeRunner
+- (void)testPrintItSchedulesACompileCommandContainingTheSourceCode
 {
-    id mockRunner = [OCMockObject mockForClass:[IKBCodeRunner class]];
-    [[mockRunner expect] doIt:@"Hello" completion:OCMOCK_ANY];
-    _vc.codeRunner = mockRunner;
+    id mockCommandBus = [OCMockObject mockForClass:[IKBCommandBus class]];
+    [[mockCommandBus expect] execute:[OCMArg checkWithBlock:^(IKBCompileAndRunCodeCommand *command){
+        return (BOOL)(command.completion != nil && [command.source isEqualToString:@"Hello"]);
+    }]];
+    _vc.commandBus = mockCommandBus;
     [_vc printIt:self];
-    [mockRunner verify];
+    [mockCommandBus verify];
 }
 
 - (void)testPrintItCompletionPlacesTheResultAfterTheCompiledSource

@@ -2,6 +2,8 @@
 
 #import "IKBCodeEditorViewController.h"
 #import "IKBCodeRunner.h"
+#import "IKBCommandBus.h"
+#import "IKBCompileAndRunSourceCommand.h"
 #import "IKBCompilerTranscriptWindowController.h"
 #import "IKBViewControllerOwnedView.h"
 
@@ -60,9 +62,12 @@
 {
     NSRange textRange = [self.textView selectedRange];
     NSString *source = [self.textView.textStorage.string substringWithRange:textRange];
-    [self.codeRunner doIt:source completion:^(id returnValue, NSString *compilerTranscript, NSError *error){
+    IKBCompileAndRunCodeCommand *command = [IKBCompileAndRunCodeCommand new];
+    command.source = source;
+    command.completion = ^(id returnValue, NSString *compilerTranscript, NSError *error){
         [self updateSourceViewWithResult:returnValue ofSourceInRange:textRange compilerOutput:compilerTranscript error:error];
-    }];
+    };
+    [self.commandBus execute:command];
 }
 
 - (BOOL)validateMenuItem:(NSMenuItem *)menuItem
