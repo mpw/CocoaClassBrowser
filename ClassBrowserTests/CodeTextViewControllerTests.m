@@ -129,8 +129,7 @@
 
 - (void)testPrintItResultUsesFixedWidthFont
 {
-    _runner.runResult = @"PASS";
-    [_vc printIt:self];
+    [_vc updateSourceViewWithResult:@"PASS" ofSourceInRange:_vc.textView.selectedRange compilerOutput:nil error:nil];
     NSRange attributesEffectiveRange = NSMakeRange(NSNotFound, 0);
     NSDictionary *attributes = [_vc.textView.textStorage attributesAtIndex:0 effectiveRange:&attributesEffectiveRange];
     XCTAssertTrue([[attributes allKeys] containsObject:NSFontAttributeName],
