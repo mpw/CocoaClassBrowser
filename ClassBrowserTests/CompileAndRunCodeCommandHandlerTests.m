@@ -8,6 +8,7 @@
 
 #import <XCTest/XCTest.h>
 #import <OCMock/OCMock.h>
+#import "XCTest+Async.h"
 
 #import "IKBCodeRunner.h"
 #import "IKBCommandHandler.h"
@@ -39,6 +40,19 @@
 - (void)executeCommand:(IKBCompileAndRunCodeCommand *)command
 {
     [self.codeRunner doIt:command.source completion:command.completion];
+}
+
+@end
+
+@interface HumbleCodeRunner : IKBCodeRunner
+@end
+
+@implementation HumbleCodeRunner
+
+- (void)doIt:(NSString *)objectiveCSource completion:(IKBCodeRunnerCompletionHandler)completion {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        completion(nil, nil, nil);
+    });
 }
 
 @end
@@ -87,4 +101,15 @@
     XCTAssertTrue([_handler.codeRunner isKindOfClass:[IKBCodeRunner class]]);
 }
 
+- (void)testCompletionBlockRunsOnMainThread
+{
+    ASYNC_TEST_START;
+    _command.completion = ^(id result, NSString *transcript, NSError *error) {
+        XCTAssertTrue([NSThread isMainThread]);
+        ASYNC_TEST_DONE;
+    };
+    _handler.codeRunner = [HumbleCodeRunner new];
+    [_handler executeCommand:_command];
+    ASYNC_TEST_END;
+}
 @end
