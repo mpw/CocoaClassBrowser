@@ -21,6 +21,16 @@
 
 @implementation IKBCompileAndRunCodeCommandHandler
 
+- (instancetype)init
+{
+    self = [super init];
+    if (self)
+    {
+        self.codeRunner = [IKBCodeRunner new];
+    }
+    return self;
+}
+
 - (BOOL)canHandleCommand:(id<IKBCommand>)command
 {
     return [command isKindOfClass:[IKBCompileAndRunCodeCommand class]];
@@ -70,6 +80,11 @@
     _handler.codeRunner = mockRunner;
     [_handler executeCommand:_command];
     [mockRunner verify];
+}
+
+- (void)testHandlerHasARunnerByDefault
+{
+    XCTAssertTrue([_handler.codeRunner isKindOfClass:[IKBCodeRunner class]]);
 }
 
 @end
