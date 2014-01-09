@@ -21,9 +21,9 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self)
     {
-        self.codeRunner = [IKBCodeRunner new];
         self.transcriptWindowController = [[IKBCompilerTranscriptWindowController alloc] initWithWindowNibName:NSStringFromClass([IKBCompilerTranscriptWindowController class])];
         self.defaultFont = [NSFont userFixedPitchFontOfSize:[NSFont systemFontSize]];
+        self.commandBus = [IKBCommandBus applicationCommandBus];
     }
     return self;
 }

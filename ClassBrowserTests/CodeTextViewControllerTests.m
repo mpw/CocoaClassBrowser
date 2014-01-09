@@ -5,7 +5,6 @@
 
 #import "IKBCodeEditorViewController.h"
 #import "IKBCodeEditorViewController_ClassExtension.h"
-#import "IKBCodeRunner.h"
 #import "IKBCommandBus.h"
 #import "IKBCompileAndRunSourceCommand.h"
 
@@ -85,11 +84,11 @@
     XCTAssertEqualObjects(subview.contentView.documentView, _vc.textView);
 }
 
-- (void)testThatWhenTheViewIsReadyTheControllerHasACodeRunner
+- (void)testThatWhenTheViewIsReadyTheControllerHasACommandBus
 {
     IKBCodeEditorViewController *viewController = [IKBCodeEditorViewController new];
     __unused NSView *view = viewController.view;
-    XCTAssertNotNil(viewController.codeRunner);
+    XCTAssertEqualObjects(viewController.commandBus, [IKBCommandBus applicationCommandBus]);
 }
 
 - (void)testTextViewHasAMenuItemToExecuteCodeAndPrintTheResult
