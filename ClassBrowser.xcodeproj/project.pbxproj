@@ -295,7 +295,10 @@
 				98B6620B185728A20045FDBD /* Frameworks */,
 				98B6620A185728A20045FDBD /* Products */,
 			);
+			indentWidth = 4;
 			sourceTree = "<group>";
+			tabWidth = 4;
+			usesTabs = 0;
 		};
 		98B6620A185728A20045FDBD /* Products */ = {
 			isa = PBXGroup;
