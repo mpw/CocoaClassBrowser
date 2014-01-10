@@ -120,6 +120,15 @@
     XCTAssertEqual(resultRange.location, (NSUInteger)5);
 }
 
+- (void)testPrintItCompletionSelectsThePlacedResult
+{
+    [_vc updateSourceViewWithResult:@"PASS" ofSourceInRange:_vc.textView.selectedRange compilerOutput:nil error:nil];
+    NSRange resultRange = [_vc.textView.string rangeOfString:@"PASS"];
+    NSRange selectionRange = [_vc.textView selectedRange];
+    XCTAssertEqual(selectionRange.location, resultRange.location);
+    XCTAssertEqual(selectionRange.length, resultRange.length);
+}
+
 - (void)testPrintItCompletionPlacesTheErrorDescriptionAfterTheCompiledSourceOnFailure
 {
     NSError *buildError = [NSError errorWithDomain:@"IKBTestErrorDomain"
