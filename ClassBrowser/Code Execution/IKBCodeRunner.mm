@@ -16,6 +16,7 @@
 #include "clang/Frontend/FrontendDiagnostic.h"
 #include "clang/Frontend/TextDiagnosticPrinter.h"
 #include "llvm/ExecutionEngine/ExecutionEngine.h"
+#include "llvm/ExecutionEngine/GenericValue.h"
 #include "llvm/ExecutionEngine/JIT.h"
 #include "llvm/IR/Module.h"
 #include "llvm/IR/Instructions.h"
@@ -66,7 +67,7 @@ BOOL canUseCompilerJobs (const driver::JobList& Jobs, DiagnosticsEngine &Diags)
 static const NSString *objcMainWrapper = @"#import <Cocoa/Cocoa.h>\n"
 @"#import <objc/runtime.h>\n"
 @"#import <objc/message.h>\n"
-@"int main()\n"
+@"id doItMain()\n"
 @"{\n"
 @"@autoreleasepool {\n"
 @"%@\n"
@@ -224,9 +225,9 @@ static const NSString *objcMainWrapper = @"#import <Cocoa/Cocoa.h>\n"
         return;
     }
 
-    llvm::Function *EntryFn = mod->getFunction("main");
+    llvm::Function *EntryFn = mod->getFunction("doItMain");
     if (!EntryFn) {
-        std::string llvmError("'main' function not found in module.");
+        std::string llvmError("'doItMain()' function not found in module.");
         [self reportJITError:IKBCodeRunnerErrorCouldNotFindFunctionToRun withCompilerOutput:diagnostic_output reportedError:llvmError toCompletionHandler:completion];
         return;
     }
@@ -246,9 +247,11 @@ static const NSString *objcMainWrapper = @"#import <Cocoa/Cocoa.h>\n"
     std::vector<std::string> jitArguments;
     jitArguments.push_back(mod->getModuleIdentifier());
 
-    int result = EE->runFunctionAsMain(EntryFn, jitArguments, nullptr);
+    std::vector<llvm::GenericValue> functionArguments;
+    llvm::GenericValue result = EE->runFunction(EntryFn, functionArguments);
+    id returnedObject = (__bridge id)GVTOP(result);
     NSString *transcript = @(diagnostic_output.c_str());
-    completion(@(result), transcript, nil);
+    completion(returnedObject, transcript, nil);
 }
 
 /** Returns true if \p GV is a reference to a selector. */
