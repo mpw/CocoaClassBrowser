@@ -19,37 +19,35 @@
     _runner = [[IKBCodeRunner alloc] initWithCompilerArgumentBuilder:[HumbleCompilerArgumentBuilder new]];
 }
 
-- (void)testICanRunHelloWorld
-{
-    NSString *source = @"#include <stdio.h>\nint main(){printf(\"Hello, world!\\n\");}";
-    [_runner runSource:source completion:^(id result, NSString *compilerTranscript, NSError *error) {
-        XCTAssertNil(error, @"I wanted the compiler to work but this happened: %@", error);
-        XCTAssertEqualObjects(result, @0, @"An unexpected value (%@) was returned.", result);
-    }];
-}
-
 - (void)testICanUseAFoundationFunction
 {
-    NSString *source = @"NSLog(@\"Hello, world!\"); return 1;";
+    NSString *source = @"NSLog(@\"Hello, world!\"); return nil;";
     [_runner doIt:source completion:^(id result, NSString *compilerTranscript, NSError *error) {
-        XCTAssertEqualObjects(result, @(1), @"Transcript: %@\nError: %@", compilerTranscript, error);
+        XCTAssertNil(result, @"Transcript: %@\nError: %@", compilerTranscript, error);
     }];
 }
 
-- (void)testICanUseAnObject
+- (void)testICanMakeAnObject
 {
-    NSString *source = @"id obj = [NSObject new]; obj = nil; return 2;";
+    NSString *source = @"id obj = [NSObject new]; return obj;";
     [_runner doIt:source completion:^(id result, NSString *compilerTranscript, NSError *error) {
-        XCTAssertEqualObjects(result, @(2), @"Transcript: %@\nError: %@", compilerTranscript, error);
+        XCTAssertEqualObjects([result class], [NSObject class], @"Transcript: %@\nError: %@", compilerTranscript, error);
     }];
 }
 
+- (void)testTheExecutedCodeReturnsAnObjectiveCObject
+{
+    NSString *source = @"return @\"Hello\";";
+    [_runner doIt:source completion:^(id result, NSString *compilerTranscript, NSError *error) {
+        XCTAssertEqualObjects(result, @"Hello", @"Transcript:%@\nError: %@", compilerTranscript, error);
+    }];
+}
 
 - (void)testICanUseNormalMessagingSyntax
 {
     NSString *source = @"NSDate *d = [NSDate dateWithTimeIntervalSinceReferenceDate:68000];\n\
     NSTimeInterval ticks = [d timeIntervalSinceReferenceDate];\n\
-    return ticks;";
+    return @(ticks);";
 
     /* When we get this wrong, Foundation actually calls abort(). */
     [_runner doIt:source completion:^(id result, NSString *compilerTranscript, NSError *error) {
