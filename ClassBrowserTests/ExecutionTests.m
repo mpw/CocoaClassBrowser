@@ -44,6 +44,19 @@
     }];
 }
 
+
+- (void)testICanUseNormalMessagingSyntax
+{
+    NSString *source = @"NSDate *d = [NSDate dateWithTimeIntervalSinceReferenceDate:68000];\n\
+    NSTimeInterval ticks = [d timeIntervalSinceReferenceDate];\n\
+    return ticks;";
+
+    /* When we get this wrong, Foundation actually calls abort(). */
+    [_runner doIt:source completion:^(id result, NSString *compilerTranscript, NSError *error) {
+        XCTAssertEqualObjects(result, @(68000), @"Transcript: %@\nError: %@", compilerTranscript, error);
+    }];
+}
+
 - (void)testDefaultCompilerArgumentBuilderIsForClangAndXcode
 {
     IKBCodeRunner *runner = [IKBCodeRunner new];
