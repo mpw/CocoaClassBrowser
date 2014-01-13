@@ -73,8 +73,9 @@
 - (void)testCompletionBlockRunsOnMainThread
 {
     ASYNC_TEST_START;
+    __block BOOL didRunOnMainThread = NO;
     _command.completion = ^(id result, NSString *transcript, NSError *error) {
-        XCTAssertTrue([NSThread isMainThread]);
+        didRunOnMainThread = [NSThread isMainThread];
         ASYNC_TEST_DONE;
     };
     _handler.codeRunner = [HumbleCodeRunner new];
@@ -82,5 +83,6 @@
         [_handler executeCommand:_command];
     });
     ASYNC_TEST_END;
+    XCTAssertTrue(didRunOnMainThread);
 }
 @end
