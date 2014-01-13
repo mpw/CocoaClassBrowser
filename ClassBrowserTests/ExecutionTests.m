@@ -38,7 +38,7 @@
 
 - (void)testICanUseAnObject
 {
-    NSString *source = @"SEL newSelector = sel_registerName(\"new\"); id obj = objc_msgSend(objc_getClass(\"NSObject\"), newSelector); obj = nil; return 2;";
+    NSString *source = @"id obj = [NSObject new]; obj = nil; return 2;";
     [_runner doIt:source completion:^(id result, NSString *compilerTranscript, NSError *error) {
         XCTAssertEqualObjects(result, @(2), @"Transcript: %@\nError: %@", compilerTranscript, error);
     }];
