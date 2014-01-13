@@ -283,11 +283,13 @@ isSelectorReference(const llvm::GlobalValue &GV)
     printf("\nEND MODULE BEFORE]]\n");
 #endif  // FIXUP_DEBUG
 
-    llvm::FunctionType *SelGetUidType = llvm::TypeBuilder<
+    llvm::FunctionType *CharPtrToCharPtrType = llvm::TypeBuilder<
             llvm::types::i<8>*(llvm::types::i<8>*),
             true>::get(Module->getContext());
+    llvm::Constant *SelGetName = Module->getOrInsertFunction(
+            "sel_getName", CharPtrToCharPtrType);
     llvm::Constant *SelGetUid = Module->getOrInsertFunction(
-            "sel_getUid", SelGetUidType);
+            "sel_getUid", CharPtrToCharPtrType);
 
     llvm::Module::GlobalListType& Globals = Module->getGlobalList();
     for (llvm::Module::GlobalListType::iterator
@@ -297,8 +299,8 @@ isSelectorReference(const llvm::GlobalValue &GV)
 
         /*
          for each use of GV:
-             generate sel_getUid("selector") instruction
-             insert that instruction after the use
+             generate name = sel_getName("selector")
+             generate sel_getUid(name) instruction
              for each user of the original use's value:
                  make it use the sel_getUid call result instead
                  (use Value::replaceAllUsesWith)
@@ -308,20 +310,22 @@ isSelectorReference(const llvm::GlobalValue &GV)
             llvm::LoadInst *Selector = dyn_cast<llvm::LoadInst>(*I);
             if (!Selector) continue;
 
-            /* (jws/2014-01-12)FIXME: We currently assume selector == string.
-             * We should instead call sel_getName()
-             * and then supply that value to sel_getUid(). */
+            llvm::CallInst *SelGetNameCall = llvm::CallInst::Create(
+                    SelGetName, Selector, "selector_name");
             llvm::CallInst *SelGetUidCall = llvm::CallInst::Create(
-                    SelGetUid, Selector, "registered_selector");
-
-            Selector->getParent()->getInstList().insertAfter(
-                     Selector, SelGetUidCall);
+                    SelGetUid, SelGetNameCall, "registered_selector");
 
             Selector->replaceAllUsesWith(SelGetUidCall);
 
-            /* Our sel_getUid() was also a user, so it's now using itself as
+            /* Our sel_getName() was also a user, so it's now using itself as
              * its first argument. Fix that. */
-            SelGetUidCall->setArgOperand(0, Selector);
+            SelGetNameCall->setArgOperand(0, Selector);
+
+            /* Patch the new call instructions into the basic block. */
+            llvm::BasicBlock *BB = Selector->getParent();
+            llvm::BasicBlock::InstListType &InstList = BB->getInstList();
+            InstList.insertAfter(Selector, SelGetNameCall);
+            InstList.insertAfter(SelGetNameCall, SelGetUidCall);
         }
     }
 
