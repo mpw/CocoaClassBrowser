@@ -1,10 +1,4 @@
-//
-//  IKBCompileAndRunSourceCommand.m
-//  ClassBrowser
-//
-//  Created by Graham Lee on 09/01/2014.
-//  Copyright (c) 2014 Project Isambard. All rights reserved.
-//
+//See COPYING for licence details.
 
 #import "IKBCompileAndRunCodeCommand.h"
 

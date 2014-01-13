@@ -1,10 +1,4 @@
-//
-//  CompileAndRunSourceCommandHandlerTests.m
-//  ClassBrowser
-//
-//  Created by Graham Lee on 09/01/2014.
-//  Copyright (c) 2014 Project Isambard. All rights reserved.
-//
+//See COPYING for licence details.
 
 #import <XCTest/XCTest.h>
 #import <OCMock/OCMock.h>
@@ -73,8 +67,9 @@
 - (void)testCompletionBlockRunsOnMainThread
 {
     ASYNC_TEST_START;
+    __block BOOL didRunOnMainThread = NO;
     _command.completion = ^(id result, NSString *transcript, NSError *error) {
-        XCTAssertTrue([NSThread isMainThread]);
+        didRunOnMainThread = [NSThread isMainThread];
         ASYNC_TEST_DONE;
     };
     _handler.codeRunner = [HumbleCodeRunner new];
@@ -82,5 +77,6 @@
         [_handler executeCommand:_command];
     });
     ASYNC_TEST_END;
+    XCTAssertTrue(didRunOnMainThread);
 }
 @end
