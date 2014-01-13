@@ -18,6 +18,7 @@
 #include "llvm/ExecutionEngine/ExecutionEngine.h"
 #include "llvm/ExecutionEngine/JIT.h"
 #include "llvm/IR/Module.h"
+#include "llvm/Analysis/Verifier.h"
 #include "llvm/Support/FileSystem.h"
 #include "llvm/Support/Host.h"
 #include "llvm/Support/ManagedStatic.h"
@@ -220,18 +221,27 @@ static const NSString *objcMainWrapper = @"#import <Cocoa/Cocoa.h>\n"
         [self reportJITError:IKBCodeRunnerErrorCouldNotConstructRuntime withCompilerOutput:diagnostic_output reportedError:llvmError toCompletionHandler:completion];
         return;
     }
-    
+
     llvm::Function *EntryFn = mod->getFunction("main");
     if (!EntryFn) {
         std::string llvmError("'main' function not found in module.");
         [self reportJITError:IKBCodeRunnerErrorCouldNotFindFunctionToRun withCompilerOutput:diagnostic_output reportedError:llvmError toCompletionHandler:completion];
         return;
     }
-    
+
+    std::string ErrorInfo;
+    if (llvm::verifyModule(*mod, llvm::PrintMessageAction, &ErrorInfo)) {
+        /* If verification fails, we would crash during execution. */
+        [self
+         reportCompileError:IKBCompilerErrorInSourceCode
+         withCompilerOutput:ErrorInfo toCompletionHandler:completion];
+        return;
+    }
+
     // FIXME: Support passing arguments.
     std::vector<std::string> jitArguments;
     jitArguments.push_back(mod->getModuleIdentifier());
-    
+
     int result = EE->runFunctionAsMain(EntryFn, jitArguments, nullptr);
     NSString *transcript = @(diagnostic_output.c_str());
     completion(@(result), transcript, nil);
