@@ -18,6 +18,8 @@
 #include "llvm/ExecutionEngine/ExecutionEngine.h"
 #include "llvm/ExecutionEngine/JIT.h"
 #include "llvm/IR/Module.h"
+#include "llvm/IR/Instructions.h"
+#include "llvm/IR/TypeBuilder.h"
 #include "llvm/Analysis/Verifier.h"
 #include "llvm/Support/FileSystem.h"
 #include "llvm/Support/Host.h"
@@ -229,6 +231,8 @@ static const NSString *objcMainWrapper = @"#import <Cocoa/Cocoa.h>\n"
         return;
     }
 
+    [self.class fixupSelectorsInModule:mod];
+
     std::string ErrorInfo;
     if (llvm::verifyModule(*mod, llvm::PrintMessageAction, &ErrorInfo)) {
         /* If verification fails, we would crash during execution. */
@@ -245,6 +249,87 @@ static const NSString *objcMainWrapper = @"#import <Cocoa/Cocoa.h>\n"
     int result = EE->runFunctionAsMain(EntryFn, jitArguments, nullptr);
     NSString *transcript = @(diagnostic_output.c_str());
     completion(@(result), transcript, nil);
+}
+
+/** Returns true if \p GV is a reference to a selector. */
+bool
+isSelectorReference(const llvm::GlobalValue &GV)
+{
+    /* We're looking for something like:
+     *  @"\01L_OBJC_SELECTOR_REFERENCES_" = internal externally_initialized
+     *    global i8* getelementptr inbounds
+     *    ([5 x i8]* @"\01L_OBJC_METH_VAR_NAME_", i32 0, i32 0),
+     *    section "__DATA, __objc_selrefs, literal_pointers, no_dead_strip"
+     *
+     * Rather than checking the name, we look at the section the value has been
+     * placed in.
+     */
+    const std::string &Section = GV.getSection();
+    bool IsSelRef = (Section.find("__objc_selrefs") != std::string::npos);
+    return IsSelRef;
+}
+
+/** Replaces all references to selectors with references to
+ *  sel_getUid(selector).
+ *
+ *  This avoids the "does not match selector known to Objective C runtime"
+ *  exception encountered without this level of indirection. */
++ (void)fixupSelectorsInModule:(llvm::Module *)Module
+{
+#define FIXUP_DEBUG (0)
+#if FIXUP_DEBUG
+    printf("\n\n[[MODULE BEFORE:\n");
+    Module->dump();
+    printf("\nEND MODULE BEFORE]]\n");
+#endif  // FIXUP_DEBUG
+
+    llvm::FunctionType *SelGetUidType = llvm::TypeBuilder<
+            llvm::types::i<8>*(llvm::types::i<8>*),
+            true>::get(Module->getContext());
+    llvm::Constant *SelGetUid = Module->getOrInsertFunction(
+            "sel_getUid", SelGetUidType);
+
+    llvm::Module::GlobalListType& Globals = Module->getGlobalList();
+    for (llvm::Module::GlobalListType::iterator
+         I = Globals.begin(), E = Globals.end(); I != E; ++I) {
+        llvm::GlobalValue &GV = *I;
+        if (!isSelectorReference(GV)) continue;
+
+        /*
+         for each use of GV:
+             generate sel_getUid("selector") instruction
+             insert that instruction after the use
+             for each user of the original use's value:
+                 make it use the sel_getUid call result instead
+                 (use Value::replaceAllUsesWith)
+         */
+        for (llvm::Value::use_iterator I = GV.use_begin(), E = GV.use_end();
+             I != E; ++I) {
+            llvm::LoadInst *Selector = dyn_cast<llvm::LoadInst>(*I);
+            if (!Selector) continue;
+
+            /* (jws/2014-01-12)FIXME: We currently assume selector == string.
+             * We should instead call sel_getName()
+             * and then supply that value to sel_getUid(). */
+            llvm::CallInst *SelGetUidCall = llvm::CallInst::Create(
+                    SelGetUid, Selector, "registered_selector");
+
+            Selector->getParent()->getInstList().insertAfter(
+                     Selector, SelGetUidCall);
+
+            Selector->replaceAllUsesWith(SelGetUidCall);
+
+            /* Our sel_getUid() was also a user, so it's now using itself as
+             * its first argument. Fix that. */
+            SelGetUidCall->setArgOperand(0, Selector);
+        }
+    }
+
+#if FIXUP_DEBUG
+    printf("\n\n[[MODULE AFTER:\n");
+    Module->dump();
+    printf("\nEND MODULE AFTER]]\n");
+#endif  // FIXUP_DEBUG
 }
 
 @end
