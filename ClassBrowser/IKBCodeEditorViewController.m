@@ -77,8 +77,10 @@
 
 - (void)updateSourceViewWithResult:(id)returnValue ofSourceInRange:(NSRange)textRange compilerOutput:(NSString *)transcript error:(NSError *)error
 {
-    NSString *formattedResult = [NSString stringWithFormat:@"%@", returnValue?:[error localizedDescription]];
-    [self.textView insertText:formattedResult replacementRange:NSMakeRange(textRange.location + textRange.length, 0)];
+    NSString *formattedResult = [NSString stringWithFormat:@" %@", returnValue?:[error localizedDescription]];
+    NSUInteger insertLocation = textRange.location + textRange.length;
+    [self.textView insertText:formattedResult replacementRange:NSMakeRange(insertLocation, 0)];
+    [self.textView setSelectedRange:NSMakeRange(insertLocation, [formattedResult length])];
     NSWindow *transcriptWindow = self.transcriptWindowController.window;
     if (transcript.length > 0) {
         self.transcriptWindowController.transcriptText = transcript;

@@ -113,14 +113,22 @@
     [mockCommandBus verify];
 }
 
-- (void)testPrintItCompletionPlacesTheResultAfterTheCompiledSource
+- (void)testPrintItCompletionPlacesTheResultAfterTheCompiledSourceWithPrependedSpace
 {
     [_vc updateSourceViewWithResult:@"PASS" ofSourceInRange:_vc.textView.selectedRange compilerOutput:nil error:nil];
     NSRange resultRange = [_vc.textView.string rangeOfString:@"PASS"];
-    XCTAssertEqual(resultRange.location, (NSUInteger)5);
+    XCTAssertEqual(resultRange.location, (NSUInteger)6);
 }
 
-- (void)testPrintItCompletionPlacesTheErrorDescriptionAfterTheCompiledSourceOnFailure
+- (void)testPrintItCompletionSelectsThePlacedResultAndThePrependedSpace
+{
+    [_vc updateSourceViewWithResult:@"PASS" ofSourceInRange:_vc.textView.selectedRange compilerOutput:nil error:nil];
+    NSRange selectionRange = _vc.textView.selectedRange;
+    XCTAssertEqual(selectionRange.location, (NSUInteger)5);
+    XCTAssertEqual(selectionRange.length, (NSUInteger)5);
+}
+
+- (void)testPrintItCompletionPlacesTheErrorDescriptionAfterTheCompiledSourceOnFailureWithPrependedSpace
 {
     NSError *buildError = [NSError errorWithDomain:@"IKBTestErrorDomain"
                                               code:99
@@ -129,7 +137,18 @@
     NSRange resultRange = [_vc.textView.string rangeOfString:[NSString stringWithFormat:@"%@", nil]];
     XCTAssertEqual(resultRange.location, NSNotFound);
     NSRange errorRange = [_vc.textView.string rangeOfString:@"Error Description"];
-    XCTAssertEqual(errorRange.location, (NSUInteger)5);
+    XCTAssertEqual(errorRange.location, (NSUInteger)6);
+}
+
+- (void)testPrintItCompletionSelectsThePlacedErrorDescriptionAndThePrependedSpace
+{
+    NSError *buildError = [NSError errorWithDomain:@"IKBTestErrorDomain"
+                                              code:99
+                                          userInfo:@{ NSLocalizedDescriptionKey: @"Error Description" }];
+    [_vc updateSourceViewWithResult:nil ofSourceInRange:_vc.textView.selectedRange compilerOutput:nil error:buildError];
+    NSRange selectionRange = _vc.textView.selectedRange;
+    XCTAssertEqual(selectionRange.location, (NSUInteger)5);
+    XCTAssertEqual(selectionRange.length, (NSUInteger)18);
 }
 
 - (void)testPrintItResultUsesFixedWidthFont
