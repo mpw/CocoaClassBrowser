@@ -15,6 +15,8 @@
 #include "clang/Frontend/CompilerInvocation.h"
 #include "clang/Frontend/FrontendDiagnostic.h"
 #include "clang/Frontend/TextDiagnosticPrinter.h"
+#include "llvm/Bitcode/BitstreamReader.h"
+#include "llvm/Bitcode/ReaderWriter.h"
 #include "llvm/ExecutionEngine/ExecutionEngine.h"
 #include "llvm/ExecutionEngine/GenericValue.h"
 #include "llvm/ExecutionEngine/JIT.h"
@@ -25,7 +27,9 @@
 #include "llvm/Support/FileSystem.h"
 #include "llvm/Support/Host.h"
 #include "llvm/Support/ManagedStatic.h"
+#include "llvm/Support/MemoryBuffer.h"
 #include "llvm/Support/Path.h"
+#include "llvm/Support/StreamableMemoryObject.h"
 #include "llvm/Support/TargetSelect.h"
 #include "llvm/Support/raw_ostream.h"
 #pragma clang diagnostic pop
@@ -95,7 +99,10 @@ static const NSString *objcMainWrapper = @"#import <Cocoa/Cocoa.h>\n"
 {
     id errorCode = @(code);
     NSDictionary *map = @{@(IKBCodeRunnerErrorCouldNotConstructRuntime): NSLocalizedString(@"LLVM could not create an execution environment.", @"Error on not building a JIT"),
-                          @(IKBCodeRunnerErrorCouldNotFindFunctionToRun): NSLocalizedString(@"LLVM could not find the main() function.", @"Error on not finding the function to run")};
+                          @(IKBCodeRunnerErrorCouldNotFindFunctionToRun): NSLocalizedString(@"LLVM could not find the main() function.", @"Error on not finding the function to run"),
+                          @(IKBCodeRunnerErrorCouldNotLoadModule): NSLocalizedString(@"LLVM could not read the bitcode module.", @"Error on failing to read an LLVM module"),
+    };
+
     return map[errorCode]?:[NSString stringWithFormat:@"An unknown llvm JIT error (code %@) occurred.", errorCode];
 }
 
@@ -214,10 +221,32 @@ static const NSString *objcMainWrapper = @"#import <Cocoa/Cocoa.h>\n"
         return;
     }
     llvm::Module *mod = Act->takeModule();
+    std::string moduleName = mod->getModuleIdentifier();
+    std::string bitcodeModule;
+    llvm::raw_string_ostream bitcodeStream(bitcodeModule);
+    llvm::WriteBitcodeToFile(mod, bitcodeStream);
+    bitcodeStream.flush();
+
+    //This contortion of streaming and reconstituting the module is temporary to allow a future refactoring.
+    std::string moduleReloadingError;
+    llvm::LLVMContext context;
+    llvm::Module *module = llvm::ParseBitcodeFile(llvm::MemoryBuffer::getMemBuffer(bitcodeModule, moduleName),
+                                                  context,
+                                                  &moduleReloadingError);
+
+    if (module == nullptr) {
+        std::string llvmError("unable to read bitcode module: ");
+        llvmError += moduleReloadingError;
+        [self reportJITError:IKBCodeRunnerErrorCouldNotLoadModule
+          withCompilerOutput:diagnostic_output
+               reportedError:llvmError
+         toCompletionHandler:completion];
+        return;
+    }
 
     llvm::InitializeNativeTarget();
     std::string Error;
-    OwningPtr<llvm::ExecutionEngine> EE(llvm::ExecutionEngine::createJIT(mod, &Error));
+    OwningPtr<llvm::ExecutionEngine> EE(llvm::ExecutionEngine::createJIT(module, &Error));
     if (!EE) {
         std::string llvmError("unable to make execution engine: ");
         llvmError += Error;
@@ -225,17 +254,17 @@ static const NSString *objcMainWrapper = @"#import <Cocoa/Cocoa.h>\n"
         return;
     }
 
-    llvm::Function *EntryFn = mod->getFunction("doItMain");
+    llvm::Function *EntryFn = module->getFunction("doItMain");
     if (!EntryFn) {
         std::string llvmError("'doItMain()' function not found in module.");
         [self reportJITError:IKBCodeRunnerErrorCouldNotFindFunctionToRun withCompilerOutput:diagnostic_output reportedError:llvmError toCompletionHandler:completion];
         return;
     }
 
-    [self.class fixupSelectorsInModule:mod];
+    [self.class fixupSelectorsInModule:module];
 
     std::string ErrorInfo;
-    if (llvm::verifyModule(*mod, llvm::PrintMessageAction, &ErrorInfo)) {
+    if (llvm::verifyModule(*module, llvm::PrintMessageAction, &ErrorInfo)) {
         /* If verification fails, we would crash during execution. */
         [self
          reportCompileError:IKBCompilerErrorInSourceCode
@@ -245,7 +274,7 @@ static const NSString *objcMainWrapper = @"#import <Cocoa/Cocoa.h>\n"
 
     // FIXME: Support passing arguments.
     std::vector<std::string> jitArguments;
-    jitArguments.push_back(mod->getModuleIdentifier());
+    jitArguments.push_back(module->getModuleIdentifier());
 
     std::vector<llvm::GenericValue> functionArguments;
     llvm::GenericValue result = EE->runFunction(EntryFn, functionArguments);
