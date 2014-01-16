@@ -171,9 +171,9 @@ isSelectorReference(const llvm::GlobalValue &GV)
 {
 #define FIXUP_DEBUG (0)
 #if FIXUP_DEBUG
-    printf("\n\n[[MODULE BEFORE:\n");
+    fprintf(stderr, "\n\n[[MODULE BEFORE:\n");
     Module->dump();
-    printf("\nEND MODULE BEFORE]]\n");
+    fprintf(stderr, "\nEND MODULE BEFORE]]\n");
 #endif  // FIXUP_DEBUG
 
     llvm::FunctionType *CharPtrToCharPtrType = llvm::TypeBuilder<
@@ -223,9 +223,9 @@ isSelectorReference(const llvm::GlobalValue &GV)
     }
 
 #if FIXUP_DEBUG
-    printf("\n\n[[MODULE AFTER:\n");
+    fprintf(stderr,"\n\n[[MODULE AFTER:\n");
     Module->dump();
-    printf("\nEND MODULE AFTER]]\n");
+    fprintf(stderr,"\nEND MODULE AFTER]]\n");
 #endif  // FIXUP_DEBUG
 }
 
