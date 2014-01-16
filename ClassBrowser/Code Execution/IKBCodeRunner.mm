@@ -101,6 +101,7 @@ static const NSString *objcMainWrapper = @"#import <Cocoa/Cocoa.h>\n"
     NSDictionary *map = @{@(IKBCodeRunnerErrorCouldNotConstructRuntime): NSLocalizedString(@"LLVM could not create an execution environment.", @"Error on not building a JIT"),
                           @(IKBCodeRunnerErrorCouldNotFindFunctionToRun): NSLocalizedString(@"LLVM could not find the main() function.", @"Error on not finding the function to run"),
                           @(IKBCodeRunnerErrorCouldNotLoadModule): NSLocalizedString(@"LLVM could not read the bitcode module.", @"Error on failing to read an LLVM module"),
+                          @(IKBCodeRunnerErrorModuleFailedVerification): NSLocalizedString(@"LLVM could not verify the bitcode module.", @"Error on failing to verify an LLVM module"),
     };
 
     return map[errorCode]?:[NSString stringWithFormat:@"An unknown llvm JIT error (code %@) occurred.", errorCode];
@@ -266,9 +267,8 @@ static const NSString *objcMainWrapper = @"#import <Cocoa/Cocoa.h>\n"
     std::string ErrorInfo;
     if (llvm::verifyModule(*module, llvm::PrintMessageAction, &ErrorInfo)) {
         /* If verification fails, we would crash during execution. */
-        [self
-         reportCompileError:IKBCompilerErrorInSourceCode
-         withCompilerOutput:ErrorInfo toCompletionHandler:completion];
+        [self reportJITError:IKBCodeRunnerErrorModuleFailedVerification withCompilerOutput:diagnostic_output reportedError:ErrorInfo toCompletionHandler:completion];
+
         return;
     }
 
