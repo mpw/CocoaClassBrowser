@@ -74,9 +74,8 @@ static const NSString *objcMainWrapper = @"#import <Cocoa/Cocoa.h>\n"
 @"#import <objc/message.h>\n"
 @"id doItMain()\n"
 @"{\n"
-@"@autoreleasepool {\n"
 @"%@\n"
-@"}}\n";
+@"}\n";
 
 - (void)doIt:(NSString *)objectiveCSource completion:(IKBCodeRunnerCompletionHandler)completion
 {
@@ -96,33 +95,11 @@ static const NSString *objcMainWrapper = @"#import <Cocoa/Cocoa.h>\n"
     return map[errorCode]?:[NSString stringWithFormat:@"An unknown compiler error (code %@) occurred.", errorCode];
 }
 
-- (NSString *)localizedDescriptionForJITErrorWithCode:(NSInteger)code
-{
-    id errorCode = @(code);
-    NSDictionary *map = @{@(IKBCodeRunnerErrorCouldNotConstructRuntime): NSLocalizedString(@"LLVM could not create an execution environment.", @"Error on not building a JIT"),
-                          @(IKBCodeRunnerErrorCouldNotFindFunctionToRun): NSLocalizedString(@"LLVM could not find the main() function.", @"Error on not finding the function to run"),
-                          @(IKBCodeRunnerErrorCouldNotLoadModule): NSLocalizedString(@"LLVM could not read the bitcode module.", @"Error on failing to read an LLVM module"),
-                          @(IKBCodeRunnerErrorModuleFailedVerification): NSLocalizedString(@"LLVM could not verify the bitcode module.", @"Error on failing to verify an LLVM module"),
-    };
-
-    return map[errorCode]?:[NSString stringWithFormat:@"An unknown llvm JIT error (code %@) occurred.", errorCode];
-}
-
 - (NSError *)compilerErrorWithCode:(NSInteger)code compilerOutput:(std::string&)output
 {
     NSString *errorDescription = [self localizedDescriptionForCompileErrorWithCode:code];
     NSError *error = [NSError errorWithDomain:IKBCompilerErrorDomain code:code userInfo: @{NSLocalizedDescriptionKey : errorDescription}];
     return error;
-}
-
-- (void)reportJITError:(NSInteger)code withCompilerOutput:(std::string&)output reportedError:(std::string&)errorText toCompletionHandler:(IKBCodeRunnerCompletionHandler)completion
-{
-    llvm::errs() << errorText << "\n";
-    NSString *failureReason = @(errorText.c_str());
-    NSString *errorDescription = [self localizedDescriptionForJITErrorWithCode:code];
-    NSError *error = [NSError errorWithDomain:IKBCodeRunnerErrorDomain code:code userInfo: @{NSLocalizedDescriptionKey : errorDescription,
-                                                                                             NSLocalizedFailureReasonErrorKey : failureReason}];
-    completion(nil, @(output.c_str()), error);
 }
 
 - (void)runSource:(NSString *)source completion:(IKBCodeRunnerCompletionHandler)completion
@@ -249,6 +226,107 @@ static const NSString *objcMainWrapper = @"#import <Cocoa/Cocoa.h>\n"
     return module;
 }
 
+- (NSString *)localizedDescriptionForJITErrorWithCode:(NSInteger)code
+{
+    id errorCode = @(code);
+    NSDictionary *map = @{@(IKBCodeRunnerErrorCouldNotConstructRuntime): NSLocalizedString(@"LLVM could not create an execution environment.", @"Error on not building a JIT"),
+            @(IKBCodeRunnerErrorCouldNotFindFunctionToRun): NSLocalizedString(@"LLVM could not find the main() function.", @"Error on not finding the function to run"),
+            @(IKBCodeRunnerErrorCouldNotLoadModule): NSLocalizedString(@"LLVM could not read the bitcode module.", @"Error on failing to read an LLVM module"),
+            @(IKBCodeRunnerErrorModuleFailedVerification): NSLocalizedString(@"LLVM could not verify the bitcode module.", @"Error on failing to verify an LLVM module"),
+    };
+
+    return map[errorCode]?:[NSString stringWithFormat:@"An unknown llvm JIT error (code %@) occurred.", errorCode];
+}
+
+
+- (NSError *)JITErrorWithCode:(NSInteger)code diagnosticOutput:(std::string&)diagnostic_output errorText:(std::string&)llvmError
+{
+    llvm::errs() << llvmError << "\n";
+    NSString *failureReason = @(llvmError.c_str());
+    NSString *errorDescription = [self localizedDescriptionForJITErrorWithCode:code];
+    NSError *error = [NSError errorWithDomain:IKBCodeRunnerErrorDomain code:code userInfo: @{NSLocalizedDescriptionKey : errorDescription,
+            NSLocalizedFailureReasonErrorKey : failureReason}];
+    return error;
+}
+
+- (id)objectByRunningFunctionWithName:(NSString *)name inModule:(IKBLLVMBitcodeModule *)compiledBitcode compilerTranscript:(std::string&)diagnostic_output error:(NSError *__autoreleasing*)error
+{
+    std::string moduleName([compiledBitcode.moduleIdentifier UTF8String]);
+    std::string moduleReloadingError;
+    llvm::LLVMContext context;
+
+    llvm::StringRef bitcodeBytes = llvm::StringRef(compiledBitcode.bitcode, compiledBitcode.bitcodeLength);
+    llvm::Module *module = llvm::ParseBitcodeFile(llvm::MemoryBuffer::getMemBuffer(bitcodeBytes, moduleName),
+                                                  context,
+                                                  &moduleReloadingError);
+
+    if (module == nullptr)
+    {
+        std::string llvmError("unable to read bitcode module: ");
+        llvmError += moduleReloadingError;
+        if (error)
+        {
+            *error = [self JITErrorWithCode:IKBCodeRunnerErrorCouldNotLoadModule
+                           diagnosticOutput:diagnostic_output
+                                  errorText:llvmError];
+        }
+        return nil;
+    }
+
+    llvm::InitializeNativeTarget();
+    std::string Error;
+    OwningPtr<llvm::ExecutionEngine> EE(llvm::ExecutionEngine::createJIT(module, &Error));
+    if (!EE)
+    {
+        std::string llvmError("unable to make execution engine: ");
+        llvmError += Error;
+        if (error)
+        {
+            *error = [self JITErrorWithCode:IKBCodeRunnerErrorCouldNotConstructRuntime
+                           diagnosticOutput:diagnostic_output
+                                  errorText:llvmError];
+        }
+        return nil;
+    }
+
+    llvm::Function *EntryFn = module->getFunction("doItMain");
+    if (!EntryFn)
+    {
+        std::string llvmError("'doItMain()' function not found in module.");
+        if (error)
+        {
+            *error = [self JITErrorWithCode:IKBCodeRunnerErrorCouldNotFindFunctionToRun
+                           diagnosticOutput:diagnostic_output
+                                  errorText:llvmError];
+        }
+        return nil;
+    }
+
+    [self.class fixupSelectorsInModule:module];
+
+    std::string ErrorInfo;
+    if (llvm::verifyModule(*module, llvm::PrintMessageAction, &ErrorInfo))
+    {
+        /* If verification fails, we would crash during execution. */
+        if (error)
+        {
+            *error = [self JITErrorWithCode:IKBCodeRunnerErrorModuleFailedVerification
+                           diagnosticOutput:diagnostic_output
+                                  errorText:ErrorInfo];
+        }
+        return nil;
+    }
+
+    // FIXME: Support passing arguments.
+    std::vector<std::string> jitArguments;
+    jitArguments.push_back(module->getModuleIdentifier());
+
+    std::vector<llvm::GenericValue> functionArguments;
+    llvm::GenericValue result = EE->runFunction(EntryFn, functionArguments);
+    id returnedObject = (__bridge id)GVTOP(result);
+    return returnedObject;
+}
+
 - (void)compileAndRunSource:(NSString *)source compilerArguments:(NSArray *)compilerArguments completion:(IKBCodeRunnerCompletionHandler)completion
 {
     std::string diagnostic_output;
@@ -262,63 +340,16 @@ static const NSString *objcMainWrapper = @"#import <Cocoa/Cocoa.h>\n"
     {
         NSString *diagnosticText = @(diagnostic_output.c_str());
         completion(nil, diagnosticText, compilerError);
-    }
-
-    std::string moduleName([compiledBitcode.moduleIdentifier UTF8String]);
-    std::string moduleReloadingError;
-    llvm::LLVMContext context;
-
-    llvm::StringRef bitcodeBytes = llvm::StringRef(compiledBitcode.bitcode, compiledBitcode.bitcodeLength);
-    llvm::Module *module = llvm::ParseBitcodeFile(llvm::MemoryBuffer::getMemBuffer(bitcodeBytes, moduleName),
-                                                  context,
-                                                  &moduleReloadingError);
-
-    if (module == nullptr) {
-        std::string llvmError("unable to read bitcode module: ");
-        llvmError += moduleReloadingError;
-        [self reportJITError:IKBCodeRunnerErrorCouldNotLoadModule
-          withCompilerOutput:diagnostic_output
-               reportedError:llvmError
-         toCompletionHandler:completion];
         return;
     }
 
-    llvm::InitializeNativeTarget();
-    std::string Error;
-    OwningPtr<llvm::ExecutionEngine> EE(llvm::ExecutionEngine::createJIT(module, &Error));
-    if (!EE) {
-        std::string llvmError("unable to make execution engine: ");
-        llvmError += Error;
-        [self reportJITError:IKBCodeRunnerErrorCouldNotConstructRuntime withCompilerOutput:diagnostic_output reportedError:llvmError toCompletionHandler:completion];
-        return;
-    }
+    NSError *jitError = nil;
 
-    llvm::Function *EntryFn = module->getFunction("doItMain");
-    if (!EntryFn) {
-        std::string llvmError("'doItMain()' function not found in module.");
-        [self reportJITError:IKBCodeRunnerErrorCouldNotFindFunctionToRun withCompilerOutput:diagnostic_output reportedError:llvmError toCompletionHandler:completion];
-        return;
-    }
-
-    [self.class fixupSelectorsInModule:module];
-
-    std::string ErrorInfo;
-    if (llvm::verifyModule(*module, llvm::PrintMessageAction, &ErrorInfo)) {
-        /* If verification fails, we would crash during execution. */
-        [self reportJITError:IKBCodeRunnerErrorModuleFailedVerification withCompilerOutput:diagnostic_output reportedError:ErrorInfo toCompletionHandler:completion];
-
-        return;
-    }
-
-    // FIXME: Support passing arguments.
-    std::vector<std::string> jitArguments;
-    jitArguments.push_back(module->getModuleIdentifier());
-
-    std::vector<llvm::GenericValue> functionArguments;
-    llvm::GenericValue result = EE->runFunction(EntryFn, functionArguments);
-    id returnedObject = (__bridge id)GVTOP(result);
-    NSString *transcript = @(diagnostic_output.c_str());
-    completion(returnedObject, transcript, nil);
+    id result = [self objectByRunningFunctionWithName:@"doItMain"
+                                             inModule:compiledBitcode
+                                   compilerTranscript:diagnostic_output
+                                                error:&jitError];
+    completion(result, @(diagnostic_output.c_str()), jitError);
 }
 
 /** Returns true if \p GV is a reference to a selector. */
