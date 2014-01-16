@@ -32,6 +32,7 @@
 #include "llvm/Support/StreamableMemoryObject.h"
 #include "llvm/Support/TargetSelect.h"
 #include "llvm/Support/raw_ostream.h"
+#import "IKBLLVMBitcodeModule.h"
 #pragma clang diagnostic pop
 
 using namespace clang;
@@ -50,44 +51,6 @@ BOOL canUseCompilerJobs (const driver::JobList& Jobs, DiagnosticsEngine &Diags)
     }
     return result;
 }
-
-@interface IKBBitcodeModule : NSObject
-
-@property (nonatomic, readonly) NSString *moduleIdentifier;
-@property (nonatomic, readonly) const char *bitcode;
-@property (nonatomic, readonly) NSUInteger bitcodeLength;
-
-- (instancetype)initWithIdentifier:(NSString *)identifier data:(NSData *)bitcodeData;
-
-@end
-
-@implementation IKBBitcodeModule
-{
-    NSData *_bitcodeData;
-}
-
-- (instancetype)initWithIdentifier:(NSString *)identifier data:(NSData *)moduleData
-{
-    self = [super init];
-    if (self)
-    {
-        _moduleIdentifier = [identifier copy];
-        _bitcodeData = [moduleData copy];
-    }
-    return self;
-}
-
-- (const char *)bitcode
-{
-    return static_cast<const char *>(_bitcodeData.bytes);
-}
-
-- (NSUInteger)bitcodeLength
-{
-    return _bitcodeData.length;
-}
-
-@end
 
 @implementation IKBCodeRunner
 
@@ -175,7 +138,7 @@ static const NSString *objcMainWrapper = @"#import <Cocoa/Cocoa.h>\n"
     }];
 }
 
-- (IKBBitcodeModule *)bitcodeForSource:(NSString *)source compilerArguments:(NSArray *)compilerArguments compilerTranscript:(std::string&)diagnostic_output error:(NSError *__autoreleasing*)error
+- (IKBLLVMBitcodeModule *)bitcodeForSource:(NSString *)source compilerArguments:(NSArray *)compilerArguments compilerTranscript:(std::string&)diagnostic_output error:(NSError *__autoreleasing*)error
 {
     NSString *temporaryPathTemplate = [NSTemporaryDirectory() stringByAppendingPathComponent:@"IKBCodeRunner.XXXXXX"];
     const char * fileTemplate = [temporaryPathTemplate fileSystemRepresentation];
@@ -280,9 +243,9 @@ static const NSString *objcMainWrapper = @"#import <Cocoa/Cocoa.h>\n"
     llvm::WriteBitcodeToFile(mod, bitcodeStream);
     bitcodeStream.flush();
 
-    IKBBitcodeModule *module = [[IKBBitcodeModule alloc] initWithIdentifier:@(moduleName.c_str())
-                                                                       data:[[NSData alloc] initWithBytes:bitcodeModule.c_str()
-                                                                                                   length:bitcodeModule.size()]];
+    IKBLLVMBitcodeModule *module = [[IKBLLVMBitcodeModule alloc] initWithIdentifier:@(moduleName.c_str())
+                                                                               data:[[NSData alloc] initWithBytes:bitcodeModule.c_str()
+                                                                                                           length:bitcodeModule.size()]];
     return module;
 }
 
@@ -291,10 +254,10 @@ static const NSString *objcMainWrapper = @"#import <Cocoa/Cocoa.h>\n"
     std::string diagnostic_output;
     NSError *compilerError = nil;
 
-    IKBBitcodeModule *compiledBitcode = [self bitcodeForSource:source
-                                             compilerArguments:compilerArguments
-                                            compilerTranscript:diagnostic_output
-                                                         error:&compilerError];
+    IKBLLVMBitcodeModule *compiledBitcode = [self bitcodeForSource:source
+                                                 compilerArguments:compilerArguments
+                                                compilerTranscript:diagnostic_output
+                                                             error:&compilerError];
     if (compiledBitcode == nil)
     {
         NSString *diagnosticText = @(diagnostic_output.c_str());
