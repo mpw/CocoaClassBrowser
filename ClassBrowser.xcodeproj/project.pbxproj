@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		329FD4CD7BD92A498FE86CCA /* IKBClangCompiler.mm in Sources */ = {isa = PBXBuildFile; fileRef = 329FD5EFD62015D69340668C /* IKBClangCompiler.mm */; };
+		329FD5322DC22E445929B0A2 /* IKBLLVMBitcodeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 329FD50931E98294CFA2D9A3 /* IKBLLVMBitcodeModule.m */; };
 		980AC69D185A48CD00611C26 /* ExecutionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 980AC69C185A48CD00611C26 /* ExecutionTests.m */; };
 		980AC6A1185A510000611C26 /* IKBCodeRunner.mm in Sources */ = {isa = PBXBuildFile; fileRef = 980AC6A0185A510000611C26 /* IKBCodeRunner.mm */; };
 		980AC6A8185A596400611C26 /* libcurses.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 980AC6A7185A596400611C26 /* libcurses.dylib */; };
@@ -119,6 +121,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		329FD4CBA16A8846BEE6A1E3 /* IKBLLVMBitcodeModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IKBLLVMBitcodeModule.h; path = "Code Execution/IKBLLVMBitcodeModule.h"; sourceTree = "<group>"; };
+		329FD50931E98294CFA2D9A3 /* IKBLLVMBitcodeModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IKBLLVMBitcodeModule.m; path = "Code Execution/IKBLLVMBitcodeModule.m"; sourceTree = "<group>"; };
+		329FD5EFD62015D69340668C /* IKBClangCompiler.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = IKBClangCompiler.mm; path = "Code Execution/IKBClangCompiler.mm"; sourceTree = "<group>"; };
+		329FDFEA9C118DB3ADC2A256 /* IKBClangCompiler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IKBClangCompiler.h; path = "Code Execution/IKBClangCompiler.h"; sourceTree = "<group>"; };
 		980AC69C185A48CD00611C26 /* ExecutionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExecutionTests.m; sourceTree = "<group>"; };
 		980AC69F185A510000611C26 /* IKBCodeRunner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IKBCodeRunner.h; path = "Code Execution/IKBCodeRunner.h"; sourceTree = "<group>"; };
 		980AC6A0185A510000611C26 /* IKBCodeRunner.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = IKBCodeRunner.mm; path = "Code Execution/IKBCodeRunner.mm"; sourceTree = "<group>"; };
@@ -318,6 +324,10 @@
 				98830689187AAEE400A4325C /* IKBCompilerArgumentBuilder.h */,
 				9883068D187ABA1D00A4325C /* IKBXcodeClangArgumentBuilder.h */,
 				9883068E187ABA1D00A4325C /* IKBXcodeClangArgumentBuilder.m */,
+				329FD50931E98294CFA2D9A3 /* IKBLLVMBitcodeModule.m */,
+				329FD4CBA16A8846BEE6A1E3 /* IKBLLVMBitcodeModule.h */,
+				329FD5EFD62015D69340668C /* IKBClangCompiler.mm */,
+				329FDFEA9C118DB3ADC2A256 /* IKBClangCompiler.h */,
 			);
 			name = "Code Execution";
 			sourceTree = "<group>";
@@ -615,6 +625,8 @@
 				9828F189187EC515003F1DC6 /* IKBCompileAndRunCodeCommand.m in Sources */,
 				98FFC98A187DA4FD00FE1659 /* IKBCommandBus.m in Sources */,
 				981613F8187C1F1400A0BEDD /* IKBCompilerTranscriptWindowController.m in Sources */,
+				329FD5322DC22E445929B0A2 /* IKBLLVMBitcodeModule.m in Sources */,
+				329FD4CD7BD92A498FE86CCA /* IKBClangCompiler.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
