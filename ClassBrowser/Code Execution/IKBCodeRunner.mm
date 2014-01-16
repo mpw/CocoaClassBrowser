@@ -51,6 +51,44 @@ BOOL canUseCompilerJobs (const driver::JobList& Jobs, DiagnosticsEngine &Diags)
     return result;
 }
 
+@interface IKBBitcodeModule : NSObject
+
+@property (nonatomic, readonly) NSString *moduleIdentifier;
+@property (nonatomic, readonly) const char *bitcode;
+@property (nonatomic, readonly) NSUInteger bitcodeLength;
+
+- (instancetype)initWithIdentifier:(NSString *)identifier data:(NSData *)bitcodeData;
+
+@end
+
+@implementation IKBBitcodeModule
+{
+    NSData *_bitcodeData;
+}
+
+- (instancetype)initWithIdentifier:(NSString *)identifier data:(NSData *)moduleData
+{
+    self = [super init];
+    if (self)
+    {
+        _moduleIdentifier = [identifier copy];
+        _bitcodeData = [moduleData copy];
+    }
+    return self;
+}
+
+- (const char *)bitcode
+{
+    return static_cast<const char *>(_bitcodeData.bytes);
+}
+
+- (NSUInteger)bitcodeLength
+{
+    return _bitcodeData.length;
+}
+
+@end
+
 @implementation IKBCodeRunner
 
 - (instancetype)init
@@ -107,12 +145,11 @@ static const NSString *objcMainWrapper = @"#import <Cocoa/Cocoa.h>\n"
     return map[errorCode]?:[NSString stringWithFormat:@"An unknown llvm JIT error (code %@) occurred.", errorCode];
 }
 
-- (void)reportCompileError:(NSInteger)code withCompilerOutput:(std::string&)output toCompletionHandler:(IKBCodeRunnerCompletionHandler)completion
+- (NSError *)compilerErrorWithCode:(NSInteger)code compilerOutput:(std::string&)output
 {
-    NSString *transcript = @(output.c_str());
     NSString *errorDescription = [self localizedDescriptionForCompileErrorWithCode:code];
     NSError *error = [NSError errorWithDomain:IKBCompilerErrorDomain code:code userInfo: @{NSLocalizedDescriptionKey : errorDescription}];
-    completion(nil, transcript, error);
+    return error;
 }
 
 - (void)reportJITError:(NSInteger)code withCompilerOutput:(std::string&)output reportedError:(std::string&)errorText toCompletionHandler:(IKBCodeRunnerCompletionHandler)completion
@@ -138,9 +175,10 @@ static const NSString *objcMainWrapper = @"#import <Cocoa/Cocoa.h>\n"
     }];
 }
 
-- (void)compileAndRunSource:(NSString *)source compilerArguments:(NSArray *)compilerArguments completion:(IKBCodeRunnerCompletionHandler)completion
+- (IKBBitcodeModule *)bitcodeForSource:(NSString *)source compilerArguments:(NSArray *)compilerArguments compilerTranscript:(std::string&)diagnostic_output error:(NSError *__autoreleasing*)error
 {
-    const char * fileTemplate = "/tmp/IKBCodeRunner.XXXXXX";
+    NSString *temporaryPathTemplate = [NSTemporaryDirectory() stringByAppendingPathComponent:@"IKBCodeRunner.XXXXXX"];
+    const char * fileTemplate = [temporaryPathTemplate fileSystemRepresentation];
     char *filename = static_cast<char *>(malloc(strlen(fileTemplate) + 1));
     strncpy(filename, fileTemplate, strlen(fileTemplate) + 1);
     int fd = mkstemp(filename);
@@ -149,11 +187,10 @@ static const NSString *objcMainWrapper = @"#import <Cocoa/Cocoa.h>\n"
     NSData *sourceData = [source dataUsingEncoding:NSUTF8StringEncoding];
     write(fd, [sourceData bytes], [sourceData length]);
     close(fd);
-    
+
     NSString *executableName = [[NSProcessInfo processInfo] processName];
     //in case you couldn't guess, this comes from an LLVM sample project.
     std::string executable_name([executableName UTF8String]);
-    std::string diagnostic_output;
     llvm::raw_string_ostream ostream(diagnostic_output);
     IntrusiveRefCntPtr<DiagnosticOptions> options = new DiagnosticOptions;
     TextDiagnosticPrinter *diagnosticClient = new TextDiagnosticPrinter(ostream, &*options);
@@ -172,54 +209,69 @@ static const NSString *objcMainWrapper = @"#import <Cocoa/Cocoa.h>\n"
     OwningPtr<Compilation> C(driver.BuildCompilation(Args));
     if (!C)
     {
-        [self reportCompileError:IKBCompilerErrorBadArguments withCompilerOutput:diagnostic_output toCompletionHandler:completion];
-        return;
+        if (error)
+        {
+            *error = [self compilerErrorWithCode:IKBCompilerErrorBadArguments compilerOutput:diagnostic_output];
+        }
+        return nil;
     }
     // we should now be able to extract the list of jobs from that
     const driver::JobList &Jobs = C->getJobs();
     if (!canUseCompilerJobs(Jobs, diagnostics))
     {
-        [self reportCompileError:IKBCompilerErrorNoClangJob withCompilerOutput:diagnostic_output toCompletionHandler:completion];
-        return;
+        if (error)
+        {
+            *error = [self compilerErrorWithCode:IKBCompilerErrorNoClangJob compilerOutput:diagnostic_output];
+        }
+        return nil;
     }
     //and pull the clang invocation from the list of jobs
     driver::Command *command = cast<driver::Command>(*Jobs.begin());
     if (llvm::StringRef(command->getCreator().getName()) != "clang") {
         diagnostics.Report(diag::err_fe_expected_clang_command);
-        [self reportCompileError:IKBCompilerErrorNotAClangInvocation withCompilerOutput:diagnostic_output toCompletionHandler:completion];
-        return;
+        if (error)
+        {
+            *error = [self compilerErrorWithCode:IKBCompilerErrorNotAClangInvocation compilerOutput:diagnostic_output];
+        }
+        return nil;
     }
     const driver::ArgStringList &CCArgs = command->getArguments();
     OwningPtr<CompilerInvocation> CI(new CompilerInvocation);
     CompilerInvocation::CreateFromArgs(*CI,
                                        const_cast<const char **>(CCArgs.data()),
                                        const_cast<const char **>(CCArgs.data()) +
-                                       CCArgs.size(),
+                                               CCArgs.size(),
                                        diagnostics);
     CompilerInstance Clang;
     Clang.setInvocation(CI.take());
-    
+
     // Create the compilers actual diagnostics engine.
     Clang.createDiagnostics();
     if (!Clang.hasDiagnostics())
     {
-        [self reportCompileError:IKBCompilerErrorCouldNotReportUnderlyingErrors withCompilerOutput:diagnostic_output toCompletionHandler:completion];
-        return;
+        if (error)
+        {
+            *error = [self compilerErrorWithCode:IKBCompilerErrorCouldNotReportUnderlyingErrors compilerOutput:diagnostic_output];
+        }
+        return nil;
     }
-    
+
     // Infer the builtin include path if unspecified.
     if (Clang.getHeaderSearchOpts().UseBuiltinIncludes &&
-        Clang.getHeaderSearchOpts().ResourceDir.empty())
+            Clang.getHeaderSearchOpts().ResourceDir.empty())
     {
         Clang.getHeaderSearchOpts().ResourceDir = [NSHomeDirectory() fileSystemRepresentation];
     }
-    
+
     // Create and execute the frontend to generate an LLVM bitcode module.
     OwningPtr<CodeGenAction> Act(new EmitLLVMOnlyAction());
     if (!Clang.ExecuteAction(*Act))
     {
-        [self reportCompileError:IKBCompilerErrorInSourceCode withCompilerOutput:diagnostic_output toCompletionHandler:completion];
-        return;
+        if (error)
+        {
+            *error = [self compilerErrorWithCode:IKBCompilerErrorInSourceCode compilerOutput:diagnostic_output];
+        }
+        return nil;
     }
     llvm::Module *mod = Act->takeModule();
     std::string moduleName = mod->getModuleIdentifier();
@@ -228,10 +280,33 @@ static const NSString *objcMainWrapper = @"#import <Cocoa/Cocoa.h>\n"
     llvm::WriteBitcodeToFile(mod, bitcodeStream);
     bitcodeStream.flush();
 
-    //This contortion of streaming and reconstituting the module is temporary to allow a future refactoring.
+    IKBBitcodeModule *module = [[IKBBitcodeModule alloc] initWithIdentifier:@(moduleName.c_str())
+                                                                       data:[[NSData alloc] initWithBytes:bitcodeModule.c_str()
+                                                                                                   length:bitcodeModule.size()]];
+    return module;
+}
+
+- (void)compileAndRunSource:(NSString *)source compilerArguments:(NSArray *)compilerArguments completion:(IKBCodeRunnerCompletionHandler)completion
+{
+    std::string diagnostic_output;
+    NSError *compilerError = nil;
+
+    IKBBitcodeModule *compiledBitcode = [self bitcodeForSource:source
+                                             compilerArguments:compilerArguments
+                                            compilerTranscript:diagnostic_output
+                                                         error:&compilerError];
+    if (compiledBitcode == nil)
+    {
+        NSString *diagnosticText = @(diagnostic_output.c_str());
+        completion(nil, diagnosticText, compilerError);
+    }
+
+    std::string moduleName([compiledBitcode.moduleIdentifier UTF8String]);
     std::string moduleReloadingError;
     llvm::LLVMContext context;
-    llvm::Module *module = llvm::ParseBitcodeFile(llvm::MemoryBuffer::getMemBuffer(bitcodeModule, moduleName),
+
+    llvm::StringRef bitcodeBytes = llvm::StringRef(compiledBitcode.bitcode, compiledBitcode.bitcodeLength);
+    llvm::Module *module = llvm::ParseBitcodeFile(llvm::MemoryBuffer::getMemBuffer(bitcodeBytes, moduleName),
                                                   context,
                                                   &moduleReloadingError);
 
