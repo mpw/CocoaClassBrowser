@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		07FBA02E1888AE9F00618658 /* IKBPreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FBA02D1888AE9F00618658 /* IKBPreferencesWindowController.m */; };
+		07FBA0301888AEF500618658 /* IKBPreferencesWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07FBA02F1888AEF500618658 /* IKBPreferencesWindowController.xib */; };
+		07FBA0321888B00800618658 /* PreferencesWindowControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FBA0311888B00800618658 /* PreferencesWindowControllerTests.m */; };
 		329FD3C5E5859855BEE6F96B /* IKBLLVMBitcodeRunner.mm in Sources */ = {isa = PBXBuildFile; fileRef = 329FDB21AE0AAF93F9D48CE7 /* IKBLLVMBitcodeRunner.mm */; };
 		329FD4CD7BD92A498FE86CCA /* IKBClangCompiler.mm in Sources */ = {isa = PBXBuildFile; fileRef = 329FD5EFD62015D69340668C /* IKBClangCompiler.mm */; };
 		329FD5322DC22E445929B0A2 /* IKBLLVMBitcodeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 329FD50931E98294CFA2D9A3 /* IKBLLVMBitcodeModule.m */; };
@@ -122,6 +125,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		07FBA02C1888AE9F00618658 /* IKBPreferencesWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IKBPreferencesWindowController.h; sourceTree = "<group>"; };
+		07FBA02D1888AE9F00618658 /* IKBPreferencesWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IKBPreferencesWindowController.m; sourceTree = "<group>"; };
+		07FBA02F1888AEF500618658 /* IKBPreferencesWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IKBPreferencesWindowController.xib; sourceTree = "<group>"; };
+		07FBA0311888B00800618658 /* PreferencesWindowControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferencesWindowControllerTests.m; sourceTree = "<group>"; };
 		329FD2DCC3208E7E8EF9483D /* IKBLLVMBitcodeRunner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IKBLLVMBitcodeRunner.h; path = "Code Execution/IKBLLVMBitcodeRunner.h"; sourceTree = "<group>"; };
 		329FD4CBA16A8846BEE6A1E3 /* IKBLLVMBitcodeModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IKBLLVMBitcodeModule.h; path = "Code Execution/IKBLLVMBitcodeModule.h"; sourceTree = "<group>"; };
 		329FD50931E98294CFA2D9A3 /* IKBLLVMBitcodeModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IKBLLVMBitcodeModule.m; path = "Code Execution/IKBLLVMBitcodeModule.m"; sourceTree = "<group>"; };
@@ -455,6 +462,9 @@
 				981613F5187C1F1400A0BEDD /* IKBCompilerTranscriptWindowController.h */,
 				981613F6187C1F1400A0BEDD /* IKBCompilerTranscriptWindowController.m */,
 				981613F7187C1F1400A0BEDD /* IKBCompilerTranscriptWindowController.xib */,
+				07FBA02C1888AE9F00618658 /* IKBPreferencesWindowController.h */,
+				07FBA02D1888AE9F00618658 /* IKBPreferencesWindowController.m */,
+				07FBA02F1888AEF500618658 /* IKBPreferencesWindowController.xib */,
 			);
 			path = ClassBrowser;
 			sourceTree = "<group>";
@@ -480,6 +490,7 @@
 				981613FA187C22F200A0BEDD /* CompilerTranscriptTests.m */,
 				98B6624D1857D3A10045FDBD /* BrowserWindowControllerTests.m */,
 				98B811D618621EF5004FF75F /* CodeTextViewControllerTests.m */,
+				07FBA0311888B00800618658 /* PreferencesWindowControllerTests.m */,
 				980AC69C185A48CD00611C26 /* ExecutionTests.m */,
 				9883068A187AB05200A4325C /* XcodeClangArgumentBuilderTests.m */,
 				9828F18A187EC7A6003F1DC6 /* CompileAndRunCodeCommandHandlerTests.m */,
@@ -598,6 +609,7 @@
 				98B6621D185728A20045FDBD /* Credits.rtf in Resources */,
 				98B662531857D7480045FDBD /* IKBClassBrowserWindowController.xib in Resources */,
 				98B66223185728A20045FDBD /* MainMenu.xib in Resources */,
+				07FBA0301888AEF500618658 /* IKBPreferencesWindowController.xib in Resources */,
 				981613F9187C1F1400A0BEDD /* IKBCompilerTranscriptWindowController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -624,6 +636,7 @@
 				98D7836418760BBD00C9137E /* IKBViewControllerOwnedView.m in Sources */,
 				98B6624B185788410045FDBD /* IKBClassList.m in Sources */,
 				9828F190187EDFEF003F1DC6 /* IKBCompileAndRunCodeCommandHandler.m in Sources */,
+				07FBA02E1888AE9F00618658 /* IKBPreferencesWindowController.m in Sources */,
 				98B662521857D7480045FDBD /* IKBClassBrowserWindowController.m in Sources */,
 				9883068F187ABA1D00A4325C /* IKBXcodeClangArgumentBuilder.m in Sources */,
 				98B811DD186232C6004FF75F /* IKBCodeEditorViewController.m in Sources */,
@@ -650,6 +663,7 @@
 				98B66249185780320045FDBD /* ClassListTests.m in Sources */,
 				98B66237185728A20045FDBD /* ClassBrowserTests.m in Sources */,
 				98830692187ABD5100A4325C /* HumbleCompilerArgumentBuilder.m in Sources */,
+				07FBA0321888B00800618658 /* PreferencesWindowControllerTests.m in Sources */,
 				98B6624C185791510045FDBD /* FakeClassList.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
