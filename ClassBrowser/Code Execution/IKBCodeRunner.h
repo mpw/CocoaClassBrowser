@@ -29,4 +29,6 @@ extern NSString *IKBCodeRunnerErrorDomain;
 typedef NS_ENUM(NSInteger, IKBCodeRunnerErrorCode) {
     IKBCodeRunnerErrorCouldNotConstructRuntime,
     IKBCodeRunnerErrorCouldNotFindFunctionToRun,
+    IKBCodeRunnerErrorCouldNotLoadModule,
+    IKBCodeRunnerErrorModuleFailedVerification,
 };

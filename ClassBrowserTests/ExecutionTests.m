@@ -37,7 +37,7 @@
 
 - (void)testTheExecutedCodeReturnsAnObjectiveCObject
 {
-    NSString *source = @"return @\"Hello\";";
+    NSString *source = @"return [@\"Hello\" mutableCopy];";
     [_runner doIt:source completion:^(id result, NSString *compilerTranscript, NSError *error) {
         XCTAssertEqualObjects(result, @"Hello", @"Transcript:%@\nError: %@", compilerTranscript, error);
     }];
