@@ -2,8 +2,6 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface IKBPreferencesWindowController : NSWindowController
-
-@property (weak) IBOutlet NSBox *contentView;
+@interface IKBPreferencesWindowController : NSWindowController <NSWindowDelegate>
 
 @end

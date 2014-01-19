@@ -1,7 +1,8 @@
 //See COPYING for licence details.
 
 #import <XCTest/XCTest.h>
-#import "IKBPreferencesWindowController.h"
+#import "IKBPreferencesWindowController_ClassExtension.h"
+#import "IKBCompilerPreferencesViewController.h"
 
 @interface PreferencesWindowControllerTests : XCTestCase
 
@@ -39,9 +40,11 @@
     XCTAssertTrue(_controller.window.isVisible);
 }
 
-- (void)testPreferenceWindowHasContentView
+- (void)testPreferenceWindowHasContentViewWithExpectedSubview
 {
     XCTAssertNotNil(_controller.contentView);
+    NSView *firstSubview = [_controller.contentView.subviews firstObject];
+    XCTAssertEqualObjects([firstSubview identifier], NSStringFromClass([IKBCompilerPreferencesViewController class]));
 }
 
 @end

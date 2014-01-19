@@ -16,7 +16,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="283" y="305" width="480" height="270"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="878"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1418"/>
             <view key="contentView" id="ony-ha-sjB">
                 <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -43,6 +43,9 @@
                     <constraint firstAttribute="trailing" secondItem="hEi-T0-8vl" secondAttribute="trailing" constant="20" id="lXV-ae-goX"/>
                 </constraints>
             </view>
+            <connections>
+                <outlet property="delegate" destination="-2" id="khn-2N-abY"/>
+            </connections>
         </window>
     </objects>
 </document>
