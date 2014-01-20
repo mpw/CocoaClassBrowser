@@ -102,6 +102,18 @@
     XCTAssertNoThrow([mockUserDefaults verify]);
 }
 
+- (void)testCurrentBaseSDKVersionUserDefaultIsRemovedWhenCurrentBaseSDKIsSetToLatest
+{
+    id mockUserDefaults = _compilerDefaults.userDefaults;
+    [[mockUserDefaults expect] removeObjectForKey:[OCMArg checkWithBlock:^BOOL(id obj) {
+        return [obj isEqualToString:IKBCurrentBaseSDKVersionKey];
+    }]];
+    [[mockUserDefaults expect] synchronize];
+    IKBBaseSDK *baseSDK = [_compilerDefaults.baseSDKsProvider baseSDKForIndex:2];
+    XCTAssertNoThrow(_compilerDefaults.currentBaseSDK = baseSDK);
+    XCTAssertNoThrow([mockUserDefaults verify]);
+}
+
 - (void)testCurrentBaseSDKVersionUserDefaultIsRemovedWhenCurrentBaseSDKIsSetToNil
 {
     id mockUserDefaults = _compilerDefaults.userDefaults;

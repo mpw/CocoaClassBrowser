@@ -68,13 +68,15 @@ NSString *IKBCurrentBaseSDKVersionKey = @"IKBCurrentBaseSDKVersion";
 - (void)setCurrentBaseSDK:(IKBBaseSDK *)currentBaseSDK
 {
     BOOL foundCurrentBaseSDK = NO;
+    BOOL isLatestBaseSDK = NO;
     for (IKBBaseSDK *baseSDK in self.baseSDKs) {
         if ([baseSDK.version isEqualToString:currentBaseSDK.version]) {
             foundCurrentBaseSDK = YES;
+            isLatestBaseSDK = [baseSDK isEqual:[self.baseSDKs lastObject]];
             break;
         }
     }
-    if (foundCurrentBaseSDK) {
+    if (foundCurrentBaseSDK && !isLatestBaseSDK) {
         [_userDefaults setObject:currentBaseSDK.version forKey:IKBCurrentBaseSDKVersionKey];
     } else {
         [_userDefaults removeObjectForKey:IKBCurrentBaseSDKVersionKey];
