@@ -73,16 +73,13 @@ using namespace clang::driver;
     llvm::LLVMContext context;
 
     llvm::StringRef bitcodeBytes = llvm::StringRef(compiledBitcode.bitcode, compiledBitcode.bitcodeLength);
-//    llvm::Module *module = llvm::ParseBitcodeFile(llvm::MemoryBuffer::getMemBuffer(bitcodeBytes, moduleName),
-//                                                  context,
-//                                                  &moduleReloadingError);
-    llvm::Module *module = llvm::parseBitcodeFile(llvm::MemoryBuffer::getMemBuffer(bitcodeBytes, moduleName),
-                                                  context).get();
+    llvm::ErrorOr<llvm::Module *> parseResult = llvm::parseBitcodeFile(llvm::MemoryBuffer::getMemBuffer(bitcodeBytes, moduleName),
+                                                  context);
 
-    if (module == nullptr)
+    if (parseResult.getError().value() != 0)
     {
         std::string llvmError("unable to read bitcode module: ");
-        llvmError += moduleReloadingError;
+        llvmError += parseResult.getError().message();
         if (error)
         {
             *error = [self JITErrorWithCode:IKBCodeRunnerErrorCouldNotLoadModule
@@ -92,6 +89,7 @@ using namespace clang::driver;
         return nil;
     }
 
+    llvm::Module *module = parseResult.get();
     llvm::InitializeNativeTarget();
     std::string Error;
     OwningPtr<llvm::ExecutionEngine> EE(llvm::ExecutionEngine::createJIT(module, &Error));
