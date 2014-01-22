@@ -121,15 +121,16 @@ using namespace clang::driver;
 
     [self.class fixupSelectorsInModule:module];
 
-    std::string ErrorInfo;
-    if (llvm::verifyModule(*module, llvm::PrintMessageAction, &ErrorInfo))
+    llvm::raw_string_ostream ostream(Error);
+    if (llvm::verifyModule(*module, &ostream))
     {
         /* If verification fails, we would crash during execution. */
         if (error)
         {
+            ostream.flush();
             *error = [self JITErrorWithCode:IKBCodeRunnerErrorModuleFailedVerification
                            diagnosticOutput:diagnostic_output
-                                  errorText:ErrorInfo];
+                                  errorText:Error];
         }
         return nil;
     }
