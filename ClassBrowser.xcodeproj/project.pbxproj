@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0770A468188C0F5000145954 /* IKBCompilerDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 0770A467188C0F5000145954 /* IKBCompilerDefaults.m */; };
-		0770A46B188C689D00145954 /* CompilerDefaultsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0770A46A188C689D00145954 /* CompilerDefaultsTests.m */; };
+		0770A468188C0F5000145954 /* IKBCompilerPreferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 0770A467188C0F5000145954 /* IKBCompilerPreferences.m */; };
+		0770A46B188C689D00145954 /* CompilerPreferencesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0770A46A188C689D00145954 /* CompilerPreferencesTests.m */; };
 		07C93DE9188A1C4000BFFD21 /* IKBCompilerPreferencesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07C93DE7188A1C4000BFFD21 /* IKBCompilerPreferencesViewController.m */; };
 		07C93DEA188A1C4000BFFD21 /* IKBCompilerPreferencesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07C93DE8188A1C4000BFFD21 /* IKBCompilerPreferencesViewController.xib */; };
 		07C93DED188A200E00BFFD21 /* IKBBaseSDK.m in Sources */ = {isa = PBXBuildFile; fileRef = 07C93DEC188A200E00BFFD21 /* IKBBaseSDK.m */; };
 		07C93DEF188A25F500BFFD21 /* CompilerPreferencesViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 07C93DEE188A25F500BFFD21 /* CompilerPreferencesViewControllerTests.m */; };
-		07D18045188A347900C1426A /* IKBDefaultBaseSDKProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D18044188A347900C1426A /* IKBDefaultBaseSDKProvider.m */; };
+		07D10B021896A0BC0023A9D9 /* IKBXcodeSelectTaskRunner.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D10B011896A0BC0023A9D9 /* IKBXcodeSelectTaskRunner.m */; };
 		07FBA02E1888AE9F00618658 /* IKBPreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FBA02D1888AE9F00618658 /* IKBPreferencesWindowController.m */; };
 		07FBA0301888AEF500618658 /* IKBPreferencesWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07FBA02F1888AEF500618658 /* IKBPreferencesWindowController.xib */; };
 		07FBA0321888B00800618658 /* PreferencesWindowControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 07FBA0311888B00800618658 /* PreferencesWindowControllerTests.m */; };
@@ -133,20 +133,19 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0770A464188B36CE00145954 /* IKBBaseSDKProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IKBBaseSDKProvider.h; sourceTree = "<group>"; };
 		0770A465188C0C9900145954 /* IKBPreferencesWindowController_ClassExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IKBPreferencesWindowController_ClassExtension.h; sourceTree = "<group>"; };
-		0770A466188C0F5000145954 /* IKBCompilerDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IKBCompilerDefaults.h; sourceTree = "<group>"; };
-		0770A467188C0F5000145954 /* IKBCompilerDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IKBCompilerDefaults.m; sourceTree = "<group>"; };
-		0770A469188C11C300145954 /* IKBCompilerDefaults_ClassExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IKBCompilerDefaults_ClassExtension.h; sourceTree = "<group>"; };
-		0770A46A188C689D00145954 /* CompilerDefaultsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CompilerDefaultsTests.m; sourceTree = "<group>"; };
+		0770A466188C0F5000145954 /* IKBCompilerPreferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IKBCompilerPreferences.h; sourceTree = "<group>"; };
+		0770A467188C0F5000145954 /* IKBCompilerPreferences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IKBCompilerPreferences.m; sourceTree = "<group>"; };
+		0770A469188C11C300145954 /* IKBCompilerPreferences_ClassExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IKBCompilerPreferences_ClassExtension.h; sourceTree = "<group>"; };
+		0770A46A188C689D00145954 /* CompilerPreferencesTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CompilerPreferencesTests.m; sourceTree = "<group>"; };
 		07C93DE6188A1C4000BFFD21 /* IKBCompilerPreferencesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IKBCompilerPreferencesViewController.h; sourceTree = "<group>"; };
 		07C93DE7188A1C4000BFFD21 /* IKBCompilerPreferencesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IKBCompilerPreferencesViewController.m; sourceTree = "<group>"; };
 		07C93DE8188A1C4000BFFD21 /* IKBCompilerPreferencesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IKBCompilerPreferencesViewController.xib; sourceTree = "<group>"; };
 		07C93DEB188A200E00BFFD21 /* IKBBaseSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IKBBaseSDK.h; sourceTree = "<group>"; };
 		07C93DEC188A200E00BFFD21 /* IKBBaseSDK.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IKBBaseSDK.m; sourceTree = "<group>"; };
 		07C93DEE188A25F500BFFD21 /* CompilerPreferencesViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CompilerPreferencesViewControllerTests.m; sourceTree = "<group>"; };
-		07D18043188A347900C1426A /* IKBDefaultBaseSDKProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IKBDefaultBaseSDKProvider.h; sourceTree = "<group>"; };
-		07D18044188A347900C1426A /* IKBDefaultBaseSDKProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IKBDefaultBaseSDKProvider.m; sourceTree = "<group>"; };
+		07D10B001896A0BC0023A9D9 /* IKBXcodeSelectTaskRunner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IKBXcodeSelectTaskRunner.h; sourceTree = "<group>"; };
+		07D10B011896A0BC0023A9D9 /* IKBXcodeSelectTaskRunner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IKBXcodeSelectTaskRunner.m; sourceTree = "<group>"; };
 		07D18047188B324E00C1426A /* IKBCompilerPreferencesViewController_ClassExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IKBCompilerPreferencesViewController_ClassExtension.h; sourceTree = "<group>"; };
 		07FBA02C1888AE9F00618658 /* IKBPreferencesWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IKBPreferencesWindowController.h; sourceTree = "<group>"; };
 		07FBA02D1888AE9F00618658 /* IKBPreferencesWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IKBPreferencesWindowController.m; sourceTree = "<group>"; };
@@ -349,18 +348,15 @@
 		07C93DE5188A1BA200BFFD21 /* Preferences */ = {
 			isa = PBXGroup;
 			children = (
+				07C93DEB188A200E00BFFD21 /* IKBBaseSDK.h */,
+				07C93DEC188A200E00BFFD21 /* IKBBaseSDK.m */,
 				07FBA02C1888AE9F00618658 /* IKBPreferencesWindowController.h */,
 				0770A465188C0C9900145954 /* IKBPreferencesWindowController_ClassExtension.h */,
 				07FBA02D1888AE9F00618658 /* IKBPreferencesWindowController.m */,
 				07FBA02F1888AEF500618658 /* IKBPreferencesWindowController.xib */,
-				07C93DEB188A200E00BFFD21 /* IKBBaseSDK.h */,
-				07C93DEC188A200E00BFFD21 /* IKBBaseSDK.m */,
-				0770A464188B36CE00145954 /* IKBBaseSDKProvider.h */,
-				07D18043188A347900C1426A /* IKBDefaultBaseSDKProvider.h */,
-				07D18044188A347900C1426A /* IKBDefaultBaseSDKProvider.m */,
-				0770A466188C0F5000145954 /* IKBCompilerDefaults.h */,
-				0770A469188C11C300145954 /* IKBCompilerDefaults_ClassExtension.h */,
-				0770A467188C0F5000145954 /* IKBCompilerDefaults.m */,
+				0770A466188C0F5000145954 /* IKBCompilerPreferences.h */,
+				0770A469188C11C300145954 /* IKBCompilerPreferences_ClassExtension.h */,
+				0770A467188C0F5000145954 /* IKBCompilerPreferences.m */,
 				07C93DE6188A1C4000BFFD21 /* IKBCompilerPreferencesViewController.h */,
 				07D18047188B324E00C1426A /* IKBCompilerPreferencesViewController_ClassExtension.h */,
 				07C93DE7188A1C4000BFFD21 /* IKBCompilerPreferencesViewController.m */,
@@ -381,6 +377,8 @@
 				98830689187AAEE400A4325C /* IKBCompilerArgumentBuilder.h */,
 				9883068D187ABA1D00A4325C /* IKBXcodeClangArgumentBuilder.h */,
 				9883068E187ABA1D00A4325C /* IKBXcodeClangArgumentBuilder.m */,
+				07D10B001896A0BC0023A9D9 /* IKBXcodeSelectTaskRunner.h */,
+				07D10B011896A0BC0023A9D9 /* IKBXcodeSelectTaskRunner.m */,
 				329FD50931E98294CFA2D9A3 /* IKBLLVMBitcodeModule.m */,
 				329FD4CBA16A8846BEE6A1E3 /* IKBLLVMBitcodeModule.h */,
 				329FD5EFD62015D69340668C /* IKBClangCompiler.mm */,
@@ -537,7 +535,7 @@
 				98B6624D1857D3A10045FDBD /* BrowserWindowControllerTests.m */,
 				98B811D618621EF5004FF75F /* CodeTextViewControllerTests.m */,
 				07FBA0311888B00800618658 /* PreferencesWindowControllerTests.m */,
-				0770A46A188C689D00145954 /* CompilerDefaultsTests.m */,
+				0770A46A188C689D00145954 /* CompilerPreferencesTests.m */,
 				07C93DEE188A25F500BFFD21 /* CompilerPreferencesViewControllerTests.m */,
 				980AC69C185A48CD00611C26 /* ExecutionTests.m */,
 				9883068A187AB05200A4325C /* XcodeClangArgumentBuilderTests.m */,
@@ -689,7 +687,7 @@
 				9828F190187EDFEF003F1DC6 /* IKBCompileAndRunCodeCommandHandler.m in Sources */,
 				07FBA02E1888AE9F00618658 /* IKBPreferencesWindowController.m in Sources */,
 				98B662521857D7480045FDBD /* IKBClassBrowserWindowController.m in Sources */,
-				0770A468188C0F5000145954 /* IKBCompilerDefaults.m in Sources */,
+				0770A468188C0F5000145954 /* IKBCompilerPreferences.m in Sources */,
 				9883068F187ABA1D00A4325C /* IKBXcodeClangArgumentBuilder.m in Sources */,
 				98B811DD186232C6004FF75F /* IKBCodeEditorViewController.m in Sources */,
 				9828F189187EC515003F1DC6 /* IKBCompileAndRunCodeCommand.m in Sources */,
@@ -697,7 +695,7 @@
 				981613F8187C1F1400A0BEDD /* IKBCompilerTranscriptWindowController.m in Sources */,
 				329FD5322DC22E445929B0A2 /* IKBLLVMBitcodeModule.m in Sources */,
 				329FD4CD7BD92A498FE86CCA /* IKBClangCompiler.mm in Sources */,
-				07D18045188A347900C1426A /* IKBDefaultBaseSDKProvider.m in Sources */,
+				07D10B021896A0BC0023A9D9 /* IKBXcodeSelectTaskRunner.m in Sources */,
 				329FD3C5E5859855BEE6F96B /* IKBLLVMBitcodeRunner.mm in Sources */,
 				07C93DE9188A1C4000BFFD21 /* IKBCompilerPreferencesViewController.m in Sources */,
 			);
@@ -714,7 +712,7 @@
 				07C93DEF188A25F500BFFD21 /* CompilerPreferencesViewControllerTests.m in Sources */,
 				981613FB187C22F200A0BEDD /* CompilerTranscriptTests.m in Sources */,
 				980AC69D185A48CD00611C26 /* ExecutionTests.m in Sources */,
-				0770A46B188C689D00145954 /* CompilerDefaultsTests.m in Sources */,
+				0770A46B188C689D00145954 /* CompilerPreferencesTests.m in Sources */,
 				98B811D718621EF5004FF75F /* CodeTextViewControllerTests.m in Sources */,
 				98B66249185780320045FDBD /* ClassListTests.m in Sources */,
 				98B66237185728A20045FDBD /* ClassBrowserTests.m in Sources */,

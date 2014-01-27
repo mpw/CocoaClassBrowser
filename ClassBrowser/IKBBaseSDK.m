@@ -4,9 +4,7 @@
 
 @implementation IKBBaseSDK
 
-- (instancetype)initWithDisplayName:(NSString *)displayName
-                               path:(NSString *)path
-                            version:(NSString *)version
+- (instancetype)initWithDisplayName:(NSString *)displayName path:(NSString *)path version:(NSString *)version
 {
     self = [super init];
     if (self) {
