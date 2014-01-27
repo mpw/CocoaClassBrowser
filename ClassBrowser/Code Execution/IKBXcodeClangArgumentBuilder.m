@@ -29,8 +29,6 @@ NSString *IKBXcodeClangArgumentBuilderErrorDomain = @"IKBXcodeClangArgumentBuild
                               @"-I",
                               clangIncludePath,
                               @"-fobjc-arc",
-                              @"-framework",
-                              @"Cocoa",
                               @"-c"];
             completion(args, nil);
         }

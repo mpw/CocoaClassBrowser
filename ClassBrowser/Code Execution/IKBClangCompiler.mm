@@ -5,6 +5,7 @@
 
 #import "IKBClangCompiler.h"
 #import "IKBCodeRunner.h"
+#import "IKBLLVMBitcodeModule.h"
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wconversion"
@@ -26,7 +27,7 @@
 #include "llvm/IR/Module.h"
 #include "llvm/IR/Instructions.h"
 #include "llvm/IR/TypeBuilder.h"
-#include "llvm/Analysis/Verifier.h"
+#include "llvm/IR/Verifier.h"
 #include "llvm/Support/FileSystem.h"
 #include "llvm/Support/Host.h"
 #include "llvm/Support/ManagedStatic.h"
@@ -35,7 +36,6 @@
 #include "llvm/Support/StreamableMemoryObject.h"
 #include "llvm/Support/TargetSelect.h"
 #include "llvm/Support/raw_ostream.h"
-#import "IKBLLVMBitcodeModule.h"
 #pragma clang diagnostic pop
 
 using namespace clang;
@@ -79,17 +79,6 @@ BOOL canUseCompilerJobs(const driver::JobList &Jobs, DiagnosticsEngine &Diags)
 
 - (IKBLLVMBitcodeModule *)bitcodeForSource:(NSString *)source compilerArguments:(NSArray *)compilerArguments compilerTranscript:(std::string&)diagnostic_output error:(NSError *__autoreleasing*)error
 {
-    NSString *temporaryPathTemplate = [NSTemporaryDirectory() stringByAppendingPathComponent:@"IKBCodeRunner.XXXXXX"];
-    const char * fileTemplate = [temporaryPathTemplate fileSystemRepresentation];
-    char *filename = static_cast<char *>(malloc(strlen(fileTemplate) + 1));
-    strncpy(filename, fileTemplate, strlen(fileTemplate) + 1);
-    int fd = mkstemp(filename);
-    NSString *sourcePath = @(filename);
-    free(filename);
-    NSData *sourceData = [source dataUsingEncoding:NSUTF8StringEncoding];
-    write(fd, [sourceData bytes], [sourceData length]);
-    close(fd);
-
     NSString *executableName = [[NSProcessInfo processInfo] processName];
     //in case you couldn't guess, this comes from an LLVM sample project.
     std::string executable_name([executableName UTF8String]);
@@ -100,6 +89,7 @@ BOOL canUseCompilerJobs(const driver::JobList &Jobs, DiagnosticsEngine &Diags)
     DiagnosticsEngine diagnostics(diagnosticIDs, &*options, diagnosticClient);
     Driver driver(executable_name, llvm::sys::getProcessTriple(), "a.out", diagnostics);
     driver.setTitle("clang");
+    driver.setCheckInputsExist(false);
     //I _think_ that all of the above could be statics, or could be in a singleton CompilerBuilder or something.
     // the trick is getting all of the ownership correct.
     SmallVector<const char *, 16> Args;
@@ -107,7 +97,11 @@ BOOL canUseCompilerJobs(const driver::JobList &Jobs, DiagnosticsEngine &Diags)
     {
         Args.push_back([arg UTF8String]);
     }
-    Args.push_back([sourcePath UTF8String]);
+    //this fake file name needs to exist for the compiler to function, but we'll never try to use it.
+    NSString *fakeSourcePath = [[NSBundle bundleForClass:[self class]] pathForResource:@"emptysource" ofType:nil];
+    StringRef fakeFileName = [fakeSourcePath fileSystemRepresentation];
+    Args.push_back([fakeSourcePath fileSystemRepresentation]);
+
     OwningPtr<Compilation> C(driver.BuildCompilation(Args));
     if (!C)
     {
@@ -145,8 +139,6 @@ BOOL canUseCompilerJobs(const driver::JobList &Jobs, DiagnosticsEngine &Diags)
                                                CCArgs.size(),
                                        diagnostics);
     CompilerInstance Clang;
-    Clang.setInvocation(CI.take());
-
     // Create the compilers actual diagnostics engine.
     Clang.createDiagnostics();
     if (!Clang.hasDiagnostics())
@@ -157,6 +149,15 @@ BOOL canUseCompilerJobs(const driver::JobList &Jobs, DiagnosticsEngine &Diags)
         }
         return nil;
     }
+
+    //create a virtual file with our content
+    Clang.setInvocation(CI.take());
+    Clang.createFileManager();
+    Clang.createSourceManager(Clang.getFileManager());
+    const FileEntry *mainFileEntry = Clang.getFileManager().getVirtualFile(fakeFileName, [source lengthOfBytesUsingEncoding:NSUTF8StringEncoding] + 1, time(0));
+    llvm::StringRef sourceString([source UTF8String]);
+    llvm::MemoryBuffer* mainFile = llvm::MemoryBuffer::getMemBuffer(sourceString);
+    Clang.getSourceManager().overrideFileContents(mainFileEntry, mainFile);
 
     // Infer the builtin include path if unspecified.
     if (Clang.getHeaderSearchOpts().UseBuiltinIncludes &&

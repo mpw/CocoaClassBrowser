@@ -27,7 +27,7 @@
 #include "llvm/IR/Module.h"
 #include "llvm/IR/Instructions.h"
 #include "llvm/IR/TypeBuilder.h"
-#include "llvm/Analysis/Verifier.h"
+#include "llvm/IR/Verifier.h"
 #include "llvm/Support/FileSystem.h"
 #include "llvm/Support/Host.h"
 #include "llvm/Support/ManagedStatic.h"
@@ -73,14 +73,13 @@ using namespace clang::driver;
     llvm::LLVMContext context;
 
     llvm::StringRef bitcodeBytes = llvm::StringRef(compiledBitcode.bitcode, compiledBitcode.bitcodeLength);
-    llvm::Module *module = llvm::ParseBitcodeFile(llvm::MemoryBuffer::getMemBuffer(bitcodeBytes, moduleName),
-                                                  context,
-                                                  &moduleReloadingError);
+    llvm::ErrorOr<llvm::Module *> parseResult = llvm::parseBitcodeFile(llvm::MemoryBuffer::getMemBuffer(bitcodeBytes, moduleName),
+                                                  context);
 
-    if (module == nullptr)
+    if (parseResult.getError().value() != 0)
     {
         std::string llvmError("unable to read bitcode module: ");
-        llvmError += moduleReloadingError;
+        llvmError += parseResult.getError().message();
         if (error)
         {
             *error = [self JITErrorWithCode:IKBCodeRunnerErrorCouldNotLoadModule
@@ -90,6 +89,7 @@ using namespace clang::driver;
         return nil;
     }
 
+    llvm::Module *module = parseResult.get();
     llvm::InitializeNativeTarget();
     std::string Error;
     OwningPtr<llvm::ExecutionEngine> EE(llvm::ExecutionEngine::createJIT(module, &Error));
@@ -121,15 +121,16 @@ using namespace clang::driver;
 
     [self.class fixupSelectorsInModule:module];
 
-    std::string ErrorInfo;
-    if (llvm::verifyModule(*module, llvm::PrintMessageAction, &ErrorInfo))
+    llvm::raw_string_ostream ostream(Error);
+    if (llvm::verifyModule(*module, &ostream))
     {
         /* If verification fails, we would crash during execution. */
         if (error)
         {
+            ostream.flush();
             *error = [self JITErrorWithCode:IKBCodeRunnerErrorModuleFailedVerification
                            diagnosticOutput:diagnostic_output
-                                  errorText:ErrorInfo];
+                                  errorText:Error];
         }
         return nil;
     }
