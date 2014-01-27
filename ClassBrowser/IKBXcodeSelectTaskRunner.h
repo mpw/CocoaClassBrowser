@@ -1,10 +1,4 @@
-//
-//  IKBXcodeSelectTaskRunner.h
-//  ClassBrowser
-//
-//  Created by Éric Trépanier on 2014-01-27.
-//  Copyright (c) 2014 Project Isambard. All rights reserved.
-//
+//See COPYING for licence details.
 
 #import <Foundation/Foundation.h>
 
