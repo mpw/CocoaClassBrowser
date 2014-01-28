@@ -69,11 +69,10 @@ using namespace clang::driver;
 - (id)objectByRunningFunctionWithName:(NSString *)name inModule:(IKBLLVMBitcodeModule *)compiledBitcode compilerTranscript:(std::string&)diagnostic_output error:(NSError *__autoreleasing*)error
 {
     std::string moduleName([compiledBitcode.moduleIdentifier UTF8String]);
-    std::string moduleReloadingError;
     llvm::LLVMContext context;
 
     llvm::StringRef bitcodeBytes = llvm::StringRef(compiledBitcode.bitcode, compiledBitcode.bitcodeLength);
-    llvm::ErrorOr<llvm::Module *> parseResult = llvm::parseBitcodeFile(llvm::MemoryBuffer::getMemBuffer(bitcodeBytes, moduleName),
+    llvm::ErrorOr<llvm::Module *> parseResult = llvm::parseBitcodeFile(llvm::MemoryBuffer::getMemBuffer(bitcodeBytes, moduleName, false),
                                                   context);
 
     if (parseResult.getError().value() != 0)
