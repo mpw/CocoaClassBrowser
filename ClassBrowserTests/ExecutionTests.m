@@ -71,4 +71,12 @@
     }];
 }
 
+- (void)testThereIsNoProblemRunningTheSourceInProblemReport26
+{
+    NSString *source = @"int theAnswer = 6 * 7;"
+    @"return @(theAnswer);";
+    [_runner doIt:source completion:^(NSNumber *result, NSString *compilerTranscript, NSError *error){
+        XCTAssertEqual([result intValue], 42, @"Transcript: %@\nError:%@", compilerTranscript, error);
+    }];
+}
 @end

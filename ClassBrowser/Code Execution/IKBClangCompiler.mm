@@ -178,14 +178,14 @@ BOOL canUseCompilerJobs(const driver::JobList &Jobs, DiagnosticsEngine &Diags)
     }
     llvm::Module *mod = Act->takeModule();
     std::string moduleName = mod->getModuleIdentifier();
-    std::string bitcodeModule;
-    llvm::raw_string_ostream bitcodeStream(bitcodeModule);
+    llvm::SmallVector<char, 128> bitcodeModule;
+    llvm::raw_svector_ostream bitcodeStream(bitcodeModule);
     llvm::WriteBitcodeToFile(mod, bitcodeStream);
-    bitcodeStream.flush();
-
+    llvm::StringRef bitcodeString = bitcodeStream.str();
+    
     IKBLLVMBitcodeModule *module = [[IKBLLVMBitcodeModule alloc] initWithIdentifier:@(moduleName.c_str())
-                                                                               data:[[NSData alloc] initWithBytes:bitcodeModule.c_str()
-                                                                                                           length:bitcodeModule.size()]];
+                                                                               data:[[NSData alloc] initWithBytes:bitcodeString.data()
+                                                                                                           length:bitcodeString.size()]];
     return module;
 }
 @end
