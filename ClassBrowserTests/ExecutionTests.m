@@ -62,4 +62,13 @@
     XCTAssertEqualObjects([builder class], [IKBXcodeClangArgumentBuilder class]);
 }
 
+- (void)testICanReturnALiteralNSString
+{
+    NSString *source = @"NSString *string = @\"Hello!\";"
+    @"return string;";
+    [_runner doIt:source completion:^(NSString *returnValue, NSString *compilerTranscript, NSError *error){
+        XCTAssertEqualObjects(returnValue, @"Hello!", @"Transcript: %@\nError:%@", compilerTranscript, error);
+    }];
+}
+
 @end
