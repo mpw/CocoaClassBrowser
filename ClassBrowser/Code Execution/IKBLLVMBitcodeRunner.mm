@@ -142,6 +142,15 @@ using namespace clang::driver;
     std::vector<llvm::GenericValue> functionArguments;
     llvm::GenericValue result = EE->runFunction(EntryFn, functionArguments);
     id returnedObject = (__bridge id)GVTOP(result);
+    if ([returnedObject isMemberOfClass:[@"" class]]) {
+        /*
+         * You can't return any static value that was defined in the
+         * dynamic module, because the variable's storage will have
+         * gone out of scope when we return from this function.
+         * Constant NSStrings is a common-enough case to want a workaround.
+         */
+        returnedObject = [NSString stringWithString:returnedObject];
+    }
     return returnedObject;
 }
 
