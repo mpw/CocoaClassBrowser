@@ -17,8 +17,6 @@
                  @"-I",
                  @"/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/5.0/include",
                  @"-fobjc-arc",
-                 @"-framework",
-                 @"Cocoa",
                  @"-c"], nil);
 }
 
