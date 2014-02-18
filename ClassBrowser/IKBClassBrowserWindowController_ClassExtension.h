@@ -9,7 +9,6 @@
 @interface IKBClassBrowserWindowController ()
 
 @property (weak) IBOutlet NSBrowser *classBrowser;
-@property (unsafe_unretained) IBOutlet NSTextView *codeText;
 @property (weak) IBOutlet NSToolbarItem *addMethodItem;
 
 @property (nonatomic, strong) id <IKBClassList> classList;
