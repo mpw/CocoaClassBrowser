@@ -101,6 +101,14 @@
     return addMethodItem;
 }
 
+- (id)mockABrowserWithSelectedColumn:(NSInteger)column row:(NSInteger)row
+{
+    id sender = [OCMockObject niceMockForClass:[NSBrowser class]];
+    [[[sender stub] andReturnValue:[NSNumber numberWithInteger:column]] selectedColumn];
+    [[[sender stub] andReturnValue:[NSNumber numberWithInteger:row]] selectedRowInColumn:column];
+    return sender;
+}
+
 - (void)testWithNothingSelectedICannotAddAMethod
 {
     id addMethodItem = [self mockTheAddMethodToolbarItem];
@@ -113,9 +121,16 @@
 {
     id addMethodItem = [self mockTheAddMethodToolbarItem];
     [[addMethodItem expect] setEnabled:NO];
-    id sender = [OCMockObject niceMockForClass:[NSBrowser class]];
-    [[[sender stub] andReturnValue:[NSNumber numberWithInteger:0]] selectedColumn];
-    [[[sender stub] andReturnValue:[NSNumber numberWithInteger:1]] selectedRowInColumn:0];
+    id sender = [self mockABrowserWithSelectedColumn:0 row:1];
+    [controller browserSelectionDidChange:sender];
+    [addMethodItem verify];
+}
+
+- (void)testWithAClassSelectedICanAddAMethod
+{
+    id addMethodItem = [self mockTheAddMethodToolbarItem];
+    [[addMethodItem expect] setEnabled:YES];
+    id sender = [self mockABrowserWithSelectedColumn:1 row:2];
     [controller browserSelectionDidChange:sender];
     [addMethodItem verify];
 }

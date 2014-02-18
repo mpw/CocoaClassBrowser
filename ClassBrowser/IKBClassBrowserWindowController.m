@@ -33,7 +33,7 @@
 {
     NSInteger column = [sender selectedColumn];
     NSInteger row = [sender selectedRowInColumn:column];
-    [self.addMethodItem setEnabled:NO];
+    [self.addMethodItem setEnabled:(column != 0)];
     [self.browserSource browser:sender didSelectRow:row inColumn:column];
 }
 
