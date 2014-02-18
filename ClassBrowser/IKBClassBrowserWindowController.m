@@ -25,6 +25,8 @@
     NSView *editorView = self.codeEditorViewController.view;
     editorView.frame = (NSRect){ .origin = {0,0}, .size = {.width = 878, .height = 412 }};
     [self.window.contentView addSubview:editorView];
+    
+    [self.addMethodItem setEnabled:NO];
 }
 
 - (IBAction)browserSelectionDidChange:(NSBrowser *)sender
@@ -34,4 +36,8 @@
     [self.browserSource browser:sender didSelectRow:row inColumn:column];
 }
 
+- (IBAction)addMethod:(id)sender
+{
+    
+}
 @end

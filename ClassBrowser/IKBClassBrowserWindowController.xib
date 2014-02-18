@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13B3116" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="IKBClassBrowserWindowController">
             <connections>
+                <outlet property="addMethodItem" destination="fQb-Bt-ZC5" id="0uO-Rv-oaG"/>
                 <outlet property="classBrowser" destination="p4C-os-s26" id="Ig7-fK-ouk"/>
                 <outlet property="window" destination="1" id="3"/>
             </connections>
@@ -23,11 +24,25 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <browser verticalHuggingPriority="750" allowsExpansionToolTips="YES" enabled="YES" hasHorizontalScroller="YES" allowsEmptySelection="YES" defaultColumnWidth="100" minColumnWidth="100" maxVisibleColumns="4" titled="YES" separatesColumns="YES" allowsTypeSelect="YES" columnResizingType="auto" id="p4C-os-s26">
-                        <rect key="frame" x="0.0" y="420" width="878" height="311"/>
+                        <rect key="frame" x="0.0" y="421" width="878" height="311"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES"/>
                     </browser>
                 </subviews>
             </view>
+            <toolbar key="toolbar" implicitIdentifier="7DD70C71-7857-4173-8F65-DD54608C7BC1" autosavesConfiguration="NO" displayMode="iconAndLabel" sizeMode="regular" id="GcY-IY-xUE">
+                <allowedToolbarItems>
+                    <toolbarItem implicitItemIdentifier="NSToolbarSpaceItem" id="RNq-S3-QLY"/>
+                    <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="Plj-3a-d7b"/>
+                    <toolbarItem implicitItemIdentifier="F72039FB-DAA9-4F40-9512-C3C0347A8DDE" label="Add Method" paletteLabel="Add Method" tag="-1" id="fQb-Bt-ZC5">
+                        <connections>
+                            <action selector="addMethod:" target="-1" id="2do-gL-Gbb"/>
+                        </connections>
+                    </toolbarItem>
+                </allowedToolbarItems>
+                <defaultToolbarItems>
+                    <toolbarItem reference="fQb-Bt-ZC5"/>
+                </defaultToolbarItems>
+            </toolbar>
             <connections>
                 <outlet property="delegate" destination="-2" id="4"/>
             </connections>

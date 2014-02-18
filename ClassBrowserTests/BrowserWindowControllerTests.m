@@ -1,6 +1,7 @@
 //See COPYING for licence details.
 
 #import <XCTest/XCTest.h>
+#import <OCMock/OCMock.h>
 #import "IKBClassBrowserWindowController.h"
 #import "IKBClassBrowserWindowController_ClassExtension.h"
 #import "IKBCodeEditorViewController.h"
@@ -90,6 +91,16 @@
     [controller windowDidLoad];
     XCTAssertNotNil(controller.codeEditorViewController);
     XCTAssertEqualObjects(controller.codeEditorViewController.view.superview, controller.window.contentView);
+}
+
+- (void)testWithNothingSelectedICannotAddAMethod
+{
+    __unused NSWindow *windowLoadedByController = controller.window;
+    id addMethodItem = [OCMockObject mockForClass:[NSToolbarItem class]];
+    controller.addMethodItem = addMethodItem;
+    [[addMethodItem expect] setEnabled:NO];
+    [controller windowDidLoad];
+    [addMethodItem verify];
 }
 
 @end

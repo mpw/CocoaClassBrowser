@@ -10,9 +10,12 @@
 
 @property (weak) IBOutlet NSBrowser *classBrowser;
 @property (unsafe_unretained) IBOutlet NSTextView *codeText;
+@property (weak) IBOutlet NSToolbarItem *addMethodItem;
+
 @property (nonatomic, strong) id <IKBClassList> classList;
 @property (nonatomic, strong) IKBClassBrowserSource *browserSource;
 @property (nonatomic, readonly) IKBCodeEditorViewController *codeEditorViewController;
+
 
 - (IBAction)browserSelectionDidChange:(NSBrowser *)sender;
 
