@@ -93,13 +93,30 @@
     XCTAssertEqualObjects(controller.codeEditorViewController.view.superview, controller.window.contentView);
 }
 
-- (void)testWithNothingSelectedICannotAddAMethod
+- (id)mockTheAddMethodToolbarItem
 {
     __unused NSWindow *windowLoadedByController = controller.window;
     id addMethodItem = [OCMockObject mockForClass:[NSToolbarItem class]];
     controller.addMethodItem = addMethodItem;
+    return addMethodItem;
+}
+
+- (void)testWithNothingSelectedICannotAddAMethod
+{
+    id addMethodItem = [self mockTheAddMethodToolbarItem];
     [[addMethodItem expect] setEnabled:NO];
     [controller windowDidLoad];
+    [addMethodItem verify];
+}
+
+- (void)testWithAClassGroupSelectedICannotAddAMethod
+{
+    id addMethodItem = [self mockTheAddMethodToolbarItem];
+    [[addMethodItem expect] setEnabled:NO];
+    id sender = [OCMockObject niceMockForClass:[NSBrowser class]];
+    [[[sender stub] andReturnValue:[NSNumber numberWithInteger:0]] selectedColumn];
+    [[[sender stub] andReturnValue:[NSNumber numberWithInteger:1]] selectedRowInColumn:0];
+    [controller browserSelectionDidChange:sender];
     [addMethodItem verify];
 }
 
