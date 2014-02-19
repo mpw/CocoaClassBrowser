@@ -57,7 +57,9 @@
 
 - (void)addMethodSheetReturnedCode:(NSModalResponse)code
 {
-    [self.codeEditorViewController setEditedMethod:self.addMethodSheet.method];
+    if (code == NSModalResponseOK) {
+        [self.codeEditorViewController setEditedMethod:self.addMethodSheet.method];
+    }
 }
 
 @end
