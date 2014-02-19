@@ -21,6 +21,7 @@
 		329FD3C5E5859855BEE6F96B /* IKBLLVMBitcodeRunner.mm in Sources */ = {isa = PBXBuildFile; fileRef = 329FDB21AE0AAF93F9D48CE7 /* IKBLLVMBitcodeRunner.mm */; };
 		329FD4CD7BD92A498FE86CCA /* IKBClangCompiler.mm in Sources */ = {isa = PBXBuildFile; fileRef = 329FD5EFD62015D69340668C /* IKBClangCompiler.mm */; };
 		329FD5322DC22E445929B0A2 /* IKBLLVMBitcodeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 329FD50931E98294CFA2D9A3 /* IKBLLVMBitcodeModule.m */; };
+		329FD5DDA8270CBD91A41A29 /* IKBObjectiveCMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = 329FDA99098367C006316F55 /* IKBObjectiveCMethod.m */; };
 		329FD9DD239C75CD1327A560 /* IKBMethodSignatureSheetController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 329FD1E05E408248C3AF580B /* IKBMethodSignatureSheetController.xib */; };
 		980AC69D185A48CD00611C26 /* ExecutionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 980AC69C185A48CD00611C26 /* ExecutionTests.m */; };
 		980AC6A1185A510000611C26 /* IKBCodeRunner.mm in Sources */ = {isa = PBXBuildFile; fileRef = 980AC6A0185A510000611C26 /* IKBCodeRunner.mm */; };
@@ -156,8 +157,10 @@
 		329FD1E05E408248C3AF580B /* IKBMethodSignatureSheetController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = IKBMethodSignatureSheetController.xib; sourceTree = "<group>"; };
 		329FD2DCC3208E7E8EF9483D /* IKBLLVMBitcodeRunner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IKBLLVMBitcodeRunner.h; path = "Code Execution/IKBLLVMBitcodeRunner.h"; sourceTree = "<group>"; };
 		329FD4CBA16A8846BEE6A1E3 /* IKBLLVMBitcodeModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IKBLLVMBitcodeModule.h; path = "Code Execution/IKBLLVMBitcodeModule.h"; sourceTree = "<group>"; };
+		329FD4E25533580C13C29F04 /* IKBObjectiveCMethod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IKBObjectiveCMethod.h; sourceTree = "<group>"; };
 		329FD50931E98294CFA2D9A3 /* IKBLLVMBitcodeModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IKBLLVMBitcodeModule.m; path = "Code Execution/IKBLLVMBitcodeModule.m"; sourceTree = "<group>"; };
 		329FD5EFD62015D69340668C /* IKBClangCompiler.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = IKBClangCompiler.mm; path = "Code Execution/IKBClangCompiler.mm"; sourceTree = "<group>"; };
+		329FDA99098367C006316F55 /* IKBObjectiveCMethod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IKBObjectiveCMethod.m; sourceTree = "<group>"; };
 		329FDB21AE0AAF93F9D48CE7 /* IKBLLVMBitcodeRunner.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = IKBLLVMBitcodeRunner.mm; path = "Code Execution/IKBLLVMBitcodeRunner.mm"; sourceTree = "<group>"; };
 		329FDE86F47AD95999EC8056 /* IKBMethodSignatureSheetController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IKBMethodSignatureSheetController.h; sourceTree = "<group>"; };
 		329FDEFFA8EDA742ACD2D0BE /* IKBMethodSignatureSheetController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IKBMethodSignatureSheetController.m; sourceTree = "<group>"; };
@@ -380,6 +383,15 @@
 			path = "Adding Methods";
 			sourceTree = "<group>";
 		};
+		329FDE0C248372050D6388AC /* Modeling Objective-C Concepts */ = {
+			isa = PBXGroup;
+			children = (
+				329FDA99098367C006316F55 /* IKBObjectiveCMethod.m */,
+				329FD4E25533580C13C29F04 /* IKBObjectiveCMethod.h */,
+			);
+			path = "Modeling Objective-C Concepts";
+			sourceTree = "<group>";
+		};
 		980AC69E185A50DF00611C26 /* Code Execution */ = {
 			isa = PBXGroup;
 			children = (
@@ -524,6 +536,7 @@
 				981613F6187C1F1400A0BEDD /* IKBCompilerTranscriptWindowController.m */,
 				981613F7187C1F1400A0BEDD /* IKBCompilerTranscriptWindowController.xib */,
 				329FDDF4C16B4DB552869F43 /* Adding Methods */,
+				329FDE0C248372050D6388AC /* Modeling Objective-C Concepts */,
 			);
 			path = ClassBrowser;
 			sourceTree = "<group>";
@@ -716,6 +729,7 @@
 				329FD3C5E5859855BEE6F96B /* IKBLLVMBitcodeRunner.mm in Sources */,
 				07C93DE9188A1C4000BFFD21 /* IKBCompilerPreferencesViewController.m in Sources */,
 				329FD0C45F982C7D538CEE74 /* IKBMethodSignatureSheetController.m in Sources */,
+				329FD5DDA8270CBD91A41A29 /* IKBObjectiveCMethod.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

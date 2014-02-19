@@ -7,6 +7,8 @@
 #import "IKBCodeEditorViewController.h"
 #import "IKBClassBrowserSource.h"
 #import "FakeClassList.h"
+#import "IKBMethodSignatureSheetController.h"
+#import "IKBObjectiveCMethod.h"
 
 @interface FakeBrowser : NSBrowser
 
@@ -160,6 +162,23 @@
     [[window expect] beginSheet:OCMOCK_ANY completionHandler:OCMOCK_ANY];
     [controller addMethod:[controller addMethodItem]];
     [window verify];
+}
+
+- (void)testOKReturnFromSheetPassesTheMethodSignatureToTheCodeEditor
+{
+    id createdMethod = [IKBObjectiveCMethod new];
+
+    id methodSignatureSheet = [OCMockObject mockForClass:[IKBMethodSignatureSheetController class]];
+    controller.addMethodSheet = methodSignatureSheet;
+    [[[methodSignatureSheet expect] andReturn:createdMethod] method];
+    id codeEditor = [OCMockObject mockForClass:[IKBCodeEditorViewController class]];
+    controller.codeEditorViewController = codeEditor;
+    [[codeEditor expect] setEditedMethod:createdMethod];
+
+    [controller addMethodSheetReturnedCode:NSModalResponseOK];
+
+    [codeEditor verify];
+    [methodSignatureSheet verify];
 }
 
 @end

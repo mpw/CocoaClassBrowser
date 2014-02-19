@@ -13,4 +13,5 @@
 
 - (void)printIt:(id)sender;
 
+- (void)setEditedMethod:(id)method;
 @end

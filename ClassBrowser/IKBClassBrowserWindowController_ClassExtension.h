@@ -14,9 +14,12 @@
 
 @property (nonatomic, strong) id <IKBClassList> classList;
 @property (nonatomic, strong) IKBClassBrowserSource *browserSource;
-@property (nonatomic, readonly) IKBCodeEditorViewController *codeEditorViewController;
+@property (nonatomic, strong) IKBCodeEditorViewController *codeEditorViewController;
 @property (nonatomic, strong) IKBMethodSignatureSheetController *addMethodSheet;
 
 - (IBAction)browserSelectionDidChange:(NSBrowser *)sender;
+- (IBAction)addMethod:(id)sender;
+
+- (void)addMethodSheetReturnedCode:(NSModalResponse)code;
 
 @end

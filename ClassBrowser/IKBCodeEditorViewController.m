@@ -6,6 +6,7 @@
 #import "IKBCompileAndRunCodeCommand.h"
 #import "IKBCompilerTranscriptWindowController.h"
 #import "IKBViewControllerOwnedView.h"
+#import "IKBObjectiveCMethod.h"
 
 @interface IKBCodeEditorViewController ()
 
@@ -90,4 +91,10 @@
     }
 
 }
+
+- (void)setEditedMethod:(IKBObjectiveCMethod *)method
+{
+
+}
+
 @end

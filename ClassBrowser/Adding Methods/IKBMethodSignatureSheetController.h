@@ -5,6 +5,8 @@
 
 #import <Cocoa/Cocoa.h>
 
+@class IKBObjectiveCMethod;
 
 @interface IKBMethodSignatureSheetController : NSWindowController
+- (IKBObjectiveCMethod *)method;
 @end
