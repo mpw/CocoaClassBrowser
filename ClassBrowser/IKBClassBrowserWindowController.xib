@@ -33,7 +33,7 @@
                 <allowedToolbarItems>
                     <toolbarItem implicitItemIdentifier="NSToolbarSpaceItem" id="RNq-S3-QLY"/>
                     <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="Plj-3a-d7b"/>
-                    <toolbarItem implicitItemIdentifier="F72039FB-DAA9-4F40-9512-C3C0347A8DDE" label="Add Method" paletteLabel="Add Method" tag="-1" id="fQb-Bt-ZC5">
+                    <toolbarItem implicitItemIdentifier="F72039FB-DAA9-4F40-9512-C3C0347A8DDE" label="Add Method" paletteLabel="Add Method" tag="-1" image="add_method" id="fQb-Bt-ZC5">
                         <connections>
                             <action selector="addMethod:" target="-1" id="2do-gL-Gbb"/>
                         </connections>
@@ -48,4 +48,7 @@
             </connections>
         </window>
     </objects>
+    <resources>
+        <image name="add_method" width="41" height="52"/>
+    </resources>
 </document>
