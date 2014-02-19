@@ -153,4 +153,13 @@
     [addMethodItem verify];
 }
 
+- (void)testAddingAMethodPresentsASheetForSettingTheMethodSignature
+{
+    id window = [OCMockObject partialMockForObject:[controller window]];
+    controller.window = window;
+    [[window expect] beginSheet:OCMOCK_ANY completionHandler:OCMOCK_ANY];
+    [controller addMethod:[controller addMethodItem]];
+    [window verify];
+}
+
 @end

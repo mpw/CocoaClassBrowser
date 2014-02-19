@@ -4,4 +4,6 @@
 
 @interface IKBClassBrowserWindowController : NSWindowController
 
+- (IBAction)addMethod:(id)sender;
+
 @end
