@@ -1,7 +1,4 @@
-//
-// Created by Graham Lee on 16/01/2014.
-// Copyright (c) 2014 Project Isambard. All rights reserved.
-//
+//See COPYING for licence details.
 
 #import <Foundation/Foundation.h>
 #include <string>

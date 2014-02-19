@@ -1,7 +1,4 @@
-//
-// Created by Graham Lee on 19/02/2014.
-// Copyright (c) 2014 Project Isambard. All rights reserved.
-//
+//See COPYING for licence details.
 
 #import "IKBMethodSignatureSheetController.h"
 #import "IKBObjectiveCMethod.h"
