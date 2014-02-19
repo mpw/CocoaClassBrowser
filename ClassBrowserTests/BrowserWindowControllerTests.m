@@ -135,4 +135,22 @@
     [addMethodItem verify];
 }
 
+- (void)testWithAProtocolSelectedICanAddAMethod
+{
+    id addMethodItem = [self mockTheAddMethodToolbarItem];
+    [[addMethodItem expect] setEnabled:YES];
+    id sender = [self mockABrowserWithSelectedColumn:2 row:0];
+    [controller browserSelectionDidChange:sender];
+    [addMethodItem verify];
+}
+
+- (void)testWithAMethodSelectedICanAddAMethod
+{
+    id addMethodItem = [self mockTheAddMethodToolbarItem];
+    [[addMethodItem expect] setEnabled:YES];
+    id sender = [self mockABrowserWithSelectedColumn:3 row:7];
+    [controller browserSelectionDidChange:sender];
+    [addMethodItem verify];
+}
+
 @end
