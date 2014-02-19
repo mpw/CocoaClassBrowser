@@ -5,6 +5,7 @@
 @class IKBClassBrowserSource;
 @class IKBCodeEditorViewController;
 @protocol IKBClassList;
+@class IKBMethodSignatureSheetController;
 
 @interface IKBClassBrowserWindowController ()
 
@@ -14,7 +15,7 @@
 @property (nonatomic, strong) id <IKBClassList> classList;
 @property (nonatomic, strong) IKBClassBrowserSource *browserSource;
 @property (nonatomic, readonly) IKBCodeEditorViewController *codeEditorViewController;
-
+@property (nonatomic, strong) IKBMethodSignatureSheetController *addMethodSheet;
 
 - (IBAction)browserSelectionDidChange:(NSBrowser *)sender;
 

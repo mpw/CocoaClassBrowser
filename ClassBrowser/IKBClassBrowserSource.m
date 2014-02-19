@@ -2,6 +2,7 @@
 
 #import "IKBClassBrowserSource.h"
 #import "IKBClassList.h"
+#import "IKBMethodSignatureSheetController.h"
 
 typedef NS_ENUM(NSInteger, IKBClassBrowserColumn) {
     IKBClassBrowserColumnClassGroup = 0,

@@ -9,8 +9,15 @@
 #import "IKBMethodSignatureSheetController.h"
 
 @implementation IKBClassBrowserWindowController
+
+- (id)initWithWindowNibName:(NSString *)windowNibName
 {
-    IKBMethodSignatureSheetController *_addMethodSheet;
+    self = [super initWithWindowNibName:windowNibName];
+    if (self)
+    {
+        _addMethodSheet = [[IKBMethodSignatureSheetController alloc] initWithWindowNibName:@"IKBMethodSignatureSheetController"];
+    }
+    return self;
 }
 
 - (void)windowDidLoad
@@ -43,9 +50,13 @@
 
 - (IBAction)addMethod:(id)sender
 {
-    _addMethodSheet = [[IKBMethodSignatureSheetController alloc] initWithWindowNibName:@"IKBMethodSignatureSheetController"];
-    [self.window beginSheet:_addMethodSheet.window completionHandler:^(NSModalResponse returnCode) {
-
+    [self.window beginSheet:self.addMethodSheet.window completionHandler:^(NSModalResponse returnCode) {
+        [self addMethodSheetReturnedCode:returnCode];
     }];
+}
+
+- (void)addMethodSheetReturnedCode:(NSModalResponse)code
+{
+
 }
 @end
