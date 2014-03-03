@@ -184,7 +184,7 @@
 - (void)testCancelReturnFromSheetDoesNotPassAnythingToTheCodeEditor
 {
     id codeEditor = [OCMockObject mockForClass:[IKBCodeEditorViewController class]];
-    //use the fact that the mock is unsafe and won't expect any methods
+    //use the fact that the mock is not nice and won't expect any methods
     controller.codeEditorViewController = codeEditor;
 
     [controller addMethodSheetReturnedCode:NSModalResponseCancel];
