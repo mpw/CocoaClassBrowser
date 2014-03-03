@@ -2,6 +2,8 @@
 
 #import <XCTest/XCTest.h>
 #import "IKBClassList.h"
+#import "FakeClassList.h"
+#import "IKBAppDelegate.h"
 
 
 @interface ClassListTests : XCTestCase
@@ -103,6 +105,12 @@
     __unused NSArray *protocols = [self protocolsForIKBAppDelegate];
     [list selectProtocolAtIndex:1];
     XCTAssertEqual([list countOfMethods], (NSUInteger)9);
+}
+
+- (void)testThatRetrievingTheSelectedClassIsPossible
+{
+    __unused NSArray *protocols = [self protocolsForIKBAppDelegate];
+    XCTAssertEqualObjects([list selectedClass], [IKBAppDelegate class]);
 }
 
 @end

@@ -97,6 +97,11 @@
     [self createProtocolList];
 }
 
+- (Class)selectedClass
+{
+    return NSStringFromClass(_selectedClass);
+}
+
 - (NSArray *)protocolsInSelectedClass
 {
     return [[_protocolList retain] autorelease];

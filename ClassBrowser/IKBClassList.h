@@ -13,6 +13,7 @@
 - (NSUInteger)countOfClasses;
 - (NSString *)objectInClassesAtIndex:(NSUInteger)index;
 - (void)selectClassAtIndex:(NSInteger)index;
+- (NSString *)selectedClass;
 
 - (NSArray *)protocolsInSelectedClass;
 - (NSUInteger)countOfProtocols;

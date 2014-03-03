@@ -6,5 +6,5 @@
 
 @interface IKBMethodSignatureSheetController : NSWindowController
 - (IKBObjectiveCMethod *)method;
-- (void)setClass:(Class)classForNewMethod;
+- (void)setClass:(NSString *)classForNewMethod;
 @end

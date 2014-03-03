@@ -194,15 +194,12 @@
 - (void)testMethodSignatureSheetIsToldTheClassToAddTheMethodTo
 {
     // first, select the Foundation category
-    browser.selectedColumn = 0;
-    browser.selectedRow = 0;
-    [controller browserSelectionDidChange:browser];
+    [classes selectClassGroupAtIndex:1];
     // then select the NSString class
-    browser.selectedColumn = 1;
-    browser.selectedRow = 2;
-    [controller browserSelectionDidChange:browser];
+    [classes selectClassAtIndex:2];
+    controller.classList = classes;
     id methodSignatureSheet = [OCMockObject niceMockForClass:[IKBMethodSignatureSheetController class]];
-    [[methodSignatureSheet expect] setClass:[NSString class]];
+    [[methodSignatureSheet expect] setClass:@"NSString"];
     controller.addMethodSheet = methodSignatureSheet;
     [controller addMethod:[controller addMethodItem]];
     [methodSignatureSheet verify];

@@ -13,7 +13,7 @@
     return nil;
 }
 
-- (void)setClass:(Class)classForNewMethod
+- (void)setClass:(NSString *)classForNewMethod
 {
 
 }
