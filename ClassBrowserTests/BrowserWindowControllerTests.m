@@ -205,4 +205,13 @@
     [methodSignatureSheet verify];
 }
 
+- (void)testMethodSignatureSheetIsAskedToDiscardExistingStateOnPresentation
+{
+    id methodSignatureSheet = [OCMockObject niceMockForClass:[IKBMethodSignatureSheetController class]];
+    [[methodSignatureSheet expect] reset];
+    controller.addMethodSheet = methodSignatureSheet;
+    [controller addMethod:[controller addMethodItem]];
+    [methodSignatureSheet verify];
+}
+
 @end
