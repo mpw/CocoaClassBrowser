@@ -13,4 +13,9 @@
     return nil;
 }
 
+- (void)setClass:(Class)classForNewMethod
+{
+
+}
+
 @end

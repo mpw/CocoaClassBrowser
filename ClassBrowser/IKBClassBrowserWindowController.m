@@ -50,6 +50,7 @@
 
 - (IBAction)addMethod:(id)sender
 {
+    [self.addMethodSheet setClass:[NSString class]];
     [self.window beginSheet:self.addMethodSheet.window completionHandler:^(NSModalResponse returnCode) {
         [self addMethodSheetReturnedCode:returnCode];
     }];
