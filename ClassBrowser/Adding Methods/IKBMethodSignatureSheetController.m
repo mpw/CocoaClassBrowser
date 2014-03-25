@@ -5,7 +5,8 @@
 #import "IKBObjectiveCMethod.h"
 
 
-@implementation IKBMethodSignatureSheetController {
+@implementation IKBMethodSignatureSheetController
+{
 
 }
 
@@ -31,6 +32,8 @@
 
 - (void)cancel:(id)sender
 {
-    
+    NSWindow *presentingWindow = [self.window sheetParent];
+    [presentingWindow endSheet:self.window returnCode:NSModalResponseCancel];
 }
+
 @end
