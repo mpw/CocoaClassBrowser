@@ -110,7 +110,7 @@
 - (void)testThatRetrievingTheSelectedClassIsPossible
 {
     __unused NSArray *protocols = [self protocolsForIKBAppDelegate];
-    XCTAssertEqualObjects([list selectedClass], [IKBAppDelegate class]);
+    XCTAssertEqualObjects([list selectedClass], NSStringFromClass([IKBAppDelegate class]));
 }
 
 @end
