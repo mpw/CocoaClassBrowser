@@ -7,7 +7,7 @@
 
 @interface IKBCodeEditorViewController : NSViewController
 
-@property (nonatomic, readonly) NSTextView *textView;
+@property (nonatomic, readonly, unsafe_unretained) NSTextView *textView;
 @property (nonatomic, strong) IKBCompilerTranscriptWindowController *transcriptWindowController;
 @property (nonatomic, strong) IKBCommandBus *commandBus;
 

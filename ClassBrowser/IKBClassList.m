@@ -97,7 +97,7 @@
     [self createProtocolList];
 }
 
-- (Class)selectedClass
+- (NSString *)selectedClass
 {
     return NSStringFromClass(_selectedClass);
 }

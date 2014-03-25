@@ -11,7 +11,7 @@
 @interface IKBCodeEditorViewController ()
 
 @property (nonatomic, strong) NSFont *defaultFont;
-@property (nonatomic, weak, readwrite) NSTextView *textView;
+@property (nonatomic, unsafe_unretained, readwrite) NSTextView *textView;
 
 @end
 
