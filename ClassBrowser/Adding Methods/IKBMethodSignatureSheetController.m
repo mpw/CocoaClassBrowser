@@ -1,6 +1,7 @@
 //See COPYING for licence details.
 
 #import "IKBMethodSignatureSheetController.h"
+#import "IKBMethodSignatureSheetController_ClassExtension.h"
 #import "IKBObjectiveCMethod.h"
 
 
@@ -23,4 +24,13 @@
 
 }
 
+- (void)createMethod:(id)sender
+{
+    
+}
+
+- (void)cancel:(id)sender
+{
+    
+}
 @end

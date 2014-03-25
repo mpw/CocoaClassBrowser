@@ -223,6 +223,7 @@
 		981613F6187C1F1400A0BEDD /* IKBCompilerTranscriptWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IKBCompilerTranscriptWindowController.m; sourceTree = "<group>"; };
 		981613F7187C1F1400A0BEDD /* IKBCompilerTranscriptWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IKBCompilerTranscriptWindowController.xib; sourceTree = "<group>"; };
 		981613FA187C22F200A0BEDD /* CompilerTranscriptTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CompilerTranscriptTests.m; sourceTree = "<group>"; };
+		9817231018E1BD7D004D2906 /* IKBMethodSignatureSheetController_ClassExtension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IKBMethodSignatureSheetController_ClassExtension.h; sourceTree = "<group>"; };
 		9819D721187D969600485A57 /* IKBCodeEditorViewController_ClassExtension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IKBCodeEditorViewController_ClassExtension.h; sourceTree = "<group>"; };
 		981DD5B318912A8A00EB971D /* emptysource */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = emptysource; sourceTree = "<group>"; };
 		9828F187187EC515003F1DC6 /* IKBCompileAndRunCodeCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IKBCompileAndRunCodeCommand.h; path = "Code Execution/IKBCompileAndRunCodeCommand.h"; sourceTree = "<group>"; };
@@ -379,6 +380,7 @@
 				329FDEFFA8EDA742ACD2D0BE /* IKBMethodSignatureSheetController.m */,
 				329FDE86F47AD95999EC8056 /* IKBMethodSignatureSheetController.h */,
 				329FD1E05E408248C3AF580B /* IKBMethodSignatureSheetController.xib */,
+				9817231018E1BD7D004D2906 /* IKBMethodSignatureSheetController_ClassExtension.h */,
 			);
 			path = "Adding Methods";
 			sourceTree = "<group>";
