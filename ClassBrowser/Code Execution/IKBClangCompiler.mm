@@ -4,23 +4,25 @@
 #import "IKBCodeRunner.h"
 #import "IKBLLVMBitcodeModule.h"
 
+#import "ClangUndefs.h"
+
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wconversion"
 #include "clang/Basic/DiagnosticOptions.h"
 #include "clang/CodeGen/CodeGenAction.h"
 #include "clang/Driver/Compilation.h"
-#include "clang/Frontend/CompilerInvocation.h"
 #include "clang/Driver/Driver.h"
 #include "clang/Driver/Tool.h"
 #include "clang/Frontend/CompilerInstance.h"
 #include "clang/Frontend/CompilerInvocation.h"
 #include "clang/Frontend/FrontendDiagnostic.h"
 #include "clang/Frontend/TextDiagnosticPrinter.h"
+#include "llvm/ADT/SmallString.h"
 #include "llvm/Bitcode/BitstreamReader.h"
 #include "llvm/Bitcode/ReaderWriter.h"
 #include "llvm/ExecutionEngine/ExecutionEngine.h"
 #include "llvm/ExecutionEngine/GenericValue.h"
-#include "llvm/ExecutionEngine/JIT.h"
+#include "llvm/ExecutionEngine/MCJIT.h"
 #include "llvm/IR/Module.h"
 #include "llvm/IR/Instructions.h"
 #include "llvm/IR/TypeBuilder.h"
@@ -30,7 +32,6 @@
 #include "llvm/Support/ManagedStatic.h"
 #include "llvm/Support/MemoryBuffer.h"
 #include "llvm/Support/Path.h"
-#include "llvm/Support/StreamableMemoryObject.h"
 #include "llvm/Support/TargetSelect.h"
 #include "llvm/Support/raw_ostream.h"
 #pragma clang diagnostic pop
@@ -42,7 +43,7 @@ BOOL canUseCompilerJobs(const driver::JobList &Jobs, DiagnosticsEngine &Diags)
 {
     BOOL result = YES;
     if (Jobs.size() != 1 || !isa<driver::Command>(*Jobs.begin())) {
-        SmallString<256> Msg;
+        llvm::SmallString<256> Msg;
         llvm::raw_svector_ostream OS(Msg);
         OS << "size: " << Jobs.size();
         Jobs.Print(OS, "; ", true);
@@ -84,7 +85,8 @@ BOOL canUseCompilerJobs(const driver::JobList &Jobs, DiagnosticsEngine &Diags)
     TextDiagnosticPrinter *diagnosticClient = new TextDiagnosticPrinter(ostream, &*options);
     IntrusiveRefCntPtr<DiagnosticIDs> diagnosticIDs(new DiagnosticIDs());
     DiagnosticsEngine diagnostics(diagnosticIDs, &*options, diagnosticClient);
-    Driver driver(executable_name, llvm::sys::getProcessTriple(), "a.out", diagnostics);
+    llvm::Triple processTriple(llvm::sys::getProcessTriple());
+    Driver driver(executable_name, processTriple.str(), diagnostics);
     driver.setTitle("clang");
     driver.setCheckInputsExist(false);
     //I _think_ that all of the above could be statics, or could be in a singleton CompilerBuilder or something.
@@ -99,7 +101,7 @@ BOOL canUseCompilerJobs(const driver::JobList &Jobs, DiagnosticsEngine &Diags)
     StringRef fakeFileName = [fakeSourcePath fileSystemRepresentation];
     Args.push_back([fakeSourcePath fileSystemRepresentation]);
 
-    OwningPtr<Compilation> C(driver.BuildCompilation(Args));
+    std::unique_ptr<Compilation> C(driver.BuildCompilation(Args));
     if (!C)
     {
         if (error)
@@ -119,8 +121,8 @@ BOOL canUseCompilerJobs(const driver::JobList &Jobs, DiagnosticsEngine &Diags)
         return nil;
     }
     //and pull the clang invocation from the list of jobs
-    driver::Command *command = cast<driver::Command>(*Jobs.begin());
-    if (llvm::StringRef(command->getCreator().getName()) != "clang") {
+    driver::Command &command = cast<driver::Command>(*Jobs.begin());
+    if (llvm::StringRef(command.getCreator().getName()) != "clang") {
         diagnostics.Report(diag::err_fe_expected_clang_command);
         if (error)
         {
@@ -128,8 +130,8 @@ BOOL canUseCompilerJobs(const driver::JobList &Jobs, DiagnosticsEngine &Diags)
         }
         return nil;
     }
-    const driver::ArgStringList &CCArgs = command->getArguments();
-    OwningPtr<CompilerInvocation> CI(new CompilerInvocation);
+    const driver::ArgStringList &CCArgs = command.getArguments();
+    std::unique_ptr<CompilerInvocation> CI(new CompilerInvocation);
     CompilerInvocation::CreateFromArgs(*CI,
                                        const_cast<const char **>(CCArgs.data()),
                                        const_cast<const char **>(CCArgs.data()) +
@@ -148,13 +150,12 @@ BOOL canUseCompilerJobs(const driver::JobList &Jobs, DiagnosticsEngine &Diags)
     }
 
     //create a virtual file with our content
-    Clang.setInvocation(CI.take());
+    Clang.setInvocation(CI.release());
     Clang.createFileManager();
     Clang.createSourceManager(Clang.getFileManager());
     const FileEntry *mainFileEntry = Clang.getFileManager().getVirtualFile(fakeFileName, [source lengthOfBytesUsingEncoding:NSUTF8StringEncoding] + 1, time(0));
     llvm::StringRef sourceString([source UTF8String]);
-    llvm::MemoryBuffer* mainFile = llvm::MemoryBuffer::getMemBuffer(sourceString);
-    Clang.getSourceManager().overrideFileContents(mainFileEntry, mainFile);
+    Clang.getSourceManager().overrideFileContents(mainFileEntry, std::move(llvm::MemoryBuffer::getMemBuffer(sourceString)));
 
     // Infer the builtin include path if unspecified.
     if (Clang.getHeaderSearchOpts().UseBuiltinIncludes &&
@@ -164,7 +165,7 @@ BOOL canUseCompilerJobs(const driver::JobList &Jobs, DiagnosticsEngine &Diags)
     }
 
     // Create and execute the frontend to generate an LLVM bitcode module.
-    OwningPtr<CodeGenAction> Act(new EmitLLVMOnlyAction());
+    std::unique_ptr<CodeGenAction> Act(new EmitLLVMOnlyAction());
     if (!Clang.ExecuteAction(*Act))
     {
         if (error)
@@ -173,16 +174,16 @@ BOOL canUseCompilerJobs(const driver::JobList &Jobs, DiagnosticsEngine &Diags)
         }
         return nil;
     }
-    llvm::Module *mod = Act->takeModule();
+    std::unique_ptr<llvm::Module> mod = Act->takeModule();
     std::string moduleName = mod->getModuleIdentifier();
     llvm::SmallVector<char, 128> bitcodeModule;
     llvm::raw_svector_ostream bitcodeStream(bitcodeModule);
-    llvm::WriteBitcodeToFile(mod, bitcodeStream);
+    llvm::WriteBitcodeToFile(mod.release(), bitcodeStream);
     llvm::StringRef bitcodeString = bitcodeStream.str();
     
-    IKBLLVMBitcodeModule *module = [[IKBLLVMBitcodeModule alloc] initWithIdentifier:@(moduleName.c_str())
+    IKBLLVMBitcodeModule *bcModule = [[IKBLLVMBitcodeModule alloc] initWithIdentifier:@(moduleName.c_str())
                                                                                data:[[NSData alloc] initWithBytes:bitcodeString.data()
                                                                                                            length:bitcodeString.size()]];
-    return module;
+    return bcModule;
 }
 @end

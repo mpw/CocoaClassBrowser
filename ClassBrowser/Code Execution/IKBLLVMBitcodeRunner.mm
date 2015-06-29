@@ -4,6 +4,8 @@
 #import "IKBLLVMBitcodeModule.h"
 #import "IKBCodeRunner.h"
 
+#import "ClangUndefs.h"
+
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wconversion"
 #include "clang/Basic/DiagnosticOptions.h"
@@ -20,7 +22,7 @@
 #include "llvm/Bitcode/ReaderWriter.h"
 #include "llvm/ExecutionEngine/ExecutionEngine.h"
 #include "llvm/ExecutionEngine/GenericValue.h"
-#include "llvm/ExecutionEngine/JIT.h"
+#include "llvm/ExecutionEngine/MCJIT.h"
 #include "llvm/IR/Module.h"
 #include "llvm/IR/Instructions.h"
 #include "llvm/IR/TypeBuilder.h"
@@ -30,7 +32,6 @@
 #include "llvm/Support/ManagedStatic.h"
 #include "llvm/Support/MemoryBuffer.h"
 #include "llvm/Support/Path.h"
-#include "llvm/Support/StreamableMemoryObject.h"
 #include "llvm/Support/TargetSelect.h"
 #include "llvm/Support/raw_ostream.h"
 #pragma clang diagnostic pop
@@ -69,7 +70,8 @@ using namespace clang::driver;
     llvm::LLVMContext context;
 
     llvm::StringRef bitcodeBytes = llvm::StringRef(compiledBitcode.bitcode, compiledBitcode.bitcodeLength);
-    llvm::ErrorOr<llvm::Module *> parseResult = llvm::parseBitcodeFile(llvm::MemoryBuffer::getMemBuffer(bitcodeBytes, moduleName, false),
+    std::unique_ptr<llvm::MemoryBuffer> memBuffer = llvm::MemoryBuffer::getMemBuffer(bitcodeBytes, moduleName, false);
+    llvm::ErrorOr<std::unique_ptr<llvm::Module>> parseResult = llvm::parseBitcodeFile(memBuffer.get()->getMemBufferRef(),
                                                   context);
 
     if (parseResult.getError().value() != 0)
@@ -85,23 +87,14 @@ using namespace clang::driver;
         return nil;
     }
 
-    llvm::Module *module = parseResult.get();
+    LLVMLinkInMCJIT();
+    llvm::InitializeNativeTargetAsmPrinter();
+    llvm::InitializeNativeTargetAsmParser();
     llvm::InitializeNativeTarget();
     std::string Error;
-    OwningPtr<llvm::ExecutionEngine> EE(llvm::ExecutionEngine::createJIT(module, &Error));
-    if (!EE)
-    {
-        std::string llvmError("unable to make execution engine: ");
-        llvmError += Error;
-        if (error)
-        {
-            *error = [self JITErrorWithCode:IKBCodeRunnerErrorCouldNotConstructRuntime
-                           diagnosticOutput:diagnostic_output
-                                  errorText:llvmError];
-        }
-        return nil;
-    }
+    auto module = std::move(parseResult.get());
 
+    
     llvm::Function *EntryFn = module->getFunction([name UTF8String]);
     if (!EntryFn)
     {
@@ -114,9 +107,9 @@ using namespace clang::driver;
         }
         return nil;
     }
-
+    
     [self.class fixupSelectorsInModule:module];
-
+    
     llvm::raw_string_ostream ostream(Error);
     if (llvm::verifyModule(*module, &ostream))
     {
@@ -131,9 +124,20 @@ using namespace clang::driver;
         return nil;
     }
 
-    // FIXME: Support passing arguments.
-    std::vector<std::string> jitArguments;
-    jitArguments.push_back(module->getModuleIdentifier());
+    std::string EngineBuildError;
+    std::unique_ptr<llvm::ExecutionEngine> EE(llvm::EngineBuilder(std::move(module)).setErrorStr(&EngineBuildError).create());
+    if (!EE)
+    {
+        std::string llvmError("unable to make execution engine: ");
+        llvmError += EngineBuildError;
+        if (error)
+        {
+            *error = [self JITErrorWithCode:IKBCodeRunnerErrorCouldNotConstructRuntime
+                           diagnosticOutput:diagnostic_output
+                                  errorText:llvmError];
+        }
+        return nil;
+    }
 
     std::vector<llvm::GenericValue> functionArguments;
     llvm::GenericValue result = EE->runFunction(EntryFn, functionArguments);
@@ -173,7 +177,7 @@ isSelectorReference(const llvm::GlobalValue &GV)
  *
  *  This avoids the "does not match selector known to Objective C runtime"
  *  exception encountered without this level of indirection. */
-+ (void)fixupSelectorsInModule:(llvm::Module *)Module
++ (void)fixupSelectorsInModule:(std::unique_ptr<llvm::Module>&)Module
 {
 #define FIXUP_DEBUG (0)
 #if FIXUP_DEBUG
