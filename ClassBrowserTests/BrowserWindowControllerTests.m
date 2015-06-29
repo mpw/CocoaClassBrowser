@@ -19,6 +19,8 @@
 
 @implementation FakeBrowser
 
+@synthesize selectedColumn = _selectedColumn;
+
 - (NSInteger)selectedRowInColumn:(NSInteger)column
 {
     return self.selectedRow;
