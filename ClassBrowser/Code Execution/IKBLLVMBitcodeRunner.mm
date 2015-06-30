@@ -139,6 +139,8 @@ using namespace clang::driver;
         return nil;
     }
 
+    EE->finalizeObject();
+    
     llvm::ArrayRef<llvm::GenericValue> functionArguments;
     llvm::GenericValue result = EE->runFunction(EntryFn, functionArguments);
     id returnedObject = (__bridge id)GVTOP(result);
