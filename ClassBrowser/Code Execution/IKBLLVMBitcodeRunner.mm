@@ -139,7 +139,7 @@ using namespace clang::driver;
         return nil;
     }
 
-    std::vector<llvm::GenericValue> functionArguments;
+    llvm::ArrayRef<llvm::GenericValue> functionArguments;
     llvm::GenericValue result = EE->runFunction(EntryFn, functionArguments);
     id returnedObject = (__bridge id)GVTOP(result);
     if ([returnedObject isMemberOfClass:[@"" class]]) {
