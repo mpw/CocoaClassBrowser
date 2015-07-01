@@ -151,7 +151,7 @@ using namespace clang::driver;
          * gone out of scope when we return from this function.
          * Constant NSStrings is a common-enough case to want a workaround.
          */
-        returnedObject = [NSString stringWithString:returnedObject];
+        returnedObject = [[NSString alloc] initWithUTF8String:[returnedObject UTF8String]];
     }
     return returnedObject;
 }
