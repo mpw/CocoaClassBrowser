@@ -13,11 +13,13 @@
 @interface FakeBrowser : NSBrowser
 
 @property (nonatomic, assign) NSInteger selectedRow;
-@property (nonatomic, assign) NSInteger selectedColumn;
+@property (atomic, assign) NSInteger selectedColumn;
 
 @end
 
 @implementation FakeBrowser
+
+@synthesize selectedColumn = _selectedColumn;
 
 - (NSInteger)selectedRowInColumn:(NSInteger)column
 {

@@ -2,7 +2,7 @@
 
 Follow the instructions in clang's getting started guide to build the clang and LLVM libraries, and install them into /usr/local along with the headers.
 
-The current master in ClassBrowser was tested with SVN revision 201767 of LLVM, Clang and Compiler-RT. Contributions for a better build process that let us manage the LLVM libraries better are welcome :-).
+The current master in ClassBrowser was tested with SVN revision 241150 of LLVM, Clang and Compiler-RT. Contributions for a better build process that let us manage the LLVM libraries better are welcome :-).
 
 
 ##Clone the project
