@@ -212,7 +212,7 @@ isSelectorReference(const llvm::GlobalValue &GV)
          */
         for (llvm::Value::use_iterator I = GV.use_begin(), E = GV.use_end();
              I != E; ++I) {
-            llvm::LoadInst *Selector = dyn_cast<llvm::LoadInst>(*I);
+            llvm::LoadInst *Selector = dyn_cast<llvm::LoadInst>(I->getUser());
             if (!Selector) continue;
 
             llvm::CallInst *SelGetNameCall = llvm::CallInst::Create(
