@@ -179,6 +179,17 @@
     XCTAssertEqual(inspectItItem.action, @selector(inspectIt:));
 }
 
+- (void)testInspectItSchedulesACompileCommandContainingTheSourceCode
+{
+    id mockCommandBus = [OCMockObject mockForClass:[IKBCommandBus class]];
+    [[mockCommandBus expect] execute:[OCMArg checkWithBlock:^(IKBCompileAndRunCodeCommand *command){
+        return (BOOL)(command.completion != nil && [command.source isEqualToString:@"Hello"]);
+    }]];
+    _vc.commandBus = mockCommandBus;
+    [_vc inspectIt:self];
+    [mockCommandBus verify];
+}
+
 - (void)testCompilerTranscriptControllerIsAvailableByDefault
 {
     IKBCodeEditorViewController *viewController = [IKBCodeEditorViewController new];

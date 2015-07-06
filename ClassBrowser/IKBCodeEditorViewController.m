@@ -62,16 +62,18 @@
 
 #pragma mark - menu items
 
-- (void)printIt:(id)sender
+- (void)printIt:sender
 {
-    NSRange textRange = [self.textView selectedRange];
-    NSString *source = [self.textView.textStorage.string substringWithRange:textRange];
-    IKBCompileAndRunCodeCommand *command = [IKBCompileAndRunCodeCommand new];
-    command.source = source;
-    command.completion = ^(id returnValue, NSString *compilerTranscript, NSError *error){
-        [self updateSourceViewWithResult:returnValue ofSourceInRange:textRange compilerOutput:compilerTranscript error:error];
-    };
-    [self.commandBus execute:command];
+    [self compileSelectedCodeWithCompletion:^(id returnValue, NSString *compilerTranscript, NSError *error) {
+        [self updateSourceViewWithResult:returnValue ofSourceInRange:[self.textView selectedRange] compilerOutput:compilerTranscript error:error];
+    }];
+}
+
+- (void)inspectIt:sender
+{
+    [self compileSelectedCodeWithCompletion:^(id returnValue, NSString *compilerTranscript, NSError *error) {
+        [self inspectResult:returnValue compilerOutput:compilerTranscript error:error];
+    }];
 }
 
 - (BOOL)validateMenuItem:(NSMenuItem *)menuItem
@@ -79,7 +81,17 @@
     return ([self.textView selectedRange].length > 0);
 }
 
-- (void)updateSourceViewWithResult:(id)returnValue ofSourceInRange:(NSRange)textRange compilerOutput:(NSString *)transcript error:(NSError *)error
+- (void)compileSelectedCodeWithCompletion:(void(^)(id,NSString *,NSError *))completion
+{
+    NSRange textRange = [self.textView selectedRange];
+    NSString *source = [self.textView.textStorage.string substringWithRange:textRange];
+    IKBCompileAndRunCodeCommand *command = [IKBCompileAndRunCodeCommand new];
+    command.source = source;
+    command.completion = completion;
+    [self.commandBus execute:command];
+}
+
+- (void)updateSourceViewWithResult:returnValue ofSourceInRange:(NSRange)textRange compilerOutput:(NSString *)transcript error:(NSError *)error
 {
     NSString *formattedResult = [NSString stringWithFormat:@" %@", returnValue?:[error localizedDescription]];
     NSUInteger insertLocation = textRange.location + textRange.length;
@@ -93,6 +105,11 @@
         [transcriptWindow orderOut:self];
     }
 
+}
+
+- (void)inspectResult:returnValue compilerOutput:(NSString *)compilerTranscript error:(NSError *)error
+{
+    
 }
 
 - (void)setEditedMethod:(IKBObjectiveCMethod *)method
