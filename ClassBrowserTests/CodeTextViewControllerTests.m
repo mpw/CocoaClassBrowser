@@ -42,6 +42,7 @@
     NSView *_view;
     TranscriptController *_transcriptController;
     NSMenuItem *_printItItem;
+    NSMenuItem *_inspectItItem;
 }
 
 - (void)setUp
@@ -53,8 +54,11 @@
     _transcriptController = [TranscriptController new];
     _vc.transcriptWindowController = (id)_transcriptController;
     _printItItem = [[NSMenuItem alloc] initWithTitle:@"Print It"
-                                                         action:@selector(printIt:)
-                                                  keyEquivalent:@""];
+                                              action:@selector(printIt:)
+                                       keyEquivalent:@""];
+    _inspectItItem = [[NSMenuItem alloc] initWithTitle:@"Inspect It"
+                                                action:@selector(inspectIt:)
+                                         keyEquivalent:@""];
 }
 
 - (void)testTheViewHasTheViewControllerAsItsNextResponder
@@ -164,6 +168,17 @@
                    @"expected attributes' effective range to match length of result string");
 }
 
+- (void)testTextViewHasAMenuItemToExecuteCodeAndInspectTheResult
+{
+    NSMenu *menu = _vc.textView.menu;
+    NSArray *titles = [menu.itemArray valueForKey:@"title"];
+    XCTAssertTrue([titles containsObject:@"Inspect It"]);
+    NSUInteger index = [titles indexOfObject:@"Inspect It"];
+    NSMenuItem *inspectItItem = [menu.itemArray objectAtIndex:index];
+    XCTAssertNil(inspectItItem.target);
+    XCTAssertEqual(inspectItItem.action, @selector(inspectIt:));
+}
+
 - (void)testCompilerTranscriptControllerIsAvailableByDefault
 {
     IKBCodeEditorViewController *viewController = [IKBCodeEditorViewController new];
@@ -210,4 +225,16 @@
 {
     XCTAssertTrue([_vc validateMenuItem:_printItItem]);
 }
+
+- (void)testInspectItMenuItemIsDisabledWhenNoTextIsSelected
+{
+    [_vc.textView setSelectedRange:NSMakeRange(0, 0)];
+    XCTAssertFalse([_vc validateMenuItem:_inspectItItem]);
+}
+
+- (void)testInspectItMenuItemIsEnabledWhenTextIsSelected
+{
+    XCTAssertTrue([_vc validateMenuItem:_inspectItItem]);
+}
+
 @end

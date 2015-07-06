@@ -12,6 +12,7 @@
 @property (nonatomic, strong) IKBCommandBus *commandBus;
 
 - (void)printIt:(id)sender;
+- (void)inspectIt:(id)sender;
 
 - (void)setEditedMethod:(id)method;
 @end

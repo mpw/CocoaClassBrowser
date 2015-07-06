@@ -49,11 +49,14 @@
     
     NSMenuItem *printItItem = [[NSMenuItem alloc] initWithTitle:@"Print It" action:@selector(printIt:) keyEquivalent:@""];
     [textView.menu addItem:printItItem];
+    NSMenuItem *inspectItItem = [[NSMenuItem alloc] initWithTitle:@"Inspect It" action:@selector(inspectIt:) keyEquivalent:@""];
+    [textView.menu addItem:inspectItItem];
+
     self.textView = textView;
     [scrollView.contentView addSubview:textView];
     scrollView.contentView.documentView = textView;
     [view addSubview:scrollView];
-    
+
     self.view = view;
 }
 
