@@ -14,12 +14,12 @@
 {
     IKBInspectorDataSource *source = [self new];
     [source configureForObject:target];
-    return source;
+    return [source autorelease];
 }
 
 - (void)configureForObject:target
 {
-    _inspectedObject = target;
+    _inspectedObject = [target retain];
     if (target == nil)
     {
         _ivarNames = [NSArray array];
@@ -33,6 +33,7 @@
         [names addObject:@(thisName)];
     }
     _ivarNames = [names copy];
+    [names release];
     free(ivars);
     return;
 }
@@ -54,4 +55,26 @@
     return _ivarNames[row];
 }
 
+- objectValueForValueAtRow:aRow
+{
+    NSString *ivarName = _ivarNames[[aRow integerValue]];
+    void *value = NULL;
+    Ivar ivar = object_getInstanceVariable(_inspectedObject, [ivarName UTF8String], &value);
+    const char *type = ivar_getTypeEncoding(ivar);
+    if (!strcmp(type, @encode(int))) {
+        int integerValue = (int)value;
+        return @(integerValue);
+    } else if (!strncmp(type, @encode(id), 1)) {
+        return (id)value;
+    } else {
+        return nil;
+    }
+}
+
+- (void)dealloc
+{
+    [_inspectedObject release];
+    [_ivarNames release];
+    [super dealloc];
+}
 @end

@@ -61,6 +61,15 @@
     XCTAssertEqualObjects(name_row2, @"_name");
 }
 
+- (void)testObjectValuesInValueColumnAreInstanceVariableValues
+{
+    NSTableColumn *column = [[NSTableColumn alloc] initWithIdentifier:@"Value"];
+    id value_row0 = [_source tableView:nil objectValueForTableColumn:column row:0];
+    XCTAssertEqualObjects(value_row0, @(37));
+    id value_row1 = [_source tableView:nil objectValueForTableColumn:column row:1];
+    XCTAssertEqualObjects(value_row1, @(3.14));
+}
+
 - (void)testDataSourceHasNoRowsIfItIsInspectingNil
 {
     IKBInspectorDataSource *source = [IKBInspectorDataSource inspectorWithObject:nil];
