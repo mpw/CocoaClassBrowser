@@ -60,7 +60,9 @@
     void *value = NULL;
     Ivar ivar = object_getInstanceVariable(_inspectedObject, [ivarName UTF8String], &value);
     const char *type = ivar_getTypeEncoding(ivar);
-    if (!strcmp(type, @encode(int))) {
+    if (!strcmp(type, @encode(int)) ||
+        !strcmp(type, @encode(long long)) ||
+        !strcmp(type, @encode(unsigned long long))) {
         int integerValue = (int)value;
         return @(integerValue);
     } else if (!strncmp(type, @encode(id), 1)) {
