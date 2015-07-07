@@ -200,6 +200,12 @@
     XCTAssertTrue([controller.window isVisible]);
 }
 
+- (void)testInspectItShowsTheCompilerTranscriptIfItNeedsTo
+{
+    [_vc inspectResult:nil compilerOutput:@"Greetings, Programs!" error:nil];
+    XCTAssertTrue([_transcriptController isWindowOrderedFront]);
+}
+
 - (void)testCompilerTranscriptControllerIsAvailableByDefault
 {
     IKBCodeEditorViewController *viewController = [IKBCodeEditorViewController new];

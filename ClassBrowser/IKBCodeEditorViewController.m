@@ -95,12 +95,8 @@
     [self.commandBus execute:command];
 }
 
-- (void)updateSourceViewWithResult:returnValue ofSourceInRange:(NSRange)textRange compilerOutput:(NSString *)transcript error:(NSError *)error
+- (void)updateCompilerTranscript:(NSString *)transcript
 {
-    NSString *formattedResult = [NSString stringWithFormat:@" %@", returnValue?:[error localizedDescription]];
-    NSUInteger insertLocation = textRange.location + textRange.length;
-    [self.textView insertText:formattedResult replacementRange:NSMakeRange(insertLocation, 0)];
-    [self.textView setSelectedRange:NSMakeRange(insertLocation, [formattedResult length])];
     NSWindow *transcriptWindow = self.transcriptWindowController.window;
     if (transcript.length > 0) {
         self.transcriptWindowController.transcriptText = transcript;
@@ -108,7 +104,15 @@
     } else {
         [transcriptWindow orderOut:self];
     }
+}
 
+- (void)updateSourceViewWithResult:returnValue ofSourceInRange:(NSRange)textRange compilerOutput:(NSString *)transcript error:(NSError *)error
+{
+    NSString *formattedResult = [NSString stringWithFormat:@" %@", returnValue?:[error localizedDescription]];
+    NSUInteger insertLocation = textRange.location + textRange.length;
+    [self.textView insertText:formattedResult replacementRange:NSMakeRange(insertLocation, 0)];
+    [self.textView setSelectedRange:NSMakeRange(insertLocation, [formattedResult length])];
+    [self updateCompilerTranscript:transcript];
 }
 
 - (void)inspectResult:returnValue compilerOutput:(NSString *)compilerTranscript error:(NSError *)error
@@ -119,6 +123,7 @@
      */
     IKBInspectorWindowController *controller = [self inspectorForObject:returnValue?:error];
     [controller.window makeKeyAndOrderFront:self];
+    [self updateCompilerTranscript:compilerTranscript];
 }
 
 - (void)setEditedMethod:(IKBObjectiveCMethod *)method
