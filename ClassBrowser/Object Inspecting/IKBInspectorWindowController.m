@@ -16,7 +16,7 @@
 - (void)setRepresentedObject:representedObject
 {
     _representedObject = representedObject;
-    self.window.title = [representedObject description];
+    self.window.title = [representedObject description]?:@"nil";
 }
 
 @end

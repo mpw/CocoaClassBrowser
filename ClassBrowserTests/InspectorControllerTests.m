@@ -11,14 +11,28 @@
 @end
 
 @implementation InspectorControllerTests
+{
+    id _window;
+    IKBInspectorWindowController *_controller;
+}
 
+- (void)setUp
+{
+    _window = [OCMockObject niceMockForClass:[NSWindow class]];
+    _controller = [[IKBInspectorWindowController alloc] initWithWindow:_window];
+}
 - (void)testInspectorWindowTitleRepresentsInspectedObjectDescription
 {
-    id window = [OCMockObject niceMockForClass:[NSWindow class]];
-    [[window expect] setTitle:@"test"];
-    IKBInspectorWindowController *controller = [[IKBInspectorWindowController alloc] initWithWindow:window];
-    [controller setRepresentedObject:@"test"];
-    [window verify];
+    [[_window expect] setTitle:@"test"];
+    [_controller setRepresentedObject:@"test"];
+    [_window verify];
+}
+
+- (void)testInspectorWindowTitleCanRepresentNilObject
+{
+    [[_window expect] setTitle:@"nil"];
+    [_controller setRepresentedObject:nil];
+    [_window verify];
 }
 
 @end
