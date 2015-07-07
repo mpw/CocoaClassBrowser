@@ -7,6 +7,7 @@
 #import "IKBCodeEditorViewController_ClassExtension.h"
 #import "IKBCommandBus.h"
 #import "IKBCompileAndRunCodeCommand.h"
+#import "IKBInspectorWindowController.h"
 
 @interface TranscriptController : NSObject
 
@@ -188,6 +189,15 @@
     _vc.commandBus = mockCommandBus;
     [_vc inspectIt:self];
     [mockCommandBus verify];
+}
+
+- (void)testInspectItCompletionShowsAnInspectorForTheResult
+{
+    id result = @42;
+    [_vc inspectResult:result compilerOutput:nil error:nil];
+    IKBInspectorWindowController *controller = [_vc inspectorForObject:result];
+    XCTAssertNotNil(controller);
+    XCTAssertTrue([controller.window isVisible]);
 }
 
 - (void)testCompilerTranscriptControllerIsAvailableByDefault

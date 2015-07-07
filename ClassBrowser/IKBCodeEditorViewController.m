@@ -5,13 +5,17 @@
 #import "IKBCommandBus.h"
 #import "IKBCompileAndRunCodeCommand.h"
 #import "IKBCompilerTranscriptWindowController.h"
+#import "IKBInspectorWindowController.h"
 #import "IKBViewControllerOwnedView.h"
 #import "IKBObjectiveCMethod.h"
+
+#import <objc/runtime.h>
 
 @interface IKBCodeEditorViewController ()
 
 @property (nonatomic, strong) NSFont *defaultFont;
 @property (nonatomic, unsafe_unretained, readwrite) NSTextView *textView;
+@property (nonatomic, strong) IKBInspectorWindowController *nilInspector;
 
 @end
 
@@ -109,12 +113,41 @@
 
 - (void)inspectResult:returnValue compilerOutput:(NSString *)compilerTranscript error:(NSError *)error
 {
-    
+    /* Writing this method means accepting the possibility that the returnValue is nil but that this is desirable.
+     * I'll follow the "if the result was nil then look at the error" approach, but rely on the error only being
+     * non-nil in the case that the activity failed. "Looking at" the error in this case means inspecting it.
+     */
+    IKBInspectorWindowController *controller = [self inspectorForObject:returnValue?:error];
+    [controller.window makeKeyAndOrderFront:self];
 }
 
 - (void)setEditedMethod:(IKBObjectiveCMethod *)method
 {
 
+}
+
+#pragma mark - Inspector shenanigans
+
+static const NSString *inspectorKey = @"IKBInspectorForObject";
+
+- (IKBInspectorWindowController *)inspectorForObject:object
+{
+    IKBInspectorWindowController *controller = nil;
+    if (!object) {
+        if (!self.nilInspector) {
+            self.nilInspector = [[IKBInspectorWindowController alloc] initWithWindowNibName:NSStringFromClass([IKBInspectorWindowController class])];
+            self.nilInspector.representedObject = nil;
+        }
+        controller = self.nilInspector;
+    } else {
+        controller = objc_getAssociatedObject(object, (__bridge const void *)(inspectorKey));
+        if (!controller) {
+            controller = [[IKBInspectorWindowController alloc] initWithWindowNibName:NSStringFromClass([IKBInspectorWindowController class])];
+            objc_setAssociatedObject(object, (__bridge const void *)inspectorKey, controller, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+            controller.representedObject = object;
+        }
+    }
+    return controller;
 }
 
 @end

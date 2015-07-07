@@ -80,6 +80,8 @@
 		98B811DD186232C6004FF75F /* IKBCodeEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98B811DC186232C6004FF75F /* IKBCodeEditorViewController.m */; };
 		98C653381B4A4E7A002987DE /* ObjectInspectorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 98C653371B4A4E7A002987DE /* ObjectInspectorTests.m */; };
 		98D7836418760BBD00C9137E /* IKBViewControllerOwnedView.m in Sources */ = {isa = PBXBuildFile; fileRef = 98D7836318760BBD00C9137E /* IKBViewControllerOwnedView.m */; };
+		98F370F01B4BA1A900802347 /* IKBInspectorWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98F370EE1B4BA1A900802347 /* IKBInspectorWindowController.m */; };
+		98F370F11B4BA1A900802347 /* IKBInspectorWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98F370EF1B4BA1A900802347 /* IKBInspectorWindowController.xib */; };
 		98FFC98A187DA4FD00FE1659 /* IKBCommandBus.m in Sources */ = {isa = PBXBuildFile; fileRef = 98FFC987187DA4FD00FE1659 /* IKBCommandBus.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 /* End PBXBuildFile section */
 
@@ -267,6 +269,9 @@
 		98C653371B4A4E7A002987DE /* ObjectInspectorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjectInspectorTests.m; sourceTree = "<group>"; };
 		98D7836218760BBD00C9137E /* IKBViewControllerOwnedView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IKBViewControllerOwnedView.h; sourceTree = "<group>"; };
 		98D7836318760BBD00C9137E /* IKBViewControllerOwnedView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IKBViewControllerOwnedView.m; sourceTree = "<group>"; };
+		98F370ED1B4BA1A900802347 /* IKBInspectorWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IKBInspectorWindowController.h; path = "Object Inspecting/IKBInspectorWindowController.h"; sourceTree = "<group>"; };
+		98F370EE1B4BA1A900802347 /* IKBInspectorWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IKBInspectorWindowController.m; path = "Object Inspecting/IKBInspectorWindowController.m"; sourceTree = "<group>"; };
+		98F370EF1B4BA1A900802347 /* IKBInspectorWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = IKBInspectorWindowController.xib; path = "Object Inspecting/IKBInspectorWindowController.xib"; sourceTree = "<group>"; };
 		98FFC985187DA4FD00FE1659 /* IKBCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IKBCommand.h; path = ikbcommandbus/IKBCommand.h; sourceTree = "<group>"; };
 		98FFC986187DA4FD00FE1659 /* IKBCommandBus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IKBCommandBus.h; path = ikbcommandbus/IKBCommandBus.h; sourceTree = "<group>"; };
 		98FFC987187DA4FD00FE1659 /* IKBCommandBus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IKBCommandBus.m; path = ikbcommandbus/IKBCommandBus.m; sourceTree = "<group>"; };
@@ -384,6 +389,9 @@
 			children = (
 				988088281B4A5AAB00D741B3 /* IKBInspectorDataSource.h */,
 				988088291B4A5AAB00D741B3 /* IKBInspectorDataSource.m */,
+				98F370ED1B4BA1A900802347 /* IKBInspectorWindowController.h */,
+				98F370EE1B4BA1A900802347 /* IKBInspectorWindowController.m */,
+				98F370EF1B4BA1A900802347 /* IKBInspectorWindowController.xib */,
 			);
 			name = "Object Inspecting";
 			sourceTree = "<group>";
@@ -673,6 +681,7 @@
 				98B66217185728A20045FDBD /* InfoPlist.strings in Resources */,
 				98B66225185728A20045FDBD /* Images.xcassets in Resources */,
 				98B6621D185728A20045FDBD /* Credits.rtf in Resources */,
+				98F370F11B4BA1A900802347 /* IKBInspectorWindowController.xib in Resources */,
 				07C93DEA188A1C4000BFFD21 /* IKBCompilerPreferencesViewController.xib in Resources */,
 				98B662531857D7480045FDBD /* IKBClassBrowserWindowController.xib in Resources */,
 				98B66223185728A20045FDBD /* MainMenu.xib in Resources */,
@@ -698,6 +707,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				98F370F01B4BA1A900802347 /* IKBInspectorWindowController.m in Sources */,
 				98B6624318574B900045FDBD /* IKBClassBrowserSource.m in Sources */,
 				980AC6A1185A510000611C26 /* IKBCodeRunner.mm in Sources */,
 				98B66219185728A20045FDBD /* main.m in Sources */,
