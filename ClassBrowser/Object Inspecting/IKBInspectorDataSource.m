@@ -67,7 +67,7 @@
     } else if (!strncmp(type, @encode(id), 1)) {
         return (id)value;
     } else {
-        return nil;
+        return @"Cannot display this ivar";
     }
 }
 
