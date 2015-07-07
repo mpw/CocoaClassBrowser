@@ -6,7 +6,6 @@
 
 @implementation IKBInspectorDataSource
 {
-    id _inspectedObject;
     NSArray *_ivarNames;
 }
 

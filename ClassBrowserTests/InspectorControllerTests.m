@@ -5,6 +5,8 @@
 #import <XCTest/XCTest.h>
 
 #import "IKBInspectorWindowController.h"
+#import "IKBInspectorWindowController_ClassExtension.h"
+#import "IKBInspectorDataSource.h"
 
 @interface InspectorControllerTests : XCTestCase
 
@@ -33,6 +35,22 @@
     [[_window expect] setTitle:@"nil"];
     [_controller setRepresentedObject:nil];
     [_window verify];
+}
+
+- (void)testInspectorGetsDataSourceRepresentingInspectedObject
+{
+    [_controller setRepresentedObject:@"test"];
+    XCTAssertEqualObjects(_controller.dataSource.inspectedObject, @"test");
+}
+
+- (void)testInspectorTellsTableViewToRepresentInspectedObject
+{
+    id table = [OCMockObject niceMockForClass:[NSTableView class]];
+    [[table expect] setDataSource:OCMOCK_ANY];
+    [[table expect] reloadData];
+    _controller.ivarTable = table;
+    [_controller setRepresentedObject:@"test"];
+    [table verify];
 }
 
 @end

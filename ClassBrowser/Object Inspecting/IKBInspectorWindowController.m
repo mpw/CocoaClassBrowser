@@ -1,10 +1,9 @@
 //See COPYING for licence details.
 
 #import "IKBInspectorWindowController.h"
+#import "IKBInspectorWindowController_ClassExtension.h"
 
-@interface IKBInspectorWindowController ()
-
-@end
+#import "IKBInspectorDataSource.h"
 
 @implementation IKBInspectorWindowController
 {
@@ -17,6 +16,9 @@
 {
     _representedObject = representedObject;
     self.window.title = [representedObject description]?:@"nil";
+    _dataSource = [IKBInspectorDataSource inspectorWithObject:representedObject];
+    self.ivarTable.dataSource = _dataSource;
+    [self.ivarTable reloadData];
 }
 
 @end

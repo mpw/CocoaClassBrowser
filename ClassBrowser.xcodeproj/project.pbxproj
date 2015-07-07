@@ -274,6 +274,7 @@
 		98F370EE1B4BA1A900802347 /* IKBInspectorWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IKBInspectorWindowController.m; path = "Object Inspecting/IKBInspectorWindowController.m"; sourceTree = "<group>"; };
 		98F370EF1B4BA1A900802347 /* IKBInspectorWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = IKBInspectorWindowController.xib; path = "Object Inspecting/IKBInspectorWindowController.xib"; sourceTree = "<group>"; };
 		98F370F21B4C3CA400802347 /* InspectorControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InspectorControllerTests.m; sourceTree = "<group>"; };
+		98F370F41B4C3F0A00802347 /* IKBInspectorWindowController_ClassExtension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = IKBInspectorWindowController_ClassExtension.h; path = "Object Inspecting/IKBInspectorWindowController_ClassExtension.h"; sourceTree = "<group>"; };
 		98FFC985187DA4FD00FE1659 /* IKBCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IKBCommand.h; path = ikbcommandbus/IKBCommand.h; sourceTree = "<group>"; };
 		98FFC986187DA4FD00FE1659 /* IKBCommandBus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IKBCommandBus.h; path = ikbcommandbus/IKBCommandBus.h; sourceTree = "<group>"; };
 		98FFC987187DA4FD00FE1659 /* IKBCommandBus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IKBCommandBus.m; path = ikbcommandbus/IKBCommandBus.m; sourceTree = "<group>"; };
@@ -392,6 +393,7 @@
 				988088281B4A5AAB00D741B3 /* IKBInspectorDataSource.h */,
 				988088291B4A5AAB00D741B3 /* IKBInspectorDataSource.m */,
 				98F370ED1B4BA1A900802347 /* IKBInspectorWindowController.h */,
+				98F370F41B4C3F0A00802347 /* IKBInspectorWindowController_ClassExtension.h */,
 				98F370EE1B4BA1A900802347 /* IKBInspectorWindowController.m */,
 				98F370EF1B4BA1A900802347 /* IKBInspectorWindowController.xib */,
 			);
