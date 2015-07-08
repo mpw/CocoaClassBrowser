@@ -83,6 +83,7 @@
 		98F370F01B4BA1A900802347 /* IKBInspectorWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98F370EE1B4BA1A900802347 /* IKBInspectorWindowController.m */; };
 		98F370F11B4BA1A900802347 /* IKBInspectorWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98F370EF1B4BA1A900802347 /* IKBInspectorWindowController.xib */; };
 		98F370F31B4C3CA400802347 /* InspectorControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 98F370F21B4C3CA400802347 /* InspectorControllerTests.m */; };
+		98F370F71B4D67E800802347 /* IKBInspectorProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 98F370F61B4D67E800802347 /* IKBInspectorProvider.m */; };
 		98FFC98A187DA4FD00FE1659 /* IKBCommandBus.m in Sources */ = {isa = PBXBuildFile; fileRef = 98FFC987187DA4FD00FE1659 /* IKBCommandBus.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 /* End PBXBuildFile section */
 
@@ -275,6 +276,8 @@
 		98F370EF1B4BA1A900802347 /* IKBInspectorWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = IKBInspectorWindowController.xib; path = "Object Inspecting/IKBInspectorWindowController.xib"; sourceTree = "<group>"; };
 		98F370F21B4C3CA400802347 /* InspectorControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InspectorControllerTests.m; sourceTree = "<group>"; };
 		98F370F41B4C3F0A00802347 /* IKBInspectorWindowController_ClassExtension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = IKBInspectorWindowController_ClassExtension.h; path = "Object Inspecting/IKBInspectorWindowController_ClassExtension.h"; sourceTree = "<group>"; };
+		98F370F51B4D67E800802347 /* IKBInspectorProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IKBInspectorProvider.h; path = "Object Inspecting/IKBInspectorProvider.h"; sourceTree = "<group>"; };
+		98F370F61B4D67E800802347 /* IKBInspectorProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IKBInspectorProvider.m; path = "Object Inspecting/IKBInspectorProvider.m"; sourceTree = "<group>"; };
 		98FFC985187DA4FD00FE1659 /* IKBCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IKBCommand.h; path = ikbcommandbus/IKBCommand.h; sourceTree = "<group>"; };
 		98FFC986187DA4FD00FE1659 /* IKBCommandBus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IKBCommandBus.h; path = ikbcommandbus/IKBCommandBus.h; sourceTree = "<group>"; };
 		98FFC987187DA4FD00FE1659 /* IKBCommandBus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IKBCommandBus.m; path = ikbcommandbus/IKBCommandBus.m; sourceTree = "<group>"; };
@@ -396,6 +399,8 @@
 				98F370F41B4C3F0A00802347 /* IKBInspectorWindowController_ClassExtension.h */,
 				98F370EE1B4BA1A900802347 /* IKBInspectorWindowController.m */,
 				98F370EF1B4BA1A900802347 /* IKBInspectorWindowController.xib */,
+				98F370F51B4D67E800802347 /* IKBInspectorProvider.h */,
+				98F370F61B4D67E800802347 /* IKBInspectorProvider.m */,
 			);
 			name = "Object Inspecting";
 			sourceTree = "<group>";
@@ -731,6 +736,7 @@
 				98FFC98A187DA4FD00FE1659 /* IKBCommandBus.m in Sources */,
 				981613F8187C1F1400A0BEDD /* IKBCompilerTranscriptWindowController.m in Sources */,
 				329FD5322DC22E445929B0A2 /* IKBLLVMBitcodeModule.m in Sources */,
+				98F370F71B4D67E800802347 /* IKBInspectorProvider.m in Sources */,
 				329FD4CD7BD92A498FE86CCA /* IKBClangCompiler.mm in Sources */,
 				07D10B021896A0BC0023A9D9 /* IKBXcodeSelectTaskRunner.m in Sources */,
 				329FD3C5E5859855BEE6F96B /* IKBLLVMBitcodeRunner.mm in Sources */,

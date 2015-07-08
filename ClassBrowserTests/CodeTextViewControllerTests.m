@@ -7,6 +7,7 @@
 #import "IKBCodeEditorViewController_ClassExtension.h"
 #import "IKBCommandBus.h"
 #import "IKBCompileAndRunCodeCommand.h"
+#import "IKBInspectorProvider.h"
 #import "IKBInspectorWindowController.h"
 
 @interface TranscriptController : NSObject
@@ -50,6 +51,7 @@
 - (void)setUp
 {
     _vc = [IKBCodeEditorViewController new];
+    _vc.inspectorProvider = [IKBInspectorProvider new];
     _view = [_vc view];
     [_vc.textView insertText:@"Hello, world"];
     [_vc.textView setSelectedRange:(NSRange){.location = 0, .length = 5}];
@@ -201,18 +203,11 @@
     XCTAssertTrue([controller.window isVisible]);
 }
 
-- (void)testInspectItCompletionSetsTheEditorAsTheInspectorDelegate
-{
-    [_vc inspectResult:_result compilerOutput:nil error:nil];
-    IKBInspectorWindowController *controller = [_vc inspectorForObject:_result];
-    XCTAssertEqualObjects(controller.controllerDelegate, _vc);
-}
-
 - (void)testClosingTheInspectorCausesTheControllerToDropIt
 {
     [_vc inspectResult:_result compilerOutput:nil error:nil];
     IKBInspectorWindowController *theController = [_vc testAccessToCurrentInspectorForObject:_result];
-    [_vc inspectorWindowControllerWindowWillClose:theController];
+    [theController.controllerDelegate inspectorWindowControllerWindowWillClose:theController];
     XCTAssertNil([_vc testAccessToCurrentInspectorForObject:_result]);
 }
 

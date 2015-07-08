@@ -5,16 +5,15 @@
 #import "IKBCommandBus.h"
 #import "IKBCompileAndRunCodeCommand.h"
 #import "IKBCompilerTranscriptWindowController.h"
+#import "IKBInspectorProvider.h"
+#import "IKBInspectorWindowController.h"
 #import "IKBViewControllerOwnedView.h"
 #import "IKBObjectiveCMethod.h"
-
-#import <objc/runtime.h>
 
 @interface IKBCodeEditorViewController ()
 
 @property (nonatomic, strong) NSFont *defaultFont;
 @property (nonatomic, unsafe_unretained, readwrite) NSTextView *textView;
-@property (nonatomic, strong) IKBInspectorWindowController *nilInspector;
 
 @end
 
@@ -121,7 +120,6 @@
      * non-nil in the case that the activity failed. "Looking at" the error in this case means inspecting it.
      */
     IKBInspectorWindowController *controller = [self inspectorForObject:returnValue?:error];
-    controller.controllerDelegate = self;
     [controller.window makeKeyAndOrderFront:self];
     [self updateCompilerTranscript:compilerTranscript];
 }
@@ -133,42 +131,14 @@
 
 #pragma mark - Inspector shenanigans
 
-static const NSString *inspectorKey = @"IKBInspectorForObject";
-
 - (IKBInspectorWindowController *)inspectorForObject:object
 {
-    IKBInspectorWindowController *controller = nil;
-    if (!object) {
-        if (!self.nilInspector) {
-            self.nilInspector = [[IKBInspectorWindowController alloc] initWithWindowNibName:NSStringFromClass([IKBInspectorWindowController class])];
-            self.nilInspector.representedObject = nil;
-        }
-        controller = self.nilInspector;
-    } else {
-        controller = objc_getAssociatedObject(object, (__bridge const void *)(inspectorKey));
-        if (!controller) {
-            controller = [[IKBInspectorWindowController alloc] initWithWindowNibName:NSStringFromClass([IKBInspectorWindowController class])];
-            objc_setAssociatedObject(object, (__bridge const void *)inspectorKey, controller, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-            controller.representedObject = object;
-        }
-    }
-    return controller;
+    return [self.inspectorProvider inspectorForObject:object];
 }
 
 - (IKBInspectorWindowController *)testAccessToCurrentInspectorForObject:object
 {
-    if (!object) return self.nilInspector;
-    return objc_getAssociatedObject(object, (__bridge const void *)inspectorKey);
-}
-
-- (void)inspectorWindowControllerWindowWillClose:(IKBInspectorWindowController *)controller
-{
-    id object = controller.representedObject;
-    if (object == nil) {
-        self.nilInspector = nil;
-    } else {
-        objc_setAssociatedObject(object, (__bridge const void *)inspectorKey, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    }
+    return [self.inspectorProvider inspectorIfAvailableForObject:object];
 }
 
 @end
