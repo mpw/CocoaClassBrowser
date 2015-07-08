@@ -44,6 +44,7 @@
     TranscriptController *_transcriptController;
     NSMenuItem *_printItItem;
     NSMenuItem *_inspectItItem;
+    id _result;
 }
 
 - (void)setUp
@@ -60,6 +61,7 @@
     _inspectItItem = [[NSMenuItem alloc] initWithTitle:@"Inspect It"
                                                 action:@selector(inspectIt:)
                                          keyEquivalent:@""];
+    _result = @42;
 }
 
 - (void)testTheViewHasTheViewControllerAsItsNextResponder
@@ -193,11 +195,25 @@
 
 - (void)testInspectItCompletionShowsAnInspectorForTheResult
 {
-    id result = @42;
-    [_vc inspectResult:result compilerOutput:nil error:nil];
-    IKBInspectorWindowController *controller = [_vc inspectorForObject:result];
+    [_vc inspectResult:_result compilerOutput:nil error:nil];
+    IKBInspectorWindowController *controller = [_vc inspectorForObject:_result];
     XCTAssertNotNil(controller);
     XCTAssertTrue([controller.window isVisible]);
+}
+
+- (void)testInspectItCompletionSetsTheEditorAsTheInspectorDelegate
+{
+    [_vc inspectResult:_result compilerOutput:nil error:nil];
+    IKBInspectorWindowController *controller = [_vc inspectorForObject:_result];
+    XCTAssertEqualObjects(controller.controllerDelegate, _vc);
+}
+
+- (void)testClosingTheInspectorCausesTheControllerToDropIt
+{
+    [_vc inspectResult:_result compilerOutput:nil error:nil];
+    IKBInspectorWindowController *theController = [_vc testAccessToCurrentInspectorForObject:_result];
+    [_vc inspectorWindowControllerWindowWillClose:theController];
+    XCTAssertNil([_vc testAccessToCurrentInspectorForObject:_result]);
 }
 
 - (void)testInspectItShowsTheCompilerTranscriptIfItNeedsTo

@@ -1,11 +1,12 @@
 //See COPYING for licence details.
 
 #import <Cocoa/Cocoa.h>
+#import "IKBInspectorWindowController.h"
 
 @class IKBCommandBus;
 @class IKBCompilerTranscriptWindowController;
 
-@interface IKBCodeEditorViewController : NSViewController
+@interface IKBCodeEditorViewController : NSViewController <IKBInspectorWindowControllerDelegate>
 
 @property (nonatomic, readonly, unsafe_unretained) NSTextView *textView;
 @property (nonatomic, strong) IKBCompilerTranscriptWindowController *transcriptWindowController;

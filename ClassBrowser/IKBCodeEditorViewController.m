@@ -5,7 +5,6 @@
 #import "IKBCommandBus.h"
 #import "IKBCompileAndRunCodeCommand.h"
 #import "IKBCompilerTranscriptWindowController.h"
-#import "IKBInspectorWindowController.h"
 #import "IKBViewControllerOwnedView.h"
 #import "IKBObjectiveCMethod.h"
 
@@ -122,6 +121,7 @@
      * non-nil in the case that the activity failed. "Looking at" the error in this case means inspecting it.
      */
     IKBInspectorWindowController *controller = [self inspectorForObject:returnValue?:error];
+    controller.controllerDelegate = self;
     [controller.window makeKeyAndOrderFront:self];
     [self updateCompilerTranscript:compilerTranscript];
 }
@@ -153,6 +153,22 @@ static const NSString *inspectorKey = @"IKBInspectorForObject";
         }
     }
     return controller;
+}
+
+- (IKBInspectorWindowController *)testAccessToCurrentInspectorForObject:object
+{
+    if (!object) return self.nilInspector;
+    return objc_getAssociatedObject(object, (__bridge const void *)inspectorKey);
+}
+
+- (void)inspectorWindowControllerWindowWillClose:(IKBInspectorWindowController *)controller
+{
+    id object = controller.representedObject;
+    if (object == nil) {
+        self.nilInspector = nil;
+    } else {
+        objc_setAssociatedObject(object, (__bridge const void *)inspectorKey, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    }
 }
 
 @end
