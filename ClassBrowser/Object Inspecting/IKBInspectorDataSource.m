@@ -61,14 +61,40 @@
     Ivar ivar = object_getInstanceVariable(_inspectedObject, [ivarName UTF8String], &value);
     const char *type = ivar_getTypeEncoding(ivar);
     if (!strcmp(type, @encode(int)) ||
+        !strcmp(type, @encode(short)) ||
+        !strcmp(type, @encode(long)) ||
         !strcmp(type, @encode(long long)) ||
-        !strcmp(type, @encode(unsigned long long))) {
-        int integerValue = (int)value;
+        !strcmp(type, @encode(char))) {
+        long long integerValue = (long long)value;
         return @(integerValue);
-    } else if (!strncmp(type, @encode(id), 1)) {
+    } else if (!strcmp(type, @encode(unsigned int)) ||
+               !strcmp(type, @encode(unsigned short)) ||
+               !strcmp(type, @encode(unsigned long)) ||
+               !strcmp(type, @encode(unsigned long long)) ||
+               !strcmp(type, @encode(unsigned char)) ||
+               !strcmp(type, @encode(_Bool)) ||
+               !strncmp(type, "b", 1)) {
+        unsigned long long unsignedValue = (unsigned long long)value;
+        return @(unsignedValue);
+    } else if (!strcmp(type, @encode(double))) {
+        uintptr_t intValue = (uintptr_t)value;
+        uintptr_t *intPtr = &intValue;
+        double *doublePtr = (double *)intPtr;
+        return @(*doublePtr);
+    } else if (!strcmp(type, @encode(float))) {
+        uintptr_t intValue = (uintptr_t)value;
+        uintptr_t *intPtr = &intValue;
+        float *floatPtr = (float *)intPtr;
+        return @(*floatPtr);
+    } else if (!strncmp(type, @encode(id), 1) ||
+               !strncmp(type, @encode(Class), 1)) {
         return (id)value;
+    } else if (!strcmp(type, @encode(char *))) {
+        char *string = (char *)value;
+        return @(string);
     } else {
-        return @"Cannot display this ivar";
+        // everything remaining should be a compound type, with value being a pointer to it.
+        return [NSValue valueWithBytes:value objCType:type];
     }
 }
 
