@@ -10,6 +10,12 @@
     id _representedObject;
 }
 
+- (void)setWindow:(NSWindow *)window
+{
+    window.delegate = self;
+    [super setWindow:window];
+}
+
 - representedObject { return _representedObject; }
 
 - (void)setRepresentedObject:representedObject
@@ -19,6 +25,11 @@
     _dataSource = [IKBInspectorDataSource inspectorWithObject:representedObject];
     self.ivarTable.dataSource = _dataSource;
     [self.ivarTable reloadData];
+}
+
+- (void)windowWillClose:(NSNotification *)notification
+{
+    [self.controllerDelegate inspectorWindowControllerWindowWillClose:self];
 }
 
 @end

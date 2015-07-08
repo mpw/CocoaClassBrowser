@@ -53,4 +53,13 @@
     [table verify];
 }
 
+- (void)testInspectorNotifiesItsDelegateOnWindowClose
+{
+    id delegate = [OCMockObject mockForProtocol:@protocol(IKBInspectorWindowControllerDelegate)];
+    [[delegate expect] inspectorWindowControllerWindowWillClose:_controller];
+    _controller.controllerDelegate = delegate;
+    [_controller windowWillClose:nil];
+    [delegate verify];
+}
+
 @end

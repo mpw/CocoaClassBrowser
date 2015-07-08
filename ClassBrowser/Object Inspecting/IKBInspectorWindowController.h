@@ -2,8 +2,17 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface IKBInspectorWindowController : NSWindowController
+@class IKBInspectorWindowController;
 
+@protocol IKBInspectorWindowControllerDelegate <NSObject>
+
+- (void)inspectorWindowControllerWindowWillClose:(IKBInspectorWindowController *)controller;
+
+@end
+
+@interface IKBInspectorWindowController : NSWindowController <NSWindowDelegate>
+
+@property (nonatomic, weak) id <IKBInspectorWindowControllerDelegate> controllerDelegate;
 @property (nonatomic, strong) id representedObject;
 
 @end
