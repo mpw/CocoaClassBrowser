@@ -33,6 +33,7 @@
     [self.classBrowser setAction:@selector(browserSelectionDidChange:)];
     
     _codeEditorViewController = [IKBCodeEditorViewController new];
+    _codeEditorViewController.inspectorProvider = self.inspectorProvider;
     NSView *editorView = self.codeEditorViewController.view;
     editorView.frame = (NSRect){ .origin = {0,0}, .size = {.width = 878, .height = 412 }};
     [self.window.contentView addSubview:editorView];

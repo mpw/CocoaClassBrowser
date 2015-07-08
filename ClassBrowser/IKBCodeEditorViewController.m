@@ -5,6 +5,8 @@
 #import "IKBCommandBus.h"
 #import "IKBCompileAndRunCodeCommand.h"
 #import "IKBCompilerTranscriptWindowController.h"
+#import "IKBInspectorProvider.h"
+#import "IKBInspectorWindowController.h"
 #import "IKBViewControllerOwnedView.h"
 #import "IKBObjectiveCMethod.h"
 
@@ -49,26 +51,31 @@
     
     NSMenuItem *printItItem = [[NSMenuItem alloc] initWithTitle:@"Print It" action:@selector(printIt:) keyEquivalent:@""];
     [textView.menu addItem:printItItem];
+    NSMenuItem *inspectItItem = [[NSMenuItem alloc] initWithTitle:@"Inspect It" action:@selector(inspectIt:) keyEquivalent:@""];
+    [textView.menu addItem:inspectItItem];
+
     self.textView = textView;
     [scrollView.contentView addSubview:textView];
     scrollView.contentView.documentView = textView;
     [view addSubview:scrollView];
-    
+
     self.view = view;
 }
 
 #pragma mark - menu items
 
-- (void)printIt:(id)sender
+- (void)printIt:sender
 {
-    NSRange textRange = [self.textView selectedRange];
-    NSString *source = [self.textView.textStorage.string substringWithRange:textRange];
-    IKBCompileAndRunCodeCommand *command = [IKBCompileAndRunCodeCommand new];
-    command.source = source;
-    command.completion = ^(id returnValue, NSString *compilerTranscript, NSError *error){
-        [self updateSourceViewWithResult:returnValue ofSourceInRange:textRange compilerOutput:compilerTranscript error:error];
-    };
-    [self.commandBus execute:command];
+    [self compileSelectedCodeWithCompletion:^(id returnValue, NSString *compilerTranscript, NSError *error) {
+        [self updateSourceViewWithResult:returnValue ofSourceInRange:[self.textView selectedRange] compilerOutput:compilerTranscript error:error];
+    }];
+}
+
+- (void)inspectIt:sender
+{
+    [self compileSelectedCodeWithCompletion:^(id returnValue, NSString *compilerTranscript, NSError *error) {
+        [self inspectResult:returnValue compilerOutput:compilerTranscript error:error];
+    }];
 }
 
 - (BOOL)validateMenuItem:(NSMenuItem *)menuItem
@@ -76,12 +83,18 @@
     return ([self.textView selectedRange].length > 0);
 }
 
-- (void)updateSourceViewWithResult:(id)returnValue ofSourceInRange:(NSRange)textRange compilerOutput:(NSString *)transcript error:(NSError *)error
+- (void)compileSelectedCodeWithCompletion:(void(^)(id,NSString *,NSError *))completion
 {
-    NSString *formattedResult = [NSString stringWithFormat:@" %@", returnValue?:[error localizedDescription]];
-    NSUInteger insertLocation = textRange.location + textRange.length;
-    [self.textView insertText:formattedResult replacementRange:NSMakeRange(insertLocation, 0)];
-    [self.textView setSelectedRange:NSMakeRange(insertLocation, [formattedResult length])];
+    NSRange textRange = [self.textView selectedRange];
+    NSString *source = [self.textView.textStorage.string substringWithRange:textRange];
+    IKBCompileAndRunCodeCommand *command = [IKBCompileAndRunCodeCommand new];
+    command.source = source;
+    command.completion = completion;
+    [self.commandBus execute:command];
+}
+
+- (void)updateCompilerTranscript:(NSString *)transcript
+{
     NSWindow *transcriptWindow = self.transcriptWindowController.window;
     if (transcript.length > 0) {
         self.transcriptWindowController.transcriptText = transcript;
@@ -89,12 +102,43 @@
     } else {
         [transcriptWindow orderOut:self];
     }
+}
 
+- (void)updateSourceViewWithResult:returnValue ofSourceInRange:(NSRange)textRange compilerOutput:(NSString *)transcript error:(NSError *)error
+{
+    NSString *formattedResult = [NSString stringWithFormat:@" %@", returnValue?:[error localizedDescription]];
+    NSUInteger insertLocation = textRange.location + textRange.length;
+    [self.textView insertText:formattedResult replacementRange:NSMakeRange(insertLocation, 0)];
+    [self.textView setSelectedRange:NSMakeRange(insertLocation, [formattedResult length])];
+    [self updateCompilerTranscript:transcript];
+}
+
+- (void)inspectResult:returnValue compilerOutput:(NSString *)compilerTranscript error:(NSError *)error
+{
+    /* Writing this method means accepting the possibility that the returnValue is nil but that this is desirable.
+     * I'll follow the "if the result was nil then look at the error" approach, but rely on the error only being
+     * non-nil in the case that the activity failed. "Looking at" the error in this case means inspecting it.
+     */
+    IKBInspectorWindowController *controller = [self inspectorForObject:returnValue?:error];
+    [controller.window makeKeyAndOrderFront:self];
+    [self updateCompilerTranscript:compilerTranscript];
 }
 
 - (void)setEditedMethod:(IKBObjectiveCMethod *)method
 {
 
+}
+
+#pragma mark - Inspector shenanigans
+
+- (IKBInspectorWindowController *)inspectorForObject:object
+{
+    return [self.inspectorProvider inspectorForObject:object];
+}
+
+- (IKBInspectorWindowController *)testAccessToCurrentInspectorForObject:object
+{
+    return [self.inspectorProvider inspectorIfAvailableForObject:object];
 }
 
 @end

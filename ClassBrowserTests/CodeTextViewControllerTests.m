@@ -7,6 +7,8 @@
 #import "IKBCodeEditorViewController_ClassExtension.h"
 #import "IKBCommandBus.h"
 #import "IKBCompileAndRunCodeCommand.h"
+#import "IKBInspectorProvider.h"
+#import "IKBInspectorWindowController.h"
 
 @interface TranscriptController : NSObject
 
@@ -42,19 +44,26 @@
     NSView *_view;
     TranscriptController *_transcriptController;
     NSMenuItem *_printItItem;
+    NSMenuItem *_inspectItItem;
+    id _result;
 }
 
 - (void)setUp
 {
     _vc = [IKBCodeEditorViewController new];
+    _vc.inspectorProvider = [IKBInspectorProvider new];
     _view = [_vc view];
     [_vc.textView insertText:@"Hello, world"];
     [_vc.textView setSelectedRange:(NSRange){.location = 0, .length = 5}];
     _transcriptController = [TranscriptController new];
     _vc.transcriptWindowController = (id)_transcriptController;
     _printItItem = [[NSMenuItem alloc] initWithTitle:@"Print It"
-                                                         action:@selector(printIt:)
-                                                  keyEquivalent:@""];
+                                              action:@selector(printIt:)
+                                       keyEquivalent:@""];
+    _inspectItItem = [[NSMenuItem alloc] initWithTitle:@"Inspect It"
+                                                action:@selector(inspectIt:)
+                                         keyEquivalent:@""];
+    _result = @42;
 }
 
 - (void)testTheViewHasTheViewControllerAsItsNextResponder
@@ -164,6 +173,50 @@
                    @"expected attributes' effective range to match length of result string");
 }
 
+- (void)testTextViewHasAMenuItemToExecuteCodeAndInspectTheResult
+{
+    NSMenu *menu = _vc.textView.menu;
+    NSArray *titles = [menu.itemArray valueForKey:@"title"];
+    XCTAssertTrue([titles containsObject:@"Inspect It"]);
+    NSUInteger index = [titles indexOfObject:@"Inspect It"];
+    NSMenuItem *inspectItItem = [menu.itemArray objectAtIndex:index];
+    XCTAssertNil(inspectItItem.target);
+    XCTAssertEqual(inspectItItem.action, @selector(inspectIt:));
+}
+
+- (void)testInspectItSchedulesACompileCommandContainingTheSourceCode
+{
+    id mockCommandBus = [OCMockObject mockForClass:[IKBCommandBus class]];
+    [[mockCommandBus expect] execute:[OCMArg checkWithBlock:^(IKBCompileAndRunCodeCommand *command){
+        return (BOOL)(command.completion != nil && [command.source isEqualToString:@"Hello"]);
+    }]];
+    _vc.commandBus = mockCommandBus;
+    [_vc inspectIt:self];
+    [mockCommandBus verify];
+}
+
+- (void)testInspectItCompletionShowsAnInspectorForTheResult
+{
+    [_vc inspectResult:_result compilerOutput:nil error:nil];
+    IKBInspectorWindowController *controller = [_vc inspectorForObject:_result];
+    XCTAssertNotNil(controller);
+    XCTAssertTrue([controller.window isVisible]);
+}
+
+- (void)testClosingTheInspectorCausesTheControllerToDropIt
+{
+    [_vc inspectResult:_result compilerOutput:nil error:nil];
+    IKBInspectorWindowController *theController = [_vc testAccessToCurrentInspectorForObject:_result];
+    [theController.controllerDelegate inspectorWindowControllerWindowWillClose:theController];
+    XCTAssertNil([_vc testAccessToCurrentInspectorForObject:_result]);
+}
+
+- (void)testInspectItShowsTheCompilerTranscriptIfItNeedsTo
+{
+    [_vc inspectResult:nil compilerOutput:@"Greetings, Programs!" error:nil];
+    XCTAssertTrue([_transcriptController isWindowOrderedFront]);
+}
+
 - (void)testCompilerTranscriptControllerIsAvailableByDefault
 {
     IKBCodeEditorViewController *viewController = [IKBCodeEditorViewController new];
@@ -210,4 +263,16 @@
 {
     XCTAssertTrue([_vc validateMenuItem:_printItItem]);
 }
+
+- (void)testInspectItMenuItemIsDisabledWhenNoTextIsSelected
+{
+    [_vc.textView setSelectedRange:NSMakeRange(0, 0)];
+    XCTAssertFalse([_vc validateMenuItem:_inspectItItem]);
+}
+
+- (void)testInspectItMenuItemIsEnabledWhenTextIsSelected
+{
+    XCTAssertTrue([_vc validateMenuItem:_inspectItItem]);
+}
+
 @end

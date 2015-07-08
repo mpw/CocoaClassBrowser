@@ -4,6 +4,7 @@
 #import "IKBClassBrowserWindowController.h"
 #import "IKBCommandBus.h"
 #import "IKBCompileAndRunCodeCommandHandler.h"
+#import "IKBInspectorProvider.h"
 #import "IKBPreferencesWindowController.h"
 
 @interface IKBAppDelegate ()
@@ -28,6 +29,7 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
     self.windowController = [[IKBClassBrowserWindowController alloc] initWithWindowNibName:@"IKBClassBrowserWindowController"];
+    self.windowController.inspectorProvider = [IKBInspectorProvider new];
     [self.windowController.window makeKeyAndOrderFront:self];
     [self.commandBus registerCommandHandler:[IKBCompileAndRunCodeCommandHandler new]];
 }
