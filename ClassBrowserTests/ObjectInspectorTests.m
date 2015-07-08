@@ -47,27 +47,31 @@
 
 - (void)testDataSourceHasOneRowForEachInstanceVariableInTheTarget
 {
-    XCTAssertEqual([_source numberOfRowsInTableView:nil], 3);
+    XCTAssertEqual([_source numberOfRowsInTableView:nil], 4);
 }
 
 - (void)testObjectValuesInNameColumnAreInstanceVariableNames
 {
     NSTableColumn *column = [[NSTableColumn alloc] initWithIdentifier:@"Name"];
     id name_row0 = [_source tableView:nil objectValueForTableColumn:column row:0];
-    XCTAssertEqualObjects(name_row0, @"_x");
+    XCTAssertEqualObjects(name_row0, @"isa");
     id name_row1 = [_source tableView:nil objectValueForTableColumn:column row:1];
-    XCTAssertEqualObjects(name_row1, @"_count");
+    XCTAssertEqualObjects(name_row1, @"_x");
     id name_row2 = [_source tableView:nil objectValueForTableColumn:column row:2];
-    XCTAssertEqualObjects(name_row2, @"_name");
+    XCTAssertEqualObjects(name_row2, @"_count");
+    id name_row3 = [_source tableView:nil objectValueForTableColumn:column row:3];
+    XCTAssertEqualObjects(name_row3, @"_name");
 }
 
 - (void)testObjectValuesInValueColumnAreInstanceVariableValues
 {
     NSTableColumn *column = [[NSTableColumn alloc] initWithIdentifier:@"Value"];
     id value_row0 = [_source tableView:nil objectValueForTableColumn:column row:0];
-    XCTAssertEqualObjects(value_row0, @(37));
+    XCTAssertEqualObjects(value_row0, [ObjectToInspect class]);
     id value_row1 = [_source tableView:nil objectValueForTableColumn:column row:1];
-    XCTAssertEqualObjects(value_row1, @(3.14));
+    XCTAssertEqualObjects(value_row1, @(37));
+    id value_row2 = [_source tableView:nil objectValueForTableColumn:column row:2];
+    XCTAssertEqualObjects(value_row2, @(3.14));
 }
 
 - (void)testDataSourceHasNoRowsIfItIsInspectingNil

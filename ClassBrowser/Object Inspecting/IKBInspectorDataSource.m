@@ -24,16 +24,22 @@
         _ivarNames = [NSArray array];
         return;
     }
-    unsigned int ivarCount;
-    Ivar *ivars = class_copyIvarList([target class], &ivarCount);
-    NSMutableArray *names = [[NSMutableArray alloc] initWithCapacity:ivarCount];
-    for (unsigned int i = 0; i < ivarCount; i++) {
-        const char *thisName = ivar_getName(ivars[i]);
-        [names addObject:@(thisName)];
+    Class theClass = object_getClass(target);
+    NSMutableArray *classList = [[@[theClass] mutableCopy] autorelease];
+    while ((theClass = class_getSuperclass(theClass)) != Nil) {
+        [classList insertObject:theClass atIndex:0];
+    }
+    NSMutableArray *names = [NSMutableArray array];
+    for (Class aClass in classList) {
+        unsigned int ivarCount;
+        Ivar *ivars = class_copyIvarList(aClass, &ivarCount);
+        for (unsigned int i = 0; i < ivarCount; i++) {
+            const char *thisName = ivar_getName(ivars[i]);
+            [names addObject:@(thisName)];
+        }
+        free(ivars);
     }
     _ivarNames = [names copy];
-    [names release];
-    free(ivars);
     return;
 }
 
