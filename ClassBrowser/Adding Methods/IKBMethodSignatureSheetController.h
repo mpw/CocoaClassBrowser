@@ -6,8 +6,9 @@
 
 @interface IKBMethodSignatureSheetController : NSWindowController
 
+@property (nonatomic, copy) NSString *className;
+
 - (IKBObjectiveCMethod *)method;
-- (void)setClass:(NSString *)classForNewMethod;
 - (void)reset;
 
 @end

@@ -53,7 +53,7 @@
 {
     [self.addMethodSheet reset];
     NSString *selectedClassName = [self.classList selectedClass];
-    [self.addMethodSheet setClass:selectedClassName];
+    [self.addMethodSheet setClassName:selectedClassName];
     [self.window beginSheet:self.addMethodSheet.window completionHandler:^(NSModalResponse returnCode) {
         [self addMethodSheetReturnedCode:returnCode];
     }];

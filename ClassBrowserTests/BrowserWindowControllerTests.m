@@ -210,7 +210,7 @@
     [classes selectClassAtIndex:2];
     controller.classList = classes;
     id methodSignatureSheet = [OCMockObject niceMockForClass:[IKBMethodSignatureSheetController class]];
-    [[methodSignatureSheet expect] setClass:@"NSString"];
+    [[methodSignatureSheet expect] setClassName:@"NSString"];
     controller.addMethodSheet = methodSignatureSheet;
     [controller addMethod:[controller addMethodItem]];
     [methodSignatureSheet verify];

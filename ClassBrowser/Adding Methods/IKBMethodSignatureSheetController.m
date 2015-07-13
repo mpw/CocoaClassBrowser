@@ -7,7 +7,6 @@
 
 @implementation IKBMethodSignatureSheetController
 {
-    NSString *_class;
     IKBObjectiveCMethod *_method;
 }
 
@@ -16,21 +15,18 @@
     return _method;
 }
 
-- (void)setClass:(NSString *)classForNewMethod
-{
-    _class = [classForNewMethod copy];
-}
-
 - (void)reset
 {
-
+    _method = nil;
+    _className = nil;
+    _signatureText = nil;
 }
 
 - (void)createMethod:(id)sender
 {
     NSAssert([self isValidSignature], @"I should only be called when the signature is valid");
     IKBObjectiveCMethod *method = [IKBObjectiveCMethod new];
-    method.className = _class;
+    method.className = self.className;
     method.declaration = self.signatureText;
     method.body = @"{\n\n}\n";
     _method = method;
