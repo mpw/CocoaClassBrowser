@@ -577,12 +577,12 @@
 				9828F18A187EC7A6003F1DC6 /* CompileAndRunCodeCommandHandlerTests.m */,
 				98C653371B4A4E7A002987DE /* ObjectInspectorTests.m */,
 				98F370F21B4C3CA400802347 /* InspectorControllerTests.m */,
+				329FD1AB22D5CB2421BE5EB0 /* MethodSignatureSheetTests.m */,
 				98B66231185728A20045FDBD /* Supporting Files */,
 				98B6624418574BE90045FDBD /* FakeClassList.h */,
 				98B6624518574BE90045FDBD /* FakeClassList.m */,
 				98830690187ABD5100A4325C /* HumbleCompilerArgumentBuilder.h */,
 				98830691187ABD5100A4325C /* HumbleCompilerArgumentBuilder.m */,
-				329FD1AB22D5CB2421BE5EB0 /* MethodSignatureSheetTests.m */,
 			);
 			path = ClassBrowserTests;
 			sourceTree = "<group>";
