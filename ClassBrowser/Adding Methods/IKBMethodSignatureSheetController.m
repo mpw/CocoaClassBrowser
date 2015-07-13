@@ -43,4 +43,12 @@
             !([self.signatureText hasSuffix:@":"]));
 }
 
+- (void)controlTextDidChange:(NSNotification *)note
+{
+    _signatureText = [[note object] stringValue];
+    BOOL valid = [self isValidSignature];
+    self.createMethodButton.enabled = valid;
+    self.problemLabel.hidden = valid;
+}
+
 @end

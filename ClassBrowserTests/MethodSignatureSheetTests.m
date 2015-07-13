@@ -5,6 +5,18 @@
 #import "IKBMethodSignatureSheetController.h"
 #import "IKBMethodSignatureSheetController_ClassExtension.h"
 
+@interface NSString (IKBStringValue)
+
+- (NSString *)stringValue;
+
+@end
+
+@implementation NSString (IKBStringValue)
+
+- (NSString *)stringValue { return self; }
+
+@end
+
 @interface MethodSignatureSheetTests : XCTestCase
 
 @end
@@ -12,11 +24,13 @@
 @implementation MethodSignatureSheetTests
 {
     IKBMethodSignatureSheetController *_controller;
+    NSWindow *_window;
 }
 
 - (void)setUp
 {
     _controller = [[IKBMethodSignatureSheetController alloc] initWithWindowNibName:NSStringFromClass([IKBMethodSignatureSheetController class])];
+    _window = _controller.window;
 }
 
 - (void)testCancellingTheSignatureSpecificationCancelsTheSheet
@@ -58,4 +72,23 @@
     _controller.signatureText = @"- (void)addObject:";
     XCTAssertFalse([_controller isValidSignature]);
 }
+
+- (void)testValidMethodSignatureMeansCreateButtonEnabledAndWarningHidden
+{
+    NSNotification *notification = [NSNotification notificationWithName:NSControlTintDidChangeNotification
+                                                                 object:@"- (id)objectAtIndex:(NSInteger)index"];
+    [_controller controlTextDidChange:notification];
+    XCTAssertTrue(_controller.createMethodButton.enabled);
+    XCTAssertTrue(_controller.problemLabel.hidden);
+}
+
+- (void)testInvalidMethodSignatureMeansCreateButtonDisabledAndWarningShown
+{
+    NSNotification *notification = [NSNotification notificationWithName:NSControlTintDidChangeNotification
+                                                                 object:@"- (id)objectAtIndex:"];
+    [_controller controlTextDidChange:notification];
+    XCTAssertFalse(_controller.createMethodButton.enabled);
+    XCTAssertFalse(_controller.problemLabel.hidden);
+}
+
 @end
