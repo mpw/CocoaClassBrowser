@@ -121,6 +121,15 @@
     [addMethodItem verify];
 }
 
+- (void)testIfEverythingIsDeselectedICannotAddAMethod
+{
+    id addMethodItem = [self mockTheAddMethodToolbarItem];
+    [[addMethodItem expect] setEnabled:NO];
+    id sender = [self mockABrowserWithSelectedColumn:-1 row:-1];
+    [controller browserSelectionDidChange:sender];
+    [addMethodItem verify];
+}
+
 - (void)testWithAClassGroupSelectedICannotAddAMethod
 {
     id addMethodItem = [self mockTheAddMethodToolbarItem];
