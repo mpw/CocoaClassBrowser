@@ -36,4 +36,11 @@
     [presentingWindow endSheet:self.window returnCode:NSModalResponseCancel];
 }
 
+- (BOOL)isValidSignature
+{
+    return ([self.signatureText canBeConvertedToEncoding:NSASCIIStringEncoding] &&
+            ([self.signatureText hasPrefix:@"-"] || [self.signatureText hasPrefix:@"+"]) &&
+            !([self.signatureText hasSuffix:@":"]));
+}
+
 @end
