@@ -95,13 +95,24 @@
 - (void)testMethodCreationResultsInAMethodWithTheSuppliedSignatureAndEmptyBodyOnTheExpectedClass
 {
     _controller.signatureText = @"-(void)addObject:(id)anObject";
-    [_controller setClass:NSStringFromClass([NSObject class])];
+    [_controller setClassName:NSStringFromClass([NSObject class])];
     [_controller createMethod:_controller.createMethodButton];
     IKBObjectiveCMethod *method = _controller.method;
     XCTAssertNotNil(method);
     XCTAssertEqualObjects(method.className, NSStringFromClass([NSObject class]));
     XCTAssertEqualObjects(method.declaration, _controller.signatureText);
     XCTAssertEqualObjects(method.body, @"{\n\n}\n");
+}
+
+- (void)testResetMethodDiscardsExistingModelState
+{
+    _controller.signatureText = @"-(void)addObject:(id)anObject";
+    [_controller setClassName:NSStringFromClass([NSArray class])];
+    [_controller createMethod:_controller.createMethodButton];
+    [_controller reset];
+    XCTAssertNil(_controller.method);
+    XCTAssertNil(_controller.signatureText);
+    XCTAssertNil(_controller.className);
 }
 
 @end
