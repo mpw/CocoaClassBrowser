@@ -4,6 +4,7 @@
 #import <OCMock/OCMock.h>
 #import "IKBMethodSignatureSheetController.h"
 #import "IKBMethodSignatureSheetController_ClassExtension.h"
+#import "IKBObjectiveCMethod.h"
 
 @interface NSString (IKBStringValue)
 
@@ -89,6 +90,18 @@
     [_controller controlTextDidChange:notification];
     XCTAssertFalse(_controller.createMethodButton.enabled);
     XCTAssertFalse(_controller.problemLabel.hidden);
+}
+
+- (void)testMethodCreationResultsInAMethodWithTheSuppliedSignatureAndEmptyBodyOnTheExpectedClass
+{
+    _controller.signatureText = @"-(void)addObject:(id)anObject";
+    [_controller setClass:NSStringFromClass([NSObject class])];
+    [_controller createMethod:_controller.createMethodButton];
+    IKBObjectiveCMethod *method = _controller.method;
+    XCTAssertNotNil(method);
+    XCTAssertEqualObjects(method.className, NSStringFromClass([NSObject class]));
+    XCTAssertEqualObjects(method.declaration, _controller.signatureText);
+    XCTAssertEqualObjects(method.body, @"{\n\n}\n");
 }
 
 @end
