@@ -80,6 +80,7 @@
 		98B811DD186232C6004FF75F /* IKBCodeEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98B811DC186232C6004FF75F /* IKBCodeEditorViewController.m */; };
 		98C653381B4A4E7A002987DE /* ObjectInspectorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 98C653371B4A4E7A002987DE /* ObjectInspectorTests.m */; };
 		98D7836418760BBD00C9137E /* IKBViewControllerOwnedView.m in Sources */ = {isa = PBXBuildFile; fileRef = 98D7836318760BBD00C9137E /* IKBViewControllerOwnedView.m */; };
+		98ECDA4C1B542E3E003E951F /* MethodTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 98ECDA4B1B542E3E003E951F /* MethodTests.m */; };
 		98F370F01B4BA1A900802347 /* IKBInspectorWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98F370EE1B4BA1A900802347 /* IKBInspectorWindowController.m */; };
 		98F370F11B4BA1A900802347 /* IKBInspectorWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98F370EF1B4BA1A900802347 /* IKBInspectorWindowController.xib */; };
 		98F370F31B4C3CA400802347 /* InspectorControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 98F370F21B4C3CA400802347 /* InspectorControllerTests.m */; };
@@ -271,6 +272,7 @@
 		98C653371B4A4E7A002987DE /* ObjectInspectorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjectInspectorTests.m; sourceTree = "<group>"; };
 		98D7836218760BBD00C9137E /* IKBViewControllerOwnedView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IKBViewControllerOwnedView.h; sourceTree = "<group>"; };
 		98D7836318760BBD00C9137E /* IKBViewControllerOwnedView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IKBViewControllerOwnedView.m; sourceTree = "<group>"; };
+		98ECDA4B1B542E3E003E951F /* MethodTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MethodTests.m; sourceTree = "<group>"; };
 		98F370ED1B4BA1A900802347 /* IKBInspectorWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IKBInspectorWindowController.h; path = "Object Inspecting/IKBInspectorWindowController.h"; sourceTree = "<group>"; };
 		98F370EE1B4BA1A900802347 /* IKBInspectorWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IKBInspectorWindowController.m; path = "Object Inspecting/IKBInspectorWindowController.m"; sourceTree = "<group>"; };
 		98F370EF1B4BA1A900802347 /* IKBInspectorWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = IKBInspectorWindowController.xib; path = "Object Inspecting/IKBInspectorWindowController.xib"; sourceTree = "<group>"; };
@@ -578,6 +580,7 @@
 				98C653371B4A4E7A002987DE /* ObjectInspectorTests.m */,
 				98F370F21B4C3CA400802347 /* InspectorControllerTests.m */,
 				329FD1AB22D5CB2421BE5EB0 /* MethodSignatureSheetTests.m */,
+				98ECDA4B1B542E3E003E951F /* MethodTests.m */,
 				98B66231185728A20045FDBD /* Supporting Files */,
 				98B6624418574BE90045FDBD /* FakeClassList.h */,
 				98B6624518574BE90045FDBD /* FakeClassList.m */,
@@ -766,6 +769,7 @@
 				98830692187ABD5100A4325C /* HumbleCompilerArgumentBuilder.m in Sources */,
 				07FBA0321888B00800618658 /* PreferencesWindowControllerTests.m in Sources */,
 				98B6624C185791510045FDBD /* FakeClassList.m in Sources */,
+				98ECDA4C1B542E3E003E951F /* MethodTests.m in Sources */,
 				329FD402601C2E8E355B4DFB /* MethodSignatureSheetTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
