@@ -3,7 +3,7 @@
 #import <Foundation/Foundation.h>
 
 
-@interface IKBObjectiveCMethod : NSObject
+@interface IKBObjectiveCMethod : NSObject <NSCoding>
 
 @property (nonatomic, copy) NSString *declaration;
 @property (nonatomic, copy) NSString *body;

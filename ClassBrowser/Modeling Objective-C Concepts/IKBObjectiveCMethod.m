@@ -51,4 +51,33 @@
     return canonicalName;
 }
 
+- (void)encodeWithCoder:(NSCoder *)aCoder
+{
+    [aCoder encodeObject:self.className forKey:@"className"];
+    [aCoder encodeObject:self.declaration forKey:@"declaration"];
+    [aCoder encodeObject:self.body forKey:@"body"];
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super init];
+    if (self) {
+        _className = [[aDecoder decodeObjectForKey:@"className"] copy];
+        _declaration = [[aDecoder decodeObjectForKey:@"declaration"] copy];
+        _body = [[aDecoder decodeObjectForKey:@"body"] copy];
+    }
+    return self;
+}
+
+- (BOOL)isEqual:(id)object
+{
+    if ([object respondsToSelector:@selector(className)] &&
+        [object respondsToSelector:@selector(declaration)] &&
+        [object respondsToSelector:@selector(body)]) {
+        return [[object className] isEqual:self.className] &&
+        [[object declaration] isEqual:self.declaration] &&
+        [[object body] isEqual:self.body];
+    }
+    return NO;
+}
 @end
