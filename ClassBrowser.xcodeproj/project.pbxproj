@@ -79,6 +79,9 @@
 		98B811D718621EF5004FF75F /* CodeTextViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 98B811D618621EF5004FF75F /* CodeTextViewControllerTests.m */; };
 		98B811DD186232C6004FF75F /* IKBCodeEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98B811DC186232C6004FF75F /* IKBCodeEditorViewController.m */; };
 		98C653381B4A4E7A002987DE /* ObjectInspectorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 98C653371B4A4E7A002987DE /* ObjectInspectorTests.m */; };
+		98CD1F181B5633F200733BAA /* IKBSourceRepositoryClassList.m in Sources */ = {isa = PBXBuildFile; fileRef = 98CD1F171B5633F200733BAA /* IKBSourceRepositoryClassList.m */; };
+		98CD1F1A1B5634E100733BAA /* SourceRepositoryClassListAdapterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 98CD1F191B5634E100733BAA /* SourceRepositoryClassListAdapterTests.m */; };
+		98CD1F1D1B56368900733BAA /* IKBObjectiveCClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 98CD1F1C1B56368900733BAA /* IKBObjectiveCClass.m */; };
 		98D7836418760BBD00C9137E /* IKBViewControllerOwnedView.m in Sources */ = {isa = PBXBuildFile; fileRef = 98D7836318760BBD00C9137E /* IKBViewControllerOwnedView.m */; };
 		98ECDA4C1B542E3E003E951F /* MethodTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 98ECDA4B1B542E3E003E951F /* MethodTests.m */; };
 		98ECDA4F1B54DC19003E951F /* IKBSourceRepository.m in Sources */ = {isa = PBXBuildFile; fileRef = 98ECDA4E1B54DC19003E951F /* IKBSourceRepository.m */; };
@@ -272,6 +275,12 @@
 		98C3970D1B4196F90066ADFD /* libLLVMX86AsmParser.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libLLVMX86AsmParser.a; path = ../../../../usr/local/lib/libLLVMX86AsmParser.a; sourceTree = "<group>"; };
 		98C3970E1B4196F90066ADFD /* libLLVMX86Disassembler.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libLLVMX86Disassembler.a; path = ../../../../usr/local/lib/libLLVMX86Disassembler.a; sourceTree = "<group>"; };
 		98C653371B4A4E7A002987DE /* ObjectInspectorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjectInspectorTests.m; sourceTree = "<group>"; };
+		98CD1F151B56325600733BAA /* IKBClassList_Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IKBClassList_Protocol.h; sourceTree = "<group>"; };
+		98CD1F161B5633F200733BAA /* IKBSourceRepositoryClassList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IKBSourceRepositoryClassList.h; sourceTree = "<group>"; };
+		98CD1F171B5633F200733BAA /* IKBSourceRepositoryClassList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IKBSourceRepositoryClassList.m; sourceTree = "<group>"; };
+		98CD1F191B5634E100733BAA /* SourceRepositoryClassListAdapterTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SourceRepositoryClassListAdapterTests.m; sourceTree = "<group>"; };
+		98CD1F1B1B56368900733BAA /* IKBObjectiveCClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IKBObjectiveCClass.h; sourceTree = "<group>"; };
+		98CD1F1C1B56368900733BAA /* IKBObjectiveCClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IKBObjectiveCClass.m; sourceTree = "<group>"; };
 		98D7836218760BBD00C9137E /* IKBViewControllerOwnedView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IKBViewControllerOwnedView.h; sourceTree = "<group>"; };
 		98D7836318760BBD00C9137E /* IKBViewControllerOwnedView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IKBViewControllerOwnedView.m; sourceTree = "<group>"; };
 		98ECDA4B1B542E3E003E951F /* MethodTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MethodTests.m; sourceTree = "<group>"; };
@@ -370,6 +379,10 @@
 				329FDA99098367C006316F55 /* IKBObjectiveCMethod.m */,
 				98ECDA4D1B54DC19003E951F /* IKBSourceRepository.h */,
 				98ECDA4E1B54DC19003E951F /* IKBSourceRepository.m */,
+				98CD1F161B5633F200733BAA /* IKBSourceRepositoryClassList.h */,
+				98CD1F171B5633F200733BAA /* IKBSourceRepositoryClassList.m */,
+				98CD1F1B1B56368900733BAA /* IKBObjectiveCClass.h */,
+				98CD1F1C1B56368900733BAA /* IKBObjectiveCClass.m */,
 			);
 			path = "Modeling Objective-C Concepts";
 			sourceTree = "<group>";
@@ -538,6 +551,7 @@
 				98B6624218574B900045FDBD /* IKBClassBrowserSource.m */,
 				98B6624018574B570045FDBD /* IKBClassList.h */,
 				98B6624A185788410045FDBD /* IKBClassList.m */,
+				98CD1F151B56325600733BAA /* IKBClassList_Protocol.h */,
 				98B6624F1857D7480045FDBD /* IKBClassBrowserWindowController.h */,
 				98B662541857D9EB0045FDBD /* IKBClassBrowserWindowController_ClassExtension.h */,
 				98B662501857D7480045FDBD /* IKBClassBrowserWindowController.m */,
@@ -589,6 +603,7 @@
 				329FD1AB22D5CB2421BE5EB0 /* MethodSignatureSheetTests.m */,
 				98ECDA4B1B542E3E003E951F /* MethodTests.m */,
 				98ECDA501B54DCBD003E951F /* SourceRepositoryTests.m */,
+				98CD1F191B5634E100733BAA /* SourceRepositoryClassListAdapterTests.m */,
 				98B66231185728A20045FDBD /* Supporting Files */,
 				98B6624418574BE90045FDBD /* FakeClassList.h */,
 				98B6624518574BE90045FDBD /* FakeClassList.m */,
@@ -738,6 +753,7 @@
 				98B6624B185788410045FDBD /* IKBClassList.m in Sources */,
 				98ECDA4F1B54DC19003E951F /* IKBSourceRepository.m in Sources */,
 				07C93DED188A200E00BFFD21 /* IKBBaseSDK.m in Sources */,
+				98CD1F181B5633F200733BAA /* IKBSourceRepositoryClassList.m in Sources */,
 				9828F190187EDFEF003F1DC6 /* IKBCompileAndRunCodeCommandHandler.m in Sources */,
 				07FBA02E1888AE9F00618658 /* IKBPreferencesWindowController.m in Sources */,
 				98B662521857D7480045FDBD /* IKBClassBrowserWindowController.m in Sources */,
@@ -745,6 +761,7 @@
 				9883068F187ABA1D00A4325C /* IKBXcodeClangArgumentBuilder.m in Sources */,
 				98B811DD186232C6004FF75F /* IKBCodeEditorViewController.m in Sources */,
 				9828F189187EC515003F1DC6 /* IKBCompileAndRunCodeCommand.m in Sources */,
+				98CD1F1D1B56368900733BAA /* IKBObjectiveCClass.m in Sources */,
 				98FFC98A187DA4FD00FE1659 /* IKBCommandBus.m in Sources */,
 				981613F8187C1F1400A0BEDD /* IKBCompilerTranscriptWindowController.m in Sources */,
 				329FD5322DC22E445929B0A2 /* IKBLLVMBitcodeModule.m in Sources */,
@@ -771,6 +788,7 @@
 				981613FB187C22F200A0BEDD /* CompilerTranscriptTests.m in Sources */,
 				980AC69D185A48CD00611C26 /* ExecutionTests.m in Sources */,
 				0770A46B188C689D00145954 /* CompilerPreferencesTests.m in Sources */,
+				98CD1F1A1B5634E100733BAA /* SourceRepositoryClassListAdapterTests.m in Sources */,
 				98B811D718621EF5004FF75F /* CodeTextViewControllerTests.m in Sources */,
 				98B66249185780320045FDBD /* ClassListTests.m in Sources */,
 				98B66237185728A20045FDBD /* ClassBrowserTests.m in Sources */,

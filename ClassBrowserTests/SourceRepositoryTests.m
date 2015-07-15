@@ -4,6 +4,7 @@
 #import <XCTest/XCTest.h>
 
 #import "IKBSourceRepository.h"
+#import "IKBObjectiveCClass.h"
 #import "IKBObjectiveCMethod.h"
 
 @interface SourceRepositoryTests : XCTestCase
@@ -13,11 +14,13 @@
 @implementation SourceRepositoryTests
 {
     IKBSourceRepository *_repository;
+    IKBObjectiveCClass *_class;
 }
 
 - (void)setUp
 {
     _repository = [IKBSourceRepository new];
+    _class = [[IKBObjectiveCClass alloc] initWithName:@"IKBFictionalClass" superclass:@"NSObject"];
 }
 
 - (void)testMethodCanBeAddedToTheRepository
@@ -41,6 +44,12 @@
     XCTAssertEqual([arrayMethods count], 0);
 }
 
+- (void)testClassCanBeAddedToTheRepository
+{
+    [_repository addClass:_class];
+    XCTAssertTrue([[_repository allClasses] containsObject:_class]);
+}
+
 - (void)testCodingRoundTrip
 {
     IKBObjectiveCMethod *method = [IKBObjectiveCMethod new];
@@ -48,9 +57,11 @@
     method.declaration = @"- (void)doThing";
     method.body = @"{\n  [self doTheThing];\n}\n";
     [_repository addMethod:method];
+    [_repository addClass:_class];
     IKBSourceRepository *otherRepository = [NSKeyedUnarchiver unarchiveObjectWithData:
                                             [NSKeyedArchiver archivedDataWithRootObject:_repository]];
     XCTAssertEqualObjects(_repository.allMethods, otherRepository.allMethods);
+    XCTAssertEqualObjects(_repository.allClasses, otherRepository.allClasses);
 }
 
 @end
