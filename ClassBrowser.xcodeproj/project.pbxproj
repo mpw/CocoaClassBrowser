@@ -79,6 +79,8 @@
 		98B811D718621EF5004FF75F /* CodeTextViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 98B811D618621EF5004FF75F /* CodeTextViewControllerTests.m */; };
 		98B811DD186232C6004FF75F /* IKBCodeEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98B811DC186232C6004FF75F /* IKBCodeEditorViewController.m */; };
 		98C653381B4A4E7A002987DE /* ObjectInspectorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 98C653371B4A4E7A002987DE /* ObjectInspectorTests.m */; };
+		98C8949E1B578710009796BF /* IKBCompositeClassList.m in Sources */ = {isa = PBXBuildFile; fileRef = 98C8949D1B578710009796BF /* IKBCompositeClassList.m */; };
+		98C894A01B578789009796BF /* CompositeClassListTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 98C8949F1B578789009796BF /* CompositeClassListTests.m */; };
 		98CD1F181B5633F200733BAA /* IKBSourceRepositoryClassList.m in Sources */ = {isa = PBXBuildFile; fileRef = 98CD1F171B5633F200733BAA /* IKBSourceRepositoryClassList.m */; };
 		98CD1F1A1B5634E100733BAA /* SourceRepositoryClassListAdapterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 98CD1F191B5634E100733BAA /* SourceRepositoryClassListAdapterTests.m */; };
 		98CD1F1D1B56368900733BAA /* IKBObjectiveCClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 98CD1F1C1B56368900733BAA /* IKBObjectiveCClass.m */; };
@@ -275,6 +277,9 @@
 		98C3970D1B4196F90066ADFD /* libLLVMX86AsmParser.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libLLVMX86AsmParser.a; path = ../../../../usr/local/lib/libLLVMX86AsmParser.a; sourceTree = "<group>"; };
 		98C3970E1B4196F90066ADFD /* libLLVMX86Disassembler.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libLLVMX86Disassembler.a; path = ../../../../usr/local/lib/libLLVMX86Disassembler.a; sourceTree = "<group>"; };
 		98C653371B4A4E7A002987DE /* ObjectInspectorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjectInspectorTests.m; sourceTree = "<group>"; };
+		98C8949C1B578710009796BF /* IKBCompositeClassList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IKBCompositeClassList.h; sourceTree = "<group>"; };
+		98C8949D1B578710009796BF /* IKBCompositeClassList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IKBCompositeClassList.m; sourceTree = "<group>"; };
+		98C8949F1B578789009796BF /* CompositeClassListTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CompositeClassListTests.m; sourceTree = "<group>"; };
 		98CD1F151B56325600733BAA /* IKBClassList_Protocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IKBClassList_Protocol.h; sourceTree = "<group>"; };
 		98CD1F161B5633F200733BAA /* IKBSourceRepositoryClassList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IKBSourceRepositoryClassList.h; sourceTree = "<group>"; };
 		98CD1F171B5633F200733BAA /* IKBSourceRepositoryClassList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IKBSourceRepositoryClassList.m; sourceTree = "<group>"; };
@@ -596,6 +601,7 @@
 				98ECDA4B1B542E3E003E951F /* MethodTests.m */,
 				98ECDA501B54DCBD003E951F /* SourceRepositoryTests.m */,
 				98CD1F191B5634E100733BAA /* SourceRepositoryClassListAdapterTests.m */,
+				98C8949F1B578789009796BF /* CompositeClassListTests.m */,
 				98B66231185728A20045FDBD /* Supporting Files */,
 				98B6624418574BE90045FDBD /* FakeClassList.h */,
 				98B6624518574BE90045FDBD /* FakeClassList.m */,
@@ -628,6 +634,8 @@
 				98B662541857D9EB0045FDBD /* IKBClassBrowserWindowController_ClassExtension.h */,
 				98B662501857D7480045FDBD /* IKBClassBrowserWindowController.m */,
 				98B662511857D7480045FDBD /* IKBClassBrowserWindowController.xib */,
+				98C8949C1B578710009796BF /* IKBCompositeClassList.h */,
+				98C8949D1B578710009796BF /* IKBCompositeClassList.m */,
 			);
 			name = "Browsing Classes";
 			sourceTree = "<group>";
@@ -778,6 +786,7 @@
 				07D10B021896A0BC0023A9D9 /* IKBXcodeSelectTaskRunner.m in Sources */,
 				329FD3C5E5859855BEE6F96B /* IKBLLVMBitcodeRunner.mm in Sources */,
 				07C93DE9188A1C4000BFFD21 /* IKBCompilerPreferencesViewController.m in Sources */,
+				98C8949E1B578710009796BF /* IKBCompositeClassList.m in Sources */,
 				329FD0C45F982C7D538CEE74 /* IKBMethodSignatureSheetController.m in Sources */,
 				329FD5DDA8270CBD91A41A29 /* IKBObjectiveCMethod.m in Sources */,
 			);
@@ -794,6 +803,7 @@
 				98B6624E1857D3A10045FDBD /* BrowserWindowControllerTests.m in Sources */,
 				07C93DEF188A25F500BFFD21 /* CompilerPreferencesViewControllerTests.m in Sources */,
 				981613FB187C22F200A0BEDD /* CompilerTranscriptTests.m in Sources */,
+				98C894A01B578789009796BF /* CompositeClassListTests.m in Sources */,
 				980AC69D185A48CD00611C26 /* ExecutionTests.m in Sources */,
 				0770A46B188C689D00145954 /* CompilerPreferencesTests.m in Sources */,
 				98CD1F1A1B5634E100733BAA /* SourceRepositoryClassListAdapterTests.m in Sources */,
