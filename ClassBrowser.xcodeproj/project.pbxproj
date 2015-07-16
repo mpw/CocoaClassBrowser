@@ -547,15 +547,7 @@
 				98B66221185728A20045FDBD /* MainMenu.xib */,
 				98B66224185728A20045FDBD /* Images.xcassets */,
 				98B66213185728A20045FDBD /* Supporting Files */,
-				98B6624118574B900045FDBD /* IKBClassBrowserSource.h */,
-				98B6624218574B900045FDBD /* IKBClassBrowserSource.m */,
-				98B6624018574B570045FDBD /* IKBRuntimeClassList.h */,
-				98B6624A185788410045FDBD /* IKBRuntimeClassList.m */,
-				98CD1F151B56325600733BAA /* IKBClassList_Protocol.h */,
-				98B6624F1857D7480045FDBD /* IKBClassBrowserWindowController.h */,
-				98B662541857D9EB0045FDBD /* IKBClassBrowserWindowController_ClassExtension.h */,
-				98B662501857D7480045FDBD /* IKBClassBrowserWindowController.m */,
-				98B662511857D7480045FDBD /* IKBClassBrowserWindowController.xib */,
+				98C8949B1B57864F009796BF /* Browsing Classes */,
 				98B811DB186232C6004FF75F /* IKBCodeEditorViewController.h */,
 				9819D721187D969600485A57 /* IKBCodeEditorViewController_ClassExtension.h */,
 				98B811DC186232C6004FF75F /* IKBCodeEditorViewController.m */,
@@ -622,6 +614,22 @@
 				98B66233185728A20045FDBD /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		98C8949B1B57864F009796BF /* Browsing Classes */ = {
+			isa = PBXGroup;
+			children = (
+				98B6624118574B900045FDBD /* IKBClassBrowserSource.h */,
+				98B6624218574B900045FDBD /* IKBClassBrowserSource.m */,
+				98B6624018574B570045FDBD /* IKBRuntimeClassList.h */,
+				98B6624A185788410045FDBD /* IKBRuntimeClassList.m */,
+				98CD1F151B56325600733BAA /* IKBClassList_Protocol.h */,
+				98B6624F1857D7480045FDBD /* IKBClassBrowserWindowController.h */,
+				98B662541857D9EB0045FDBD /* IKBClassBrowserWindowController_ClassExtension.h */,
+				98B662501857D7480045FDBD /* IKBClassBrowserWindowController.m */,
+				98B662511857D7480045FDBD /* IKBClassBrowserWindowController.xib */,
+			);
+			name = "Browsing Classes";
 			sourceTree = "<group>";
 		};
 		98FFC984187DA4DD00FE1659 /* IKBCommandBus */ = {
