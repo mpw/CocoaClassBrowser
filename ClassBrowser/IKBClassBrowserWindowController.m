@@ -4,7 +4,7 @@
 #import "IKBClassBrowserWindowController_ClassExtension.h"
 
 #import "IKBClassBrowserSource.h"
-#import "IKBClassList.h"
+#import "IKBRuntimeClassList.h"
 #import "IKBCodeEditorViewController.h"
 #import "IKBMethodSignatureSheetController.h"
 
@@ -24,7 +24,7 @@
 {
     [super windowDidLoad];
     
-    IKBClassList *classList = [IKBClassList new];
+    IKBRuntimeClassList *classList = [IKBRuntimeClassList new];
     self.classList = classList;
     self.browserSource = [[IKBClassBrowserSource alloc] initWithClassList:classList];
     self.classBrowser.delegate = self.browserSource;

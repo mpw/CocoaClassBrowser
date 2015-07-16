@@ -1,7 +1,7 @@
 //See COPYING for licence details.
 
 #import <XCTest/XCTest.h>
-#import "IKBClassList.h"
+#import "IKBRuntimeClassList.h"
 #import "FakeClassList.h"
 #import "IKBAppDelegate.h"
 
@@ -19,7 +19,7 @@
 
 - (void)setUp
 {
-    list = [IKBClassList new];
+    list = [IKBRuntimeClassList new];
     classGroups = [list allClassGroups];
     foundationIndex = [classGroups indexOfObject:@"Foundation"];
 }

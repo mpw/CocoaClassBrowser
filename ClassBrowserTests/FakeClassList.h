@@ -1,7 +1,7 @@
 //See COPYING for licence details.
 
 #import <Foundation/Foundation.h>
-#import "IKBClassList.h"
+#import "IKBRuntimeClassList.h"
 
 @interface FakeClassList : NSObject <IKBClassList>
 

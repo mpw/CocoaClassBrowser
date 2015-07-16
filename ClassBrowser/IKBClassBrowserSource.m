@@ -1,7 +1,7 @@
 //See COPYING for licence details.
 
 #import "IKBClassBrowserSource.h"
-#import "IKBClassList.h"
+#import "IKBRuntimeClassList.h"
 #import "IKBMethodSignatureSheetController.h"
 
 typedef NS_ENUM(NSInteger, IKBClassBrowserColumn) {

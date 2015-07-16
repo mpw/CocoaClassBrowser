@@ -4,7 +4,7 @@
 
 #import "IKBClassList_Protocol.h"
 
-@interface IKBClassList : NSObject <IKBClassList>
+@interface IKBRuntimeClassList : NSObject <IKBClassList>
 
 @end
 

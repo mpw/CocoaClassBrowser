@@ -1,7 +1,7 @@
 //See COPYING for licence details.
 
 #import <XCTest/XCTest.h>
-#import "IKBClassList.h"
+#import "IKBRuntimeClassList.h"
 #import "IKBClassBrowserSource.h"
 
 #import "FakeClassList.h"

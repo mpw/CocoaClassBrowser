@@ -1,9 +1,9 @@
 //See COPYING for licence details.
 
-#import "IKBClassList.h"
+#import "IKBRuntimeClassList.h"
 #import <objc/runtime.h>
 
-@implementation IKBClassList
+@implementation IKBRuntimeClassList
 {
     NSDictionary *_classesByGroup;
     NSArray *_selectedGroup;
