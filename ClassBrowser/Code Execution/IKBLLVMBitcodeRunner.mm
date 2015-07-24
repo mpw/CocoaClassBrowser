@@ -36,8 +36,32 @@
 #include "llvm/Support/raw_ostream.h"
 #pragma clang diagnostic pop
 
+#import <objc/runtime.h>
+
 using namespace clang;
 using namespace clang::driver;
+
+@interface IKBExecutionEngine : NSObject
+
+- (instancetype)initWithEngine:(llvm::ExecutionEngine *)engine;
+
+@end
+
+@implementation IKBExecutionEngine
+{
+    std::unique_ptr<llvm::ExecutionEngine>_engine;
+}
+
+- (instancetype)initWithEngine:(llvm::ExecutionEngine *)engine
+{
+    self = [super init];
+    if (self) {
+        _engine = std::unique_ptr<llvm::ExecutionEngine>(engine);
+    }
+    return self;
+}
+
+@end
 
 @implementation IKBLLVMBitcodeRunner
 
@@ -144,15 +168,9 @@ using namespace clang::driver;
     llvm::ArrayRef<llvm::GenericValue> functionArguments;
     llvm::GenericValue result = EE->runFunction(EntryFn, functionArguments);
     id returnedObject = (__bridge id)GVTOP(result);
-    if ([returnedObject isMemberOfClass:[@"" class]]) {
-        /*
-         * You can't return any static value that was defined in the
-         * dynamic module, because the variable's storage will have
-         * gone out of scope when we return from this function.
-         * Constant NSStrings is a common-enough case to want a workaround.
-         */
-        returnedObject = [[NSString alloc] initWithUTF8String:[returnedObject UTF8String]];
-    }
+    
+    IKBExecutionEngine *engineOwner = [[IKBExecutionEngine alloc] initWithEngine:EE.release()];
+    objc_setAssociatedObject(returnedObject, "ExecutionEngine", engineOwner, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     return returnedObject;
 }
 
