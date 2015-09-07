@@ -84,13 +84,13 @@ typedef NS_ENUM(NSInteger, IKBClassBrowserColumn) {
 {
     switch (column) {
         case IKBClassBrowserColumnClassGroup:
-            [_classList selectClassGroupAtIndex:row];
+            [self selectClassGroupAtIndex:row];
             break;
         case IKBClassBrowserColumnClass:
-            [_classList selectClassAtIndex:row];
+            [self selectClassAtIndex:row];
             break;
         case IKBClassBrowserColumnProtocol:
-            [_classList selectProtocolAtIndex:row];
+            [self selectProtocolAtIndex:row];
             break;
         case IKBClassBrowserColumnMethod:
             return;
@@ -99,6 +99,21 @@ typedef NS_ENUM(NSInteger, IKBClassBrowserColumn) {
             break;
     }
     [browser reloadColumn:column + 1];
+}
+
+- (void)selectClassGroupAtIndex:(NSInteger)index
+{
+  [_classList selectClassGroupAtIndex:index];
+}
+
+- (void)selectClassAtIndex:(NSInteger)index
+{
+  [_classList selectClassAtIndex:index];
+}
+
+- (void)selectProtocolAtIndex:(NSInteger)index
+{
+  [_classList selectProtocolAtIndex:index];
 }
 
 @end
