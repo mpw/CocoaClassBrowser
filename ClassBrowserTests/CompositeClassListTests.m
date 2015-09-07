@@ -38,16 +38,14 @@
 
 - (void)testClassesInAGroupAreCombinedAndMerged
 {
-    [_classList selectClassGroupAtIndex:0];
-    NSArray *classes = [_classList classesInSelectedGroup];
+    NSArray *classes = [_classList classesInGroup:@"Bar"];
     NSArray *expectedClasses = @[@"MyBar", @"TheirBar", @"YourBar"];
     XCTAssertEqualObjects(classes, expectedClasses);
 }
 
 - (void)testClassesInGroupAreCorrectWhenOneSublistLacksThatGroup
 {
-    [_classList selectClassGroupAtIndex:2];
-    NSArray *classes = [_classList classesInSelectedGroup];
+    NSArray *classes = [_classList classesInGroup:@"Foo"];
     NSArray *expectedClasses = @[@"IKBFoo", @"NSFoo", @"UIFoo"];
     XCTAssertEqualObjects(classes, expectedClasses);
 }

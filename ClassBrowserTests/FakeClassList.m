@@ -4,9 +4,6 @@
 
 @implementation FakeClassList
 {
-    NSInteger _selectedGroup;
-    NSInteger _selectedClass;
-    NSInteger _selectedProtocol;
     NSArray *_protocols;
     NSArray *_methods;
 }
@@ -37,79 +34,49 @@
     return [self.classGroups objectAtIndex:index];
 }
 
-- (void)selectClassGroupAtIndex:(NSInteger)index
-{
-    _selectedGroup = index;
-}
-
-- (NSString *)selectedClassGroup
-{
-    return self.classGroups[_selectedGroup];
-}
-
 - (NSArray *)classGroups
 {
     return [self.classes.allKeys sortedArrayUsingSelector:@selector(compare:)];
 }
 
-- (NSUInteger)countOfClasses
+- (NSUInteger)countOfClassesInGroup:(NSString *)group
 {
-    return [self.classes[self.selectedClassGroup] count];
+    return [self.classes[group] count];
 }
 
-- (NSString *)objectInClassesAtIndex:(NSUInteger)index
+- (NSString *)classInGroup:(NSString *)group atIndex:(NSUInteger)index
 {
-    return self.classes[self.selectedClassGroup][index];
+    return self.classes[group][index];
 }
 
-- (NSArray *)classesInSelectedGroup
+- (NSArray *)classesInGroup:(NSString *)group
 {
-    return self.classes[self.selectedClassGroup];
+    return self.classes[group];
 }
 
-- (void)selectClassAtIndex:(NSInteger)index
+- (NSArray *)protocolsInClass:(NSString *)className
 {
-    _selectedClass = index;
+    return _protocols;
 }
 
-- (NSString *)selectedClass
-{
-    return self.classes[self.selectedClassGroup][_selectedClass];
-}
-
-- (NSUInteger)countOfProtocols
+- (NSUInteger)countOfProtocolsInClass:(NSString *)className
 {
     return _protocols.count;
 }
 
-- (NSString *)objectInProtocolsAtIndex:(NSUInteger)index
+- (NSString *)protocolInClass:(NSString *)className atIndex:(NSUInteger)index
 {
     return _protocols[index];
 }
 
-- (void)selectProtocolAtIndex:(NSInteger)index
-{
-    _selectedProtocol = index;
-}
-
-- (NSString *)selectedProtocol
-{
-    return _protocols[_selectedProtocol];
-}
-
-- (NSUInteger)countOfMethods
+- (NSUInteger)countOfMethodsInProtocol:(NSString *)protocolName ofClass:(NSString *)className
 {
     return _methods.count;
 }
 
-- (NSString *)objectInMethodsAtIndex:(NSUInteger)index
+- (NSString *)methodInProtocol:(NSString *)protocolName ofClass:(NSString *)className atIndex:(NSUInteger)index
 {
     return _methods[index];
-}
-
-- (NSArray *)protocolsInSelectedClass
-{
-    return _protocols;
 }
 
 @end

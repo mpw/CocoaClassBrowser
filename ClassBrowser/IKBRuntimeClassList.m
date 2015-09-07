@@ -6,11 +6,6 @@
 @implementation IKBRuntimeClassList
 {
     NSDictionary *_classesByGroup;
-    NSArray *_selectedGroup;
-    Class _selectedClass;
-    NSArray *_protocolList;
-    NSString *_selectedProtocol;
-    NSArray *_methodList;
 }
 
 - (instancetype)init
@@ -49,9 +44,6 @@
 - (void)dealloc
 {
     [_classesByGroup release];
-    [_protocolList release];
-    [_methodList release];
-    [_selectedProtocol release];
     [super dealloc];
 }
 
@@ -70,68 +62,44 @@
     return [[_classesByGroup allKeys] sortedArrayUsingSelector:@selector(compare:)];
 }
 
-- (NSUInteger)countOfClasses
+- (NSUInteger)countOfClassesInGroup:(NSString *)group
 {
-    return [_selectedGroup count];
+    return [_classesByGroup[group] count];
 }
 
-- (void)selectClassGroupAtIndex:(NSInteger)index
+- (NSString *)classInGroup:(NSString *)group atIndex:(NSUInteger)index
 {
-    NSString *selectedClassGroup = [self allClassGroups][index];
-    _selectedGroup = _classesByGroup[selectedClassGroup];
+    return _classesByGroup[group][index];
 }
 
-- (NSString *)objectInClassesAtIndex:(NSUInteger)index
+- (NSArray *)classesInGroup:(NSString *)group
 {
-    return _selectedGroup[index];
+    return [[_classesByGroup[group] retain] autorelease];
 }
 
-- (NSArray *)classesInSelectedGroup
+- (NSArray *)protocolsInClass:(NSString *)className
 {
-    return [[_selectedGroup retain] autorelease];
+    return [self protocolListForClass:className];
 }
 
-- (void)selectClassAtIndex:(NSInteger)index
+- (NSUInteger)countOfProtocolsInClass:(NSString *)className
 {
-    _selectedClass = NSClassFromString([self objectInClassesAtIndex:index]);
-    [self createProtocolList];
+    return [[self protocolListForClass:className] count];
 }
 
-- (NSString *)selectedClass
+- (NSString *)protocolInClass:(NSString *)className atIndex:(NSUInteger)index
 {
-    return NSStringFromClass(_selectedClass);
+    return [self protocolListForClass:className][index];
 }
 
-- (NSArray *)protocolsInSelectedClass
+- (NSUInteger)countOfMethodsInProtocol:(NSString *)protocolName ofClass:(NSString *)className
 {
-    return [[_protocolList retain] autorelease];
+    return [[self methodListForProtocol:protocolName inClass:className] count];
 }
 
-- (NSUInteger)countOfProtocols
+- (NSString *)methodInProtocol:(NSString *)protocolName ofClass:(NSString *)className atIndex:(NSUInteger)index
 {
-    return [_protocolList count];
-}
-
-- (NSString *)objectInProtocolsAtIndex:(NSUInteger)index
-{
-    return _protocolList[index];
-}
-
-- (void)selectProtocolAtIndex:(NSInteger)index
-{
-    [_selectedProtocol release];
-    _selectedProtocol = [[self objectInProtocolsAtIndex:index] retain];
-    [self createMethodList];
-}
-
-- (NSUInteger)countOfMethods
-{
-    return [_methodList count];
-}
-
-- (NSString *)objectInMethodsAtIndex:(NSUInteger)index
-{
-    return _methodList[index];
+    return [self methodListForProtocol:protocolName inClass:className][index];
 }
 
 - (void)sortClassesInGroups
@@ -141,12 +109,10 @@
     }];
 }
 
-- (void)createProtocolList
+- (NSArray *)protocolListForClass:(NSString *)className
 {
-    [_protocolList release];
-    _protocolList = nil;
     unsigned int protocolCount;
-    Protocol **list = class_copyProtocolList(_selectedClass, &protocolCount);
+    Protocol **list = class_copyProtocolList(NSClassFromString(className), &protocolCount);
     NSMutableArray *protocols = [NSMutableArray array];
     for (unsigned int i = 0; i < protocolCount; i++)
     {
@@ -157,33 +123,32 @@
     free(list);
     [protocols sortUsingSelector:@selector(compare:)];
     NSArray *fullList = [@[IKBProtocolAllMethods, IKBProtocolUncategorizedMethods] arrayByAddingObjectsFromArray:protocols];
-    _protocolList = [fullList retain];
+    return fullList;
 }
 
-- (void)createMethodList
+- (NSArray *)methodListForProtocol:(NSString *)protocolName inClass:(NSString *)className
 {
-    [_methodList release];
-    _methodList = nil;
     NSArray *appropriateMethods = nil;
-    if ([_selectedProtocol isEqualToString:(id)IKBProtocolAllMethods])
+    if ([protocolName isEqualToString:(id)IKBProtocolAllMethods])
     {
-        appropriateMethods = [self listAllMethods];
+        appropriateMethods = [self listAllMethodsInClass:className];
     }
-    else if ([_selectedProtocol isEqualToString:(id)IKBProtocolUncategorizedMethods])
+    else if ([protocolName isEqualToString:(id)IKBProtocolUncategorizedMethods])
     {
-        appropriateMethods = [self listUncategorizedMethods];
+        appropriateMethods = [self listUncategorizedMethodsInClass:className];
     }
     else
     {
-        appropriateMethods = [self listMethodsInSelectedProtocol];
+        appropriateMethods = [self listMethodsForProtocol:protocolName inClass:className];
     }
-    _methodList = [[self sortMethods:appropriateMethods] retain];
+    return [self sortMethods:appropriateMethods];
 }
 
-- (NSArray *)listAllMethods
+- (NSArray *)listAllMethodsInClass:(NSString *)className
 {
     unsigned int countOfClassMethods = 0;
-    Method *classMethodList = class_copyMethodList(object_getClass(_selectedClass), &countOfClassMethods);
+    Class aClass = NSClassFromString(className);
+    Method *classMethodList = class_copyMethodList(object_getClass(aClass), &countOfClassMethods);
     NSMutableArray *methodsInClass = [NSMutableArray array];
     for (unsigned int i = 0; i < countOfClassMethods; i++)
     {
@@ -194,7 +159,7 @@
     free(classMethodList);
     
     unsigned int countOfInstanceMethods = 0;
-    Method *instanceMethodList = class_copyMethodList(_selectedClass, &countOfInstanceMethods);
+    Method *instanceMethodList = class_copyMethodList(aClass, &countOfInstanceMethods);
     for (unsigned int i = 0; i < countOfInstanceMethods; i++)
     {
         Method thisMethod = instanceMethodList[i];
@@ -205,10 +170,10 @@
     return methodsInClass;
 }
 
-- (NSArray *)listUncategorizedMethods
+- (NSArray *)listUncategorizedMethodsInClass:(NSString *)className
 {
-    NSArray *allMethods = [self listAllMethods];
-    NSArray *allProtocols = [self protocolsInSelectedClass];
+    NSArray *allMethods = [self listAllMethodsInClass:className];
+    NSArray *allProtocols = [self protocolListForClass:className];
     if ([allProtocols count] == 2)
     {
         return allMethods;
@@ -219,8 +184,7 @@
         NSArray *realProtocols = [allProtocols subarrayWithRange:NSMakeRange(2, [allProtocols count] - 2)];
         for (NSString *protocolName in realProtocols)
         {
-            Protocol *protocol = NSProtocolFromString(protocolName);
-            NSArray *conformingMethods = [self methodsInProtocol:protocol];
+            NSArray *conformingMethods = [self methodsForProtocol:protocolName inClass:className];
             [mutableMethods removeObjectsInArray:conformingMethods];
         }
         return mutableMethods;
@@ -228,11 +192,12 @@
     return nil;
 }
 
-- (NSArray *)methodsInProtocol:(Protocol *)protocol
+- (NSArray *)methodsForProtocol:(NSString *)protocolName inClass:(NSString *)className
 {
     NSMutableArray *methodsInProtocolAndClass = [NSMutableArray array];
     unsigned int countOfClassMethods = 0;
-    Method *classMethodList = class_copyMethodList(object_getClass(_selectedClass), &countOfClassMethods);
+    Class aClass = NSClassFromString(className);
+    Method *classMethodList = class_copyMethodList(object_getClass(aClass), &countOfClassMethods);
     NSMutableArray *methodsInClass = [NSMutableArray array];
     for (unsigned int i = 0; i < countOfClassMethods; i++)
     {
@@ -242,6 +207,7 @@
     }
     free(classMethodList);
     
+    Protocol *protocol = NSProtocolFromString(protocolName);
     //required class methods
     unsigned int countOfProtocolMethods = 0;
     struct objc_method_description *method_list = protocol_copyMethodDescriptionList(protocol, YES, NO, &countOfProtocolMethods);
@@ -269,7 +235,7 @@
     }
     
     unsigned int countOfInstanceMethods = 0;
-    Method *instanceMethodList = class_copyMethodList(_selectedClass, &countOfInstanceMethods);
+    Method *instanceMethodList = class_copyMethodList(aClass, &countOfInstanceMethods);
     methodsInClass = [NSMutableArray array];
     for (unsigned int i = 0; i < countOfInstanceMethods; i++)
     {
@@ -309,10 +275,9 @@
     return methodsInProtocolAndClass;
 }
 
-- (NSArray *)listMethodsInSelectedProtocol
+- (NSArray *)listMethodsForProtocol:(NSString *)protocolName inClass:(NSString *)className
 {
-    Protocol *protocol = NSProtocolFromString(_selectedProtocol);
-    return [self methodsInProtocol:protocol];
+    return [self methodsForProtocol:protocolName inClass:className];
 }
 
 - (NSArray *)sortMethods:(NSArray *)unsorted

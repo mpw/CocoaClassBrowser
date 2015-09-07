@@ -7,21 +7,17 @@
 - (NSArray *)allClassGroups;
 - (NSUInteger)countOfClassGroups;
 - (NSString *)objectInClassGroupsAtIndex:(NSUInteger)index;
-- (void)selectClassGroupAtIndex:(NSInteger)index;
 
-- (NSArray *)classesInSelectedGroup;
-- (NSUInteger)countOfClasses;
-- (NSString *)objectInClassesAtIndex:(NSUInteger)index;
-- (void)selectClassAtIndex:(NSInteger)index;
-- (NSString *)selectedClass;
+- (NSArray *)classesInGroup:(NSString *)group;
+- (NSUInteger)countOfClassesInGroup:(NSString *)group;
+- (NSString *)classInGroup:(NSString *)group atIndex:(NSUInteger)index;
 
-- (NSArray *)protocolsInSelectedClass;
-- (NSUInteger)countOfProtocols;
-- (NSString *)objectInProtocolsAtIndex:(NSUInteger)index;
-- (void)selectProtocolAtIndex:(NSInteger)index;
+- (NSArray *)protocolsInClass:(NSString *)className;
+- (NSUInteger)countOfProtocolsInClass:(NSString *)className;
+- (NSString *)protocolInClass:(NSString *)className atIndex:(NSUInteger)index;
 
-- (NSUInteger)countOfMethods;
-- (NSString *)objectInMethodsAtIndex:(NSUInteger)index;
+- (NSUInteger)countOfMethodsInProtocol:(NSString *)protocolName ofClass:(NSString *)className;
+- (NSString *)methodInProtocol:(NSString *)protocolName ofClass:(NSString *)className atIndex:(NSUInteger)index;
 
 @end
 

@@ -93,10 +93,10 @@ void selectSecondProtocolForSecondClassInBrowser(IKBClassBrowserSource *source, 
     XCTAssertFalse([cell isLeaf]);
 }
 
-- (void)testBrowserCellSelectionResultsInChoosingAClassGroupInTheDataModel
+- (void)testBrowserCellSelectionResultsInChoosingAClassGroup
 {
     [source browser:nil didSelectRow:1 inColumn:0];
-    XCTAssertEqualObjects(list.selectedClassGroup, @"Foundation");
+    XCTAssertEqualObjects(source.selectedClassGroup, @"Foundation");
 }
 
 - (void)testBrowserCellsInColumnOneAreNamedAfterTheClassesInTheSelectedGroup
@@ -129,7 +129,7 @@ void selectSecondProtocolForSecondClassInBrowser(IKBClassBrowserSource *source, 
 - (void)testSelectingClassInBrowserIsReflectedInDataModel
 {
     selectSecondClassInBrowser(source, nil);
-    XCTAssertEqualObjects(list.selectedClass, @"NSCell");
+    XCTAssertEqualObjects(source.selectedClass, @"NSCell");
 }
 
 - (void)testProtocolsAreShownInTheThirdColumn
@@ -144,12 +144,6 @@ void selectSecondProtocolForSecondClassInBrowser(IKBClassBrowserSource *source, 
     [source browser:nil willDisplayCell:cell atRow:2 column:2];
     XCTAssertEqualObjects([cell stringValue], @"NSCopying");
     XCTAssertFalse([cell isLeaf]);
-}
-
-- (void)testSelectingProtocolInBrowserIsReflectedInDataModel
-{
-    selectSecondProtocolForSecondClassInBrowser(source, nil);
-    XCTAssertEqualObjects(list.selectedProtocol, @"uncategorized");
 }
 
 - (void)testSelectingProtocolRefreshesMethodColumn

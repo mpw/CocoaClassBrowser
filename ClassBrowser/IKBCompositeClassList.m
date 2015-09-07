@@ -5,7 +5,6 @@
 @implementation IKBCompositeClassList
 {
     NSArray *_classLists;
-    NSString *_selectedClassGroup;
 }
 
 + (instancetype)compositeOfClassLists:(NSArray *)classLists
@@ -42,25 +41,56 @@
     return [self _mergedClassGroups][index];
 }
 
-- (void)selectClassGroupAtIndex:(NSInteger)index
-{
-    _selectedClassGroup = [self objectInClassGroupsAtIndex:index];
-}
-
-- (NSArray *)classesInSelectedGroup
+- (NSArray *)classesInGroup:(NSString *)group
 {
     NSMutableOrderedSet *classesBuilder = [NSMutableOrderedSet orderedSet];
     [_classLists enumerateObjectsUsingBlock:^(id <IKBClassList>list, NSUInteger idx, BOOL *stop) {
-        NSInteger index = [[list allClassGroups] indexOfObject:_selectedClassGroup];
+        NSInteger index = [[list allClassGroups] indexOfObject:group];
         if (index != NSNotFound) {
-            [list selectClassGroupAtIndex:index];
-            NSArray *classes = [list classesInSelectedGroup];
+            NSArray *classes = [list classesInGroup:group];
             [classesBuilder addObjectsFromArray:classes];
         }
     }];
     NSArray *combinedClassList = [classesBuilder array];
     combinedClassList = [combinedClassList sortedArrayUsingSelector:@selector(compare:)];
     return combinedClassList;
+}
+
+- (NSUInteger)countOfClassesInGroup:(NSString *)group
+{
+    return [[self classesInGroup:group] count];
+}
+
+- (NSString *)classInGroup:(NSString *)group atIndex:(NSUInteger)index
+{
+    return [self classesInGroup:group][index];
+}
+
+#pragma mark - Unimplemented protocol methods
+
+- (NSArray *)protocolsInClass:(NSString *)className
+{
+    return nil;
+}
+
+- (NSUInteger)countOfProtocolsInClass:(NSString *)className
+{
+    return NSNotFound;
+}
+
+- (NSString *)protocolInClass:(NSString *)className atIndex:(NSUInteger)index
+{
+    return nil;
+}
+
+- (NSUInteger)countOfMethodsInProtocol:(NSString *)protocolName ofClass:(NSString *)className
+{
+    return NSNotFound;
+}
+
+- (NSString *)methodInProtocol:(NSString *)protocolName ofClass:(NSString *)className atIndex:(NSUInteger)index
+{
+    return nil;
 }
 
 @end

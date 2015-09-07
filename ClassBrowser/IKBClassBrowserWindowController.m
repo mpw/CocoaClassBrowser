@@ -52,7 +52,7 @@
 - (IBAction)addMethod:(id)sender
 {
     [self.addMethodSheet reset];
-    NSString *selectedClassName = [self.classList selectedClass];
+    NSString *selectedClassName = [self.browserSource selectedClass];
     [self.addMethodSheet setClassName:selectedClassName];
     [self.window beginSheet:self.addMethodSheet.window completionHandler:^(NSModalResponse returnCode) {
         [self addMethodSheetReturnedCode:returnCode];

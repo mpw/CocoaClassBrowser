@@ -14,6 +14,9 @@ typedef NS_ENUM(NSInteger, IKBClassBrowserColumn) {
 @implementation IKBClassBrowserSource
 {
     id <IKBClassList> _classList;
+    NSString *_selectedGroup;
+    NSString *_selectedClass;
+    NSString *_selectedProtocol;
 }
 
 - (instancetype)initWithClassList:(id)list
@@ -33,13 +36,13 @@ typedef NS_ENUM(NSInteger, IKBClassBrowserColumn) {
             return [_classList countOfClassGroups];
             break;
         case IKBClassBrowserColumnClass:
-            return [_classList countOfClasses];
+            return [_classList countOfClassesInGroup:_selectedGroup];
             break;
         case IKBClassBrowserColumnProtocol:
-            return [_classList countOfProtocols];
+            return [_classList countOfProtocolsInClass:_selectedClass];
             break;
         case IKBClassBrowserColumnMethod:
-            return [_classList countOfMethods];
+            return [_classList countOfMethodsInProtocol:_selectedProtocol ofClass:_selectedClass];
             break;
         default:
             return 0;
@@ -59,19 +62,19 @@ typedef NS_ENUM(NSInteger, IKBClassBrowserColumn) {
         }
         case IKBClassBrowserColumnClass:
         {
-            NSString *className = [_classList objectInClassesAtIndex:row];
+            NSString *className = [_classList classInGroup:_selectedGroup atIndex:row];
             [cell setStringValue:className];
             break;
         }
         case IKBClassBrowserColumnProtocol:
         {
-            NSString *protocolName = [_classList objectInProtocolsAtIndex:row];
+            NSString *protocolName = [_classList protocolInClass:_selectedClass atIndex:row];
             [cell setStringValue:protocolName];
             break;
         }
         case IKBClassBrowserColumnMethod:
         {
-            NSString *methodName = [_classList objectInMethodsAtIndex:row];
+            NSString *methodName = [_classList methodInProtocol:_selectedProtocol ofClass:_selectedClass atIndex:row];
             [cell setStringValue:methodName];
             [cell setLeaf:YES];
         }
@@ -103,17 +106,26 @@ typedef NS_ENUM(NSInteger, IKBClassBrowserColumn) {
 
 - (void)selectClassGroupAtIndex:(NSInteger)index
 {
-  [_classList selectClassGroupAtIndex:index];
+    _selectedGroup = [_classList objectInClassGroupsAtIndex:index];
 }
 
 - (void)selectClassAtIndex:(NSInteger)index
 {
-  [_classList selectClassAtIndex:index];
+    _selectedClass = [_classList classInGroup:_selectedGroup atIndex:index];
 }
 
 - (void)selectProtocolAtIndex:(NSInteger)index
 {
-  [_classList selectProtocolAtIndex:index];
+    _selectedProtocol = [_classList protocolInClass:_selectedClass atIndex:index];
 }
 
+- (NSString *)selectedClassGroup
+{
+    return _selectedGroup;
+}
+
+- (NSString *)selectedClass
+{
+    return _selectedClass;
+}
 @end

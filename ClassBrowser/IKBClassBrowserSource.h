@@ -8,5 +8,7 @@
 
 - (instancetype)initWithClassList:(id <IKBClassList>)list;
 - (void)browser:(NSBrowser *)browser didSelectRow:(NSInteger)row inColumn:(NSInteger)column;
+- (NSString *)selectedClassGroup;
+- (NSString *)selectedClass;
 
 @end

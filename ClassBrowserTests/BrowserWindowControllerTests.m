@@ -205,9 +205,10 @@
 - (void)testMethodSignatureSheetIsToldTheClassToAddTheMethodTo
 {
     // first, select the Foundation category
-    [classes selectClassGroupAtIndex:1];
+    //[classes selectClassGroupAtIndex:1];
     // then select the NSString class
-    [classes selectClassAtIndex:2];
+    //[classes selectClassAtIndex:2];
+    XCTFail(@"try to add a method to the NSString class");
     controller.classList = classes;
     id methodSignatureSheet = [OCMockObject niceMockForClass:[IKBMethodSignatureSheetController class]];
     [[methodSignatureSheet expect] setClassName:@"NSString"];
