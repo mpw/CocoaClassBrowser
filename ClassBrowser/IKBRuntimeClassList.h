@@ -7,6 +7,3 @@
 @interface IKBRuntimeClassList : NSObject <IKBClassList>
 
 @end
-
-extern NSString const *IKBProtocolAllMethods;
-extern NSString const *IKBProtocolUncategorizedMethods;

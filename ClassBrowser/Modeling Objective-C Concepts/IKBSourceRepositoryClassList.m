@@ -73,6 +73,11 @@
     return nil;
 }
 
+- (NSArray *)methodsInProtocol:(NSString *)protocolName ofClass:(NSString *)className
+{
+    return nil;
+}
+
 - (NSUInteger)countOfMethodsInProtocol:(NSString *)protocolName ofClass:(NSString *)className
 {
     return NSNotFound;

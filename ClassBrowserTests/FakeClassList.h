@@ -7,8 +7,8 @@
 
 @property (nonatomic, strong) NSDictionary *classes;
 @property (nonatomic, readonly) NSArray *classGroups;
-@property (nonatomic, readonly) NSString *selectedClassGroup;
-@property (nonatomic, readonly) NSString *selectedClass;
-@property (nonatomic, readonly) NSString *selectedProtocol;
+
+- (void)setProtocols:(NSArray *)protocols forClass:(NSString *)className;
+- (void)setMethods:(NSArray *)methods forProtocol:(NSString *)protocolName inClass:(NSString *)className;
 
 @end

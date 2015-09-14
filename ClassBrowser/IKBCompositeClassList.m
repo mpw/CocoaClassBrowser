@@ -66,31 +66,48 @@
     return [self classesInGroup:group][index];
 }
 
-#pragma mark - Unimplemented protocol methods
-
 - (NSArray *)protocolsInClass:(NSString *)className
 {
-    return nil;
+    NSMutableOrderedSet *protocolsBuilder = [NSMutableOrderedSet orderedSet];
+    [_classLists enumerateObjectsUsingBlock:^(id <IKBClassList>list, NSUInteger idx, BOOL *stop) {
+        [protocolsBuilder addObjectsFromArray:[list protocolsInClass:className]];
+    }];
+
+    [protocolsBuilder removeObject:IKBProtocolUncategorizedMethods];
+    [protocolsBuilder removeObject:IKBProtocolAllMethods];
+    NSArray *protocols = [[protocolsBuilder array] sortedArrayUsingSelector:@selector(compare:)];
+    protocols = [@[IKBProtocolAllMethods, IKBProtocolUncategorizedMethods] arrayByAddingObjectsFromArray:protocols];
+    
+    return protocols;
 }
 
 - (NSUInteger)countOfProtocolsInClass:(NSString *)className
 {
-    return NSNotFound;
+    return [[self protocolsInClass:className] count];
 }
 
 - (NSString *)protocolInClass:(NSString *)className atIndex:(NSUInteger)index
 {
-    return nil;
+    return [self protocolsInClass:className][index];
+}
+
+- (NSArray *)methodsInProtocol:(NSString *)protocolName ofClass:(NSString *)className
+{
+    NSMutableOrderedSet *methodsBuilder = [NSMutableOrderedSet orderedSet];
+    [_classLists enumerateObjectsUsingBlock:^(id <IKBClassList>list, NSUInteger idx, BOOL *stop) {
+        [methodsBuilder addObjectsFromArray:[list methodsInProtocol:protocolName ofClass:className]];
+    }];
+    return IKBSortedMethodList([methodsBuilder array]);
 }
 
 - (NSUInteger)countOfMethodsInProtocol:(NSString *)protocolName ofClass:(NSString *)className
 {
-    return NSNotFound;
+    return [[self methodsInProtocol:protocolName ofClass:className] count];
 }
 
 - (NSString *)methodInProtocol:(NSString *)protocolName ofClass:(NSString *)className atIndex:(NSUInteger)index
 {
-    return nil;
+    return [self methodsInProtocol:protocolName ofClass:className][index];
 }
 
 @end

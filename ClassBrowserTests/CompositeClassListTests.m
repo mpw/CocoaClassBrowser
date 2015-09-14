@@ -21,9 +21,13 @@
     _list1 = [FakeClassList new];
     _list1.classes = @{ @"Foo" : @[@"IKBFoo", @"NSFoo", @"UIFoo"],
                         @"Bar" : @[@"MyBar", @"YourBar"] };
+    [_list1 setProtocols:@[@"A", @"C"] forClass:@"MyBar"];
+    [_list1 setMethods:@[@"-doAThing"] forProtocol:@"A" inClass:@"MyBar"];
     _list2 = [FakeClassList new];
     _list2.classes = @{ @"Bar" : @[@"TheirBar", @"MyBar"],
                         @"Baz" : @[@"WKBaz", @"MKBaz"] };
+    [_list2 setProtocols:@[@"A", @"B", @"C"] forClass:@"MyBar"];
+    [_list2 setMethods:@[@"-doAnotherThing"] forProtocol:@"A" inClass:@"MyBar"];
     _classList = [IKBCompositeClassList compositeOfClassLists: @[_list1, _list2]];
 }
 
@@ -50,4 +54,17 @@
     XCTAssertEqualObjects(classes, expectedClasses);
 }
 
+- (void)testProtocolsForAGivenClassAreCombinedAndMerged
+{
+    NSArray *protocols = [_classList protocolsInClass:@"MyBar"];
+    NSArray *expectedProtocols = @[@"--all--", @"uncategorized", @"A", @"B", @"C", @"NSCopying"];
+    XCTAssertEqualObjects(protocols, expectedProtocols);
+}
+
+- (void)testMethodsForAProtocolInAClassAreCombinedAndMerged
+{
+    NSArray *methods = [_classList methodsInProtocol:@"A" ofClass:@"MyBar"];
+    NSArray *expectedMethods = @[@"+alloc", @"-copyWithZone:", @"-doAThing", @"-doAnotherThing"];
+    XCTAssertEqualObjects(methods, expectedMethods);
+}
 @end

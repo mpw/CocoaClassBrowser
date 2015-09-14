@@ -92,6 +92,11 @@
     return [self protocolListForClass:className][index];
 }
 
+- (NSArray *)methodsInProtocol:(NSString *)protocolName ofClass:(NSString *)className
+{
+    return [self methodListForProtocol:protocolName inClass:className];
+}
+
 - (NSUInteger)countOfMethodsInProtocol:(NSString *)protocolName ofClass:(NSString *)className
 {
     return [[self methodListForProtocol:protocolName inClass:className] count];
@@ -282,23 +287,7 @@
 
 - (NSArray *)sortMethods:(NSArray *)unsorted
 {
-    return [unsorted sortedArrayUsingComparator:^(NSString *name1, NSString *name2){
-        //class methods first
-        NSString *initial1 = [name1 substringToIndex:1];
-        NSString *initial2 = [name2 substringToIndex:1];
-        if ([initial1 isEqualToString:@"+"] && [initial2 isEqualToString:@"-"])
-        {
-            return NSOrderedAscending;
-        }
-        else if ([initial2 isEqualToString:@"+"] && [initial1 isEqualToString:@"-"])
-        {
-            return NSOrderedDescending;
-        }
-        return [name1 compare:name2];
-    }];
+    return IKBSortedMethodList(unsorted);
 }
 
 @end
-
-NSString const *IKBProtocolAllMethods = @"--all--";
-NSString const *IKBProtocolUncategorizedMethods = @"uncategorized";
