@@ -56,6 +56,7 @@
     [aCoder encodeObject:self.className forKey:@"className"];
     [aCoder encodeObject:self.declaration forKey:@"declaration"];
     [aCoder encodeObject:self.body forKey:@"body"];
+    [aCoder encodeObject:self.protocolName forKey:@"protocolName"];
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder
@@ -65,6 +66,7 @@
         _className = [[aDecoder decodeObjectForKey:@"className"] copy];
         _declaration = [[aDecoder decodeObjectForKey:@"declaration"] copy];
         _body = [[aDecoder decodeObjectForKey:@"body"] copy];
+        _protocolName = [[aDecoder decodeObjectForKey:@"protocolName"] copy];
     }
     return self;
 }
@@ -73,10 +75,12 @@
 {
     if ([object respondsToSelector:@selector(className)] &&
         [object respondsToSelector:@selector(declaration)] &&
-        [object respondsToSelector:@selector(body)]) {
+        [object respondsToSelector:@selector(body)] &&
+        [object respondsToSelector:@selector(protocolName)]) {
         return [[object className] isEqual:self.className] &&
         [[object declaration] isEqual:self.declaration] &&
-        [[object body] isEqual:self.body];
+        [[object body] isEqual:self.body] &&
+        [[object protocolName] isEqual:self.protocolName];
     }
     return NO;
 }

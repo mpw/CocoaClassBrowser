@@ -56,6 +56,7 @@
     method.className = @"IKBMyClass";
     method.declaration = @"- (void)doThing";
     method.body = @"{\n  [self doTheThing];\n}\n";
+    method.protocolName = @"IKBThingDoing";
     [_repository addMethod:method];
     [_repository addClass:_class];
     IKBSourceRepository *otherRepository = [NSKeyedUnarchiver unarchiveObjectWithData:
