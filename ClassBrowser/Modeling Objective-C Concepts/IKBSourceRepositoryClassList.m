@@ -3,6 +3,8 @@
 #import "IKBSourceRepositoryClassList.h"
 #import "IKBSourceRepository.h"
 
+static NSString *IKBSourceRepositoryCustomClassesGroup = @"Custom Classes";
+
 @implementation IKBSourceRepositoryClassList
 {
     IKBSourceRepository *_repository;
@@ -31,7 +33,7 @@
 {
     NSArray *groups = @[];
     if ([self repositoryHasClasses]) {
-        groups = [groups arrayByAddingObject:@"Custom Classes"];
+        groups = [groups arrayByAddingObject:IKBSourceRepositoryCustomClassesGroup];
     }
     return groups;
 }
@@ -41,22 +43,24 @@
     return [self allClassGroups][index];
 }
 
-#pragma mark - Unimplemented protocol methods
-
 - (NSArray *)classesInGroup:(NSString *)group
 {
-    return nil;
+    NSArray *classList = [group isEqualToString:IKBSourceRepositoryCustomClassesGroup]?[_repository allClasses]:nil;
+    NSArray *namesList = [classList valueForKey:@"name"];
+    return [namesList sortedArrayUsingSelector:@selector(compare:)];
 }
 
 - (NSUInteger)countOfClassesInGroup:(NSString *)group
 {
-    return NSNotFound;
+    return [[self classesInGroup:group] count];
 }
 
 - (NSString *)classInGroup:(NSString *)group atIndex:(NSUInteger)index
 {
-    return nil;
+    return [self classesInGroup:group][index];
 }
+
+#pragma mark - Unimplemented protocol methods
 
 - (NSArray *)protocolsInClass:(NSString *)className
 {

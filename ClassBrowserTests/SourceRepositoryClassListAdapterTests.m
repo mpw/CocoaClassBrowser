@@ -36,4 +36,17 @@
     XCTAssertEqual([_classList countOfClassGroups], 1);
     XCTAssertEqualObjects([_classList objectInClassGroupsAtIndex:0], @"Custom Classes");
 }
+
+- (void)testRepositoryClassesAreOrderedAlphabetically
+{
+    IKBObjectiveCClass *aClass = [[IKBObjectiveCClass alloc] initWithName:@"BFictionalClass" superclass:@"NSObject"];
+    [_repository addClass:aClass];
+    IKBObjectiveCClass *anotherClass = [[IKBObjectiveCClass alloc] initWithName:@"AFictionalClass" superclass:@"NSObject"];
+    [_repository addClass:anotherClass];
+    NSString *group = @"Custom Classes";
+    XCTAssertEqual([_classList countOfClassesInGroup:group], 2);
+    XCTAssertEqualObjects([_classList classInGroup:group atIndex:0], @"AFictionalClass");
+    XCTAssertEqualObjects([_classList classInGroup:group atIndex:1], @"BFictionalClass");
+}
+
 @end
