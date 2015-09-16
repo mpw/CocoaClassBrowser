@@ -60,22 +60,27 @@ static NSString *IKBSourceRepositoryCustomClassesGroup = @"Custom Classes";
     return [self classesInGroup:group][index];
 }
 
-#pragma mark - Unimplemented protocol methods
-
 - (NSArray *)protocolsInClass:(NSString *)className
 {
-    return nil;
+    NSArray *allMethods = [_repository methodsForClassNamed:className];
+    NSArray *allProtocols = [allMethods valueForKey:@"protocolName"];
+    NSSet *uniqueProtocols = [NSSet setWithArray:allProtocols];
+    NSArray *orderedProtocols = [[uniqueProtocols allObjects] sortedArrayUsingSelector:@selector(compare:)];
+    NSArray *resultingProtocolList = [@[IKBProtocolAllMethods, IKBProtocolUncategorizedMethods] arrayByAddingObjectsFromArray:orderedProtocols];
+    return resultingProtocolList;
 }
 
 - (NSUInteger)countOfProtocolsInClass:(NSString *)className
 {
-    return NSNotFound;
+    return [[self protocolsInClass:className] count];
 }
 
 - (NSString *)protocolInClass:(NSString *)className atIndex:(NSUInteger)index
 {
-    return nil;
+    return [self protocolsInClass:className][index];
 }
+
+#pragma mark - Unimplemented protocol methods
 
 - (NSArray *)methodsInProtocol:(NSString *)protocolName ofClass:(NSString *)className
 {

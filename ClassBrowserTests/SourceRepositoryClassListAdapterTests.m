@@ -4,6 +4,7 @@
 #import <XCTest/XCTest.h>
 
 #import "IKBObjectiveCClass.h"
+#import "IKBObjectiveCMethod.h"
 #import "IKBSourceRepositoryClassList.h"
 #import "IKBSourceRepository.h"
 
@@ -49,4 +50,33 @@
     XCTAssertEqualObjects([_classList classInGroup:group atIndex:1], @"BFictionalClass");
 }
 
+- (void)testRepositoryProtocolsAreOrderedAlphabetically
+{
+    [self addPopulatedClassToRepository];
+    NSString *className = @"IKBThingDoer";
+    XCTAssertEqual([_classList countOfProtocolsInClass:className], 4);
+    XCTAssertEqualObjects([_classList protocolInClass:className atIndex:2], @"IKBThingDoing");
+    XCTAssertEqualObjects([_classList protocolInClass:className atIndex:3], @"NSCopying");
+}
+
+- (void)addPopulatedClassToRepository
+{
+    IKBObjectiveCClass *aClass = [[IKBObjectiveCClass alloc] initWithName:@"IKBThingDoer" superclass:@"NSObject"];
+    [_repository addClass:aClass];
+    IKBObjectiveCMethod *aMethod = [IKBObjectiveCMethod new];
+    aMethod.declaration = @"- (void)doTheThing";
+    aMethod.protocolName = @"IKBThingDoing";
+    aMethod.className = aClass.name;
+    [_repository addMethod:aMethod];
+    IKBObjectiveCMethod *anotherMethod = [IKBObjectiveCMethod new];
+    anotherMethod.declaration = @"+ (id)classyThing";
+    anotherMethod.protocolName = @"IKBThingDoing";
+    anotherMethod.className = aClass.name;
+    [_repository addMethod:anotherMethod];
+    IKBObjectiveCMethod *yaMethod = [IKBObjectiveCMethod new];
+    yaMethod.declaration = @"- (id)copyWithZone:(NSZone *)zone";
+    yaMethod.protocolName = @"NSCopying";
+    yaMethod.className = aClass.name;
+    [_repository addMethod:yaMethod];
+}
 @end
