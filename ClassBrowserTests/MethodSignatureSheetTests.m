@@ -79,8 +79,8 @@
     NSNotification *notification = [NSNotification notificationWithName:NSControlTintDidChangeNotification
                                                                  object:@"- (id)objectAtIndex:(NSInteger)index"];
     [_controller controlTextDidChange:notification];
-    XCTAssertTrue(_controller.createMethodButton.enabled);
-    XCTAssertTrue(_controller.problemLabel.hidden);
+    XCTAssertTrue([_controller.createMethodButton isEnabled]);
+    XCTAssertTrue([_controller.problemLabel isHidden]);
 }
 
 - (void)testInvalidMethodSignatureMeansCreateButtonDisabledAndWarningShown
@@ -88,8 +88,8 @@
     NSNotification *notification = [NSNotification notificationWithName:NSControlTintDidChangeNotification
                                                                  object:@"- (id)objectAtIndex:"];
     [_controller controlTextDidChange:notification];
-    XCTAssertFalse(_controller.createMethodButton.enabled);
-    XCTAssertFalse(_controller.problemLabel.hidden);
+    XCTAssertFalse([_controller.createMethodButton isEnabled]);
+    XCTAssertFalse([_controller.problemLabel isHidden]);
 }
 
 - (void)testMethodCreationResultsInAMethodWithTheSuppliedSignatureAndEmptyBodyOnTheExpectedClass
