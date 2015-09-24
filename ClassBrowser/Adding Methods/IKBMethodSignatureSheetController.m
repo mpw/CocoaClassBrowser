@@ -15,42 +15,43 @@
     return _method;
 }
 
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    self.problemLabel.stringValue = NSLocalizedString(@"That is not a valid Objective-C method signature.", @"Shown when trying to add an invalid ObjC method");
+    self.createEntryButton.stringValue = NSLocalizedString(@"Create Method", @"Button title for creating method");
+}
 - (void)reset
 {
+    [super reset];
     _method = nil;
-    _className = nil;
-    _signatureText = nil;
 }
 
-- (void)createMethod:(id)sender
+- (void)createEntry:(id)sender
 {
-    NSAssert([self isValidSignature], @"I should only be called when the signature is valid");
+    NSAssert([self isEntryValid], @"I should only be called when the signature is valid");
     IKBObjectiveCMethod *method = [IKBObjectiveCMethod new];
     method.className = self.className;
-    method.declaration = self.signatureText;
+    method.declaration = self.textEntered;
     method.body = @"{\n\n}\n";
     _method = method;
 }
 
-- (void)cancel:(id)sender
+- (BOOL)isEntryValid
 {
-    NSWindow *presentingWindow = [self.window sheetParent];
-    [presentingWindow endSheet:self.window returnCode:NSModalResponseCancel];
+    return [self isValidSignature];
 }
 
 - (BOOL)isValidSignature
 {
-    return ([self.signatureText canBeConvertedToEncoding:NSASCIIStringEncoding] &&
-            ([self.signatureText hasPrefix:@"-"] || [self.signatureText hasPrefix:@"+"]) &&
-            !([self.signatureText hasSuffix:@":"]));
+    return ([self.textEntered canBeConvertedToEncoding:NSASCIIStringEncoding] &&
+            ([self.textEntered hasPrefix:@"-"] || [self.textEntered hasPrefix:@"+"]) &&
+            !([self.textEntered hasSuffix:@":"]));
 }
 
-- (void)controlTextDidChange:(NSNotification *)note
+- (void)setControlState:(BOOL)entryValidity
 {
-    _signatureText = [[note object] stringValue];
-    BOOL valid = [self isValidSignature];
-    self.createMethodButton.enabled = valid;
-    self.problemLabel.hidden = valid;
+    self.createEntryButton.enabled = entryValidity;
+    self.problemLabel.hidden = entryValidity;
 }
-
 @end

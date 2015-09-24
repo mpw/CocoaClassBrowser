@@ -23,7 +23,7 @@
 		329FD4CD7BD92A498FE86CCA /* IKBClangCompiler.mm in Sources */ = {isa = PBXBuildFile; fileRef = 329FD5EFD62015D69340668C /* IKBClangCompiler.mm */; };
 		329FD5322DC22E445929B0A2 /* IKBLLVMBitcodeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 329FD50931E98294CFA2D9A3 /* IKBLLVMBitcodeModule.m */; };
 		329FD5DDA8270CBD91A41A29 /* IKBObjectiveCMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = 329FDA99098367C006316F55 /* IKBObjectiveCMethod.m */; };
-		329FD9DD239C75CD1327A560 /* IKBMethodSignatureSheetController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 329FD1E05E408248C3AF580B /* IKBMethodSignatureSheetController.xib */; };
+		329FD9DD239C75CD1327A560 /* IKBNameEntrySheetController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 329FD1E05E408248C3AF580B /* IKBNameEntrySheetController.xib */; };
 		980AC69D185A48CD00611C26 /* ExecutionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 980AC69C185A48CD00611C26 /* ExecutionTests.m */; };
 		980AC6A1185A510000611C26 /* IKBCodeRunner.mm in Sources */ = {isa = PBXBuildFile; fileRef = 980AC6A0185A510000611C26 /* IKBCodeRunner.mm */; };
 		980AC6A8185A596400611C26 /* libcurses.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 980AC6A7185A596400611C26 /* libcurses.dylib */; };
@@ -54,6 +54,7 @@
 		9828F18B187EC7A6003F1DC6 /* CompileAndRunCodeCommandHandlerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9828F18A187EC7A6003F1DC6 /* CompileAndRunCodeCommandHandlerTests.m */; };
 		9828F18D187EDE17003F1DC6 /* AppDelegateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9828F18C187EDE17003F1DC6 /* AppDelegateTests.m */; };
 		9828F190187EDFEF003F1DC6 /* IKBCompileAndRunCodeCommandHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9828F18F187EDFEF003F1DC6 /* IKBCompileAndRunCodeCommandHandler.m */; };
+		985249401BB402CD006CB69D /* IKBNameEntrySheetController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9852493F1BB402CD006CB69D /* IKBNameEntrySheetController.m */; };
 		9854CE341BA69B4800396A45 /* IKBClassListConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 9854CE331BA69B4800396A45 /* IKBClassListConstants.m */; };
 		9880882A1B4A5AAB00D741B3 /* IKBInspectorDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 988088291B4A5AAB00D741B3 /* IKBInspectorDataSource.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		9883068B187AB05200A4325C /* XcodeClangArgumentBuilderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9883068A187AB05200A4325C /* XcodeClangArgumentBuilderTests.m */; };
@@ -139,7 +140,7 @@
 		07FBA02F1888AEF500618658 /* IKBPreferencesWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IKBPreferencesWindowController.xib; sourceTree = "<group>"; };
 		07FBA0311888B00800618658 /* PreferencesWindowControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferencesWindowControllerTests.m; sourceTree = "<group>"; };
 		329FD1AB22D5CB2421BE5EB0 /* MethodSignatureSheetTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MethodSignatureSheetTests.m; sourceTree = "<group>"; };
-		329FD1E05E408248C3AF580B /* IKBMethodSignatureSheetController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = IKBMethodSignatureSheetController.xib; sourceTree = "<group>"; };
+		329FD1E05E408248C3AF580B /* IKBNameEntrySheetController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = IKBNameEntrySheetController.xib; sourceTree = "<group>"; };
 		329FD2DCC3208E7E8EF9483D /* IKBLLVMBitcodeRunner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IKBLLVMBitcodeRunner.h; path = "Code Execution/IKBLLVMBitcodeRunner.h"; sourceTree = "<group>"; };
 		329FD4CBA16A8846BEE6A1E3 /* IKBLLVMBitcodeModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IKBLLVMBitcodeModule.h; path = "Code Execution/IKBLLVMBitcodeModule.h"; sourceTree = "<group>"; };
 		329FD4E25533580C13C29F04 /* IKBObjectiveCMethod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IKBObjectiveCMethod.h; sourceTree = "<group>"; };
@@ -218,6 +219,8 @@
 		9828F18C187EDE17003F1DC6 /* AppDelegateTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegateTests.m; sourceTree = "<group>"; };
 		9828F18E187EDFEF003F1DC6 /* IKBCompileAndRunCodeCommandHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IKBCompileAndRunCodeCommandHandler.h; sourceTree = "<group>"; };
 		9828F18F187EDFEF003F1DC6 /* IKBCompileAndRunCodeCommandHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IKBCompileAndRunCodeCommandHandler.m; sourceTree = "<group>"; };
+		9852493E1BB402CD006CB69D /* IKBNameEntrySheetController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = IKBNameEntrySheetController.h; sourceTree = "<group>"; tabWidth = 4; usesTabs = 0; wrapsLines = 1; };
+		9852493F1BB402CD006CB69D /* IKBNameEntrySheetController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = IKBNameEntrySheetController.m; sourceTree = "<group>"; tabWidth = 4; usesTabs = 0; wrapsLines = 1; };
 		9854CE331BA69B4800396A45 /* IKBClassListConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IKBClassListConstants.m; sourceTree = "<group>"; };
 		988088281B4A5AAB00D741B3 /* IKBInspectorDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IKBInspectorDataSource.h; path = "Object Inspecting/IKBInspectorDataSource.h"; sourceTree = "<group>"; };
 		988088291B4A5AAB00D741B3 /* IKBInspectorDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IKBInspectorDataSource.m; path = "Object Inspecting/IKBInspectorDataSource.m"; sourceTree = "<group>"; };
@@ -371,9 +374,11 @@
 		329FDDF4C16B4DB552869F43 /* Adding Methods */ = {
 			isa = PBXGroup;
 			children = (
-				329FDEFFA8EDA742ACD2D0BE /* IKBMethodSignatureSheetController.m */,
+				9852493E1BB402CD006CB69D /* IKBNameEntrySheetController.h */,
+				9852493F1BB402CD006CB69D /* IKBNameEntrySheetController.m */,
 				329FDE86F47AD95999EC8056 /* IKBMethodSignatureSheetController.h */,
-				329FD1E05E408248C3AF580B /* IKBMethodSignatureSheetController.xib */,
+				329FDEFFA8EDA742ACD2D0BE /* IKBMethodSignatureSheetController.m */,
+				329FD1E05E408248C3AF580B /* IKBNameEntrySheetController.xib */,
 				9817231018E1BD7D004D2906 /* IKBMethodSignatureSheetController_ClassExtension.h */,
 			);
 			path = "Adding Methods";
@@ -743,7 +748,7 @@
 				07FBA0301888AEF500618658 /* IKBPreferencesWindowController.xib in Resources */,
 				981613F9187C1F1400A0BEDD /* IKBCompilerTranscriptWindowController.xib in Resources */,
 				981DD5B418912A8B00EB971D /* emptysource in Resources */,
-				329FD9DD239C75CD1327A560 /* IKBMethodSignatureSheetController.xib in Resources */,
+				329FD9DD239C75CD1327A560 /* IKBNameEntrySheetController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -792,6 +797,7 @@
 				07C93DE9188A1C4000BFFD21 /* IKBCompilerPreferencesViewController.m in Sources */,
 				98C8949E1B578710009796BF /* IKBCompositeClassList.m in Sources */,
 				329FD0C45F982C7D538CEE74 /* IKBMethodSignatureSheetController.m in Sources */,
+				985249401BB402CD006CB69D /* IKBNameEntrySheetController.m in Sources */,
 				329FD5DDA8270CBD91A41A29 /* IKBObjectiveCMethod.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

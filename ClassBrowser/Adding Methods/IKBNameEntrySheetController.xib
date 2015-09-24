@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7706"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner" customClass="IKBMethodSignatureSheetController">
+        <customObject id="-2" userLabel="File's Owner" customClass="IKBNameEntrySheetController">
             <connections>
-                <outlet property="createMethodButton" destination="vdM-18-oka" id="0aw-ao-S4E"/>
+                <outlet property="createEntryButton" destination="vdM-18-oka" id="gqn-Yl-Ztd"/>
+                <outlet property="entryField" destination="TXJ-eH-9QU" id="a5y-5S-THI"/>
                 <outlet property="problemLabel" destination="304-Nf-cBA" id="1YE-5P-rK2"/>
-                <outlet property="signatureField" destination="TXJ-eH-9QU" id="YdT-7b-tSo"/>
                 <outlet property="window" destination="1" id="xXr-uM-f0I"/>
             </connections>
         </customObject>
@@ -19,7 +19,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="240" width="480" height="111"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="900"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1440"/>
             <view key="contentView" id="2">
                 <rect key="frame" x="0.0" y="0.0" width="480" height="111"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -31,7 +31,7 @@
                             <font key="font" metaFont="system"/>
                         </buttonCell>
                         <connections>
-                            <action selector="createMethod:" target="-1" id="MPm-KQ-zFN"/>
+                            <action selector="createEntry:" target="-1" id="egl-js-VXW"/>
                             <binding destination="-2" name="enabled" keyPath="validSignature" id="blu-KC-V9a"/>
                             <outlet property="nextKeyView" destination="TXJ-eH-9QU" id="rQP-oT-BMH"/>
                         </connections>
