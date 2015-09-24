@@ -7,6 +7,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="IKBClassBrowserWindowController">
             <connections>
+                <outlet property="addClassItem" destination="p2d-a0-plc" id="Fvg-t1-R86"/>
                 <outlet property="addMethodItem" destination="fQb-Bt-ZC5" id="0uO-Rv-oaG"/>
                 <outlet property="classBrowser" destination="p4C-os-s26" id="Ig7-fK-ouk"/>
                 <outlet property="window" destination="1" id="3"/>

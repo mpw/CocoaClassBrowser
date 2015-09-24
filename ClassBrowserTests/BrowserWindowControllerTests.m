@@ -2,13 +2,16 @@
 
 #import <XCTest/XCTest.h>
 #import <OCMock/OCMock.h>
+
+#import "IKBCodeEditorViewController.h"
 #import "IKBClassBrowserWindowController.h"
 #import "IKBClassBrowserWindowController_ClassExtension.h"
-#import "IKBCodeEditorViewController.h"
 #import "IKBClassBrowserSource.h"
-#import "FakeClassList.h"
+#import "IKBClassNameSheetController.h"
 #import "IKBMethodSignatureSheetController.h"
 #import "IKBObjectiveCMethod.h"
+
+#import "FakeClassList.h"
 
 @interface FakeBrowser : NSBrowser
 
@@ -33,6 +36,7 @@
 @property (nonatomic, assign) NSInteger selectedRow;
 @property (nonatomic, assign) NSInteger selectedColumn;
 @property (nonatomic, strong) NSBrowser *actionedBrowser;
+@property (nonatomic, copy) NSString *selectedClass;
 
 @end
 
@@ -184,7 +188,7 @@
     [[[methodSignatureSheet expect] andReturn:createdMethod] method];
     id codeEditor = [OCMockObject mockForClass:[IKBCodeEditorViewController class]];
     controller.codeEditorViewController = codeEditor;
-    [[codeEditor expect] setEditedMethod:createdMethod];
+    [[codeEditor expect] setEditedMethod:OCMOCK_ANY];
 
     [controller addMethodSheetReturnedCode:NSModalResponseOK];
 
@@ -204,11 +208,7 @@
 
 - (void)testMethodSignatureSheetIsToldTheClassToAddTheMethodTo
 {
-    // first, select the Foundation category
-    //[classes selectClassGroupAtIndex:1];
-    // then select the NSString class
-    //[classes selectClassAtIndex:2];
-    XCTFail(@"try to add a method to the NSString class");
+    [source setSelectedClass:@"NSString"];
     controller.classList = classes;
     id methodSignatureSheet = [OCMockObject niceMockForClass:[IKBMethodSignatureSheetController class]];
     [[methodSignatureSheet expect] setClassName:@"NSString"];
@@ -226,4 +226,12 @@
     [methodSignatureSheet verify];
 }
 
+- (void)testClassNameSheetIsAskedToDiscardExistingStateOnPresentation
+{
+    id classNameSheet = [OCMockObject niceMockForClass:[IKBClassNameSheetController class]];
+    [[classNameSheet expect] reset];
+    controller.addClassSheet = classNameSheet;
+    [controller addClass:[controller addClassItem]];
+    [classNameSheet verify];
+}
 @end

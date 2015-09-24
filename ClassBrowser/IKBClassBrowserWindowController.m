@@ -4,6 +4,7 @@
 #import "IKBClassBrowserWindowController_ClassExtension.h"
 
 #import "IKBClassBrowserSource.h"
+#import "IKBClassNameSheetController.h"
 #import "IKBRuntimeClassList.h"
 #import "IKBCodeEditorViewController.h"
 #import "IKBMethodSignatureSheetController.h"
@@ -16,7 +17,9 @@
     self = [super initWithWindowNibName:windowNibName];
     if (self)
     {
-        _addMethodSheet = [[IKBMethodSignatureSheetController alloc] initWithWindowNibName:NSStringFromClass([IKBNameEntrySheetController class])];
+        NSString *nameEntrySheetController = NSStringFromClass([IKBNameEntrySheetController class]);
+        _addMethodSheet = [[IKBMethodSignatureSheetController alloc] initWithWindowNibName:nameEntrySheetController];
+        _addClassSheet = [[IKBClassNameSheetController alloc] initWithWindowNibName:nameEntrySheetController];
     }
     return self;
 }
@@ -52,7 +55,7 @@
 
 - (IBAction)addClass:(id)sender
 {
-    
+    [self.addClassSheet reset];
 }
 
 - (IBAction)addMethod:(id)sender
