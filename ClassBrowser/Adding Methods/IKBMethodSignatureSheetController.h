@@ -9,6 +9,5 @@
 @interface IKBMethodSignatureSheetController : IKBNameEntrySheetController
 
 - (IKBObjectiveCMethod *)method;
-- (void)reset;
 
 @end
