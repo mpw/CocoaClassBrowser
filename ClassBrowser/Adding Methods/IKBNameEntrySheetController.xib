@@ -32,7 +32,7 @@
                         </buttonCell>
                         <connections>
                             <action selector="createEntry:" target="-1" id="egl-js-VXW"/>
-                            <binding destination="-2" name="enabled" keyPath="validSignature" id="blu-KC-V9a"/>
+                            <binding destination="-2" name="enabled" keyPath="entryValid" id="TEj-4t-CLd"/>
                             <outlet property="nextKeyView" destination="TXJ-eH-9QU" id="rQP-oT-BMH"/>
                         </connections>
                     </button>

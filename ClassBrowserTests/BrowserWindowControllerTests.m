@@ -234,4 +234,13 @@
     [controller addClass:[controller addClassItem]];
     [classNameSheet verify];
 }
+
+- (void)testAddingClassPresentsASheetForSettingTheClassName
+{
+    id window = [OCMockObject partialMockForObject:[controller window]];
+    controller.window = window;
+    [[window expect] beginSheet:OCMOCK_ANY completionHandler:OCMOCK_ANY];
+    [controller addClass:[controller addClassItem]];
+    [window verify];
+}
 @end

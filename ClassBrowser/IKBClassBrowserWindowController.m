@@ -56,6 +56,9 @@
 - (IBAction)addClass:(id)sender
 {
     [self.addClassSheet reset];
+    [self.window beginSheet:self.addClassSheet.window completionHandler:^(NSModalResponse returnCode) {
+        [self addClassSheetReturnedCode:returnCode];
+    }];
 }
 
 - (IBAction)addMethod:(id)sender
@@ -73,6 +76,11 @@
     if (code == NSModalResponseOK) {
         [self.codeEditorViewController setEditedMethod:self.addMethodSheet.method];
     }
+}
+
+- (void)addClassSheetReturnedCode:(NSModalResponse)code
+{
+    
 }
 
 @end

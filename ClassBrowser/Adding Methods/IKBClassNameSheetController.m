@@ -8,4 +8,9 @@
 
 @implementation IKBClassNameSheetController
 
+- (BOOL)isEntryValid
+{
+    return YES;
+}
+
 @end
