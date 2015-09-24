@@ -5,6 +5,7 @@
 
 #import "IKBClassNameSheetController.h"
 #import "IKBNameEntrySheetController.h"
+#import "IKBObjectiveCClass.h"
 
 @interface ClassAddingSheetTests : XCTestCase
 
@@ -48,6 +49,15 @@
 {
     _classNameSheet.textEntered = @"IKBNewClåss";
     XCTAssertFalse([_classNameSheet isEntryValid]);
+}
+
+- (void)testEntryCreationResultsInAnNSObjectSubclass
+{
+    _classNameSheet.textEntered = @"IKBNewClass";
+    [_classNameSheet createEntry:nil];
+    IKBObjectiveCClass *createdClass = _classNameSheet.createdClass;
+    XCTAssertEqualObjects(createdClass.name, @"IKBNewClass");
+    XCTAssertEqualObjects(createdClass.superclassName, @"NSObject");
 }
 
 @end

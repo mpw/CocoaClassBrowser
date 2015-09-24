@@ -1,6 +1,7 @@
 //See COPYING for licence details.
 
 #import "IKBClassNameSheetController.h"
+#import "IKBObjectiveCClass.h"
 
 @interface IKBClassNameSheetController ()
 
@@ -36,6 +37,7 @@
 - (void)createEntry:(id)sender
 {
     NSAssert([self isEntryValid], @"Only create a class when the class name is acceptable");
+    self.createdClass = [[IKBObjectiveCClass alloc] initWithName:self.textEntered superclass:@"NSObject"];
 }
 
 @end
