@@ -21,6 +21,7 @@
     self.problemLabel.stringValue = NSLocalizedString(@"That is not a valid Objective-C method signature.", @"Shown when trying to add an invalid ObjC method");
     self.createEntryButton.stringValue = NSLocalizedString(@"Create Method", @"Button title for creating method");
 }
+
 - (void)reset
 {
     [super reset];
