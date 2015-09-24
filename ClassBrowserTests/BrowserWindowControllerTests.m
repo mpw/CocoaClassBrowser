@@ -255,4 +255,14 @@
     [repository verify];
 }
 
+- (void)testPassingOKReturnFromClassNameSheetTellsBrowserToReloadData
+{
+    id mockBrowser = [OCMockObject niceMockForClass:[NSBrowser class]];
+    controller.classBrowser = mockBrowser;
+    [[mockBrowser expect] loadColumnZero];
+    controller.addClassSheet.textEntered = @"IKBNewClass";
+    [controller addClassSheetReturnedCode:NSModalResponseOK];
+    [mockBrowser verify];
+}
+
 @end

@@ -88,6 +88,7 @@
 {
     if (code == NSModalResponseOK) {
         [self.repository addClass:[[IKBObjectiveCClass alloc] initWithName:self.addClassSheet.className superclass:@"NSObject"]];
+        [self.classBrowser loadColumnZero];
     }
 }
 
