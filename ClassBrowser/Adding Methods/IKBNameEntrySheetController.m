@@ -35,6 +35,8 @@
 
 - (void)setControlState:(BOOL)entryValidity
 {
-    NSAssert(NO, @"Subclass responsibility");
+    self.createEntryButton.enabled = entryValidity;
+    self.problemLabel.hidden = entryValidity;
 }
+
 @end

@@ -50,9 +50,4 @@
             !([self.textEntered hasSuffix:@":"]));
 }
 
-- (void)setControlState:(BOOL)entryValidity
-{
-    self.createEntryButton.enabled = entryValidity;
-    self.problemLabel.hidden = entryValidity;
-}
 @end

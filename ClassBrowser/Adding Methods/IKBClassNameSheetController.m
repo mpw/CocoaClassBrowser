@@ -38,8 +38,4 @@
     NSAssert([self isEntryValid], @"Only create a class when the class name is acceptable");
 }
 
-- (void)setControlState:(BOOL)entryValidity
-{
-    
-}
 @end
