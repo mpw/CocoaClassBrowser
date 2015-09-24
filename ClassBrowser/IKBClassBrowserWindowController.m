@@ -9,6 +9,8 @@
 #import "IKBCodeEditorViewController.h"
 #import "IKBMethodSignatureSheetController.h"
 #import "IKBNameEntrySheetController.h"
+#import "IKBObjectiveCClass.h"
+#import "IKBSourceRepository.h"
 
 @implementation IKBClassBrowserWindowController
 
@@ -80,7 +82,9 @@
 
 - (void)addClassSheetReturnedCode:(NSModalResponse)code
 {
-    
+    if (code == NSModalResponseOK) {
+        [self.repository addClass:[[IKBObjectiveCClass alloc] initWithName:self.addClassSheet.className superclass:@"NSObject"]];
+    }
 }
 
 @end

@@ -10,6 +10,7 @@
 #import "IKBClassNameSheetController.h"
 #import "IKBMethodSignatureSheetController.h"
 #import "IKBObjectiveCMethod.h"
+#import "IKBSourceRepository.h"
 
 #import "FakeClassList.h"
 
@@ -243,4 +244,15 @@
     [controller addClass:[controller addClassItem]];
     [window verify];
 }
+
+- (void)testPassingOKReturnFromClassNameSheetAddsAClassToTheRepository
+{
+    id repository = [OCMockObject mockForClass:[IKBSourceRepository class]];
+    controller.repository = repository;
+    [[repository expect] addClass:OCMOCK_ANY];
+    controller.addClassSheet.textEntered = @"IKBNewClass";
+    [controller addClassSheetReturnedCode:NSModalResponseOK];
+    [repository verify];
+}
+
 @end

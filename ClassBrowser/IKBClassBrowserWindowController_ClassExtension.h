@@ -25,5 +25,6 @@
 - (IBAction)addMethod:(id)sender;
 
 - (void)addMethodSheetReturnedCode:(NSModalResponse)code;
+- (void)addClassSheetReturnedCode:(NSModalResponse)code;
 
 @end

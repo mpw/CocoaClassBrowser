@@ -13,4 +13,9 @@
     return YES;
 }
 
+- (NSString *)className
+{
+    return self.textEntered;
+}
+
 @end
