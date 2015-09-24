@@ -18,6 +18,7 @@
 @property (nonatomic, strong) IKBMethodSignatureSheetController *addMethodSheet;
 
 - (IBAction)browserSelectionDidChange:(NSBrowser *)sender;
+- (IBAction)addClass:(id)sender;
 - (IBAction)addMethod:(id)sender;
 
 - (void)addMethodSheetReturnedCode:(NSModalResponse)code;

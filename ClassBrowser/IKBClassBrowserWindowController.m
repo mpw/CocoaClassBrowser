@@ -49,6 +49,11 @@
     [self.browserSource browser:sender didSelectRow:row inColumn:column];
 }
 
+- (IBAction)addClass:(id)sender
+{
+    
+}
+
 - (IBAction)addMethod:(id)sender
 {
     [self.addMethodSheet reset];
