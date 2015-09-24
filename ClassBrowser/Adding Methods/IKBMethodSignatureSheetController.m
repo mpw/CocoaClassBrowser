@@ -36,6 +36,8 @@
     method.declaration = self.textEntered;
     method.body = @"{\n\n}\n";
     _method = method;
+    NSWindow *presentingWindow = [self.window sheetParent];
+    [presentingWindow endSheet:self.window returnCode:NSModalResponseOK];
 }
 
 - (BOOL)isEntryValid
