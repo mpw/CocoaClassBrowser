@@ -26,7 +26,7 @@
 {
     [super awakeFromNib];
     self.problemLabel.stringValue = NSLocalizedString(@"That is not a valid Objective-C class name.", @"Shown when trying to add an invalid ObjC class");
-    self.createEntryButton.stringValue = NSLocalizedString(@"Create Class", @"Button title for creating class");
+    self.createEntryButton.title = NSLocalizedString(@"Create Class", @"Button title for creating class");
 }
 
 - (NSString *)className
