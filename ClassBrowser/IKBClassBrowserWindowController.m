@@ -5,12 +5,14 @@
 
 #import "IKBClassBrowserSource.h"
 #import "IKBClassNameSheetController.h"
-#import "IKBRuntimeClassList.h"
+#import "IKBCompositeClassList.h"
 #import "IKBCodeEditorViewController.h"
 #import "IKBMethodSignatureSheetController.h"
 #import "IKBNameEntrySheetController.h"
 #import "IKBObjectiveCClass.h"
+#import "IKBRuntimeClassList.h"
 #import "IKBSourceRepository.h"
+#import "IKBSourceRepositoryClassList.h"
 
 @implementation IKBClassBrowserWindowController
 
@@ -30,9 +32,11 @@
 {
     [super windowDidLoad];
     
-    IKBRuntimeClassList *classList = [IKBRuntimeClassList new];
-    self.classList = classList;
-    self.browserSource = [[IKBClassBrowserSource alloc] initWithClassList:classList];
+    IKBRuntimeClassList *compiledClassList = [IKBRuntimeClassList new];
+    IKBSourceRepositoryClassList *repositoryClassList = [[IKBSourceRepositoryClassList alloc] initWithRepository:self.repository];
+    IKBCompositeClassList *compositeClassList = [IKBCompositeClassList compositeOfClassLists:@[compiledClassList, repositoryClassList]];
+    self.classList = compositeClassList;
+    self.browserSource = [[IKBClassBrowserSource alloc] initWithClassList:compositeClassList];
     self.classBrowser.delegate = self.browserSource;
     [self.classBrowser reloadColumn:0];
     [self.classBrowser setTarget:self];
