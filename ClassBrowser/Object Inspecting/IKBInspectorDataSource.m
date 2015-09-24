@@ -65,6 +65,9 @@
     NSString *ivarName = _ivarNames[[aRow integerValue]];
     void *value = NULL;
     Ivar ivar = object_getInstanceVariable(_inspectedObject, [ivarName UTF8String], &value);
+    if (value == NULL) {
+        return nil;
+    }
     const char *type = ivar_getTypeEncoding(ivar);
     if (!strcmp(type, @encode(int)) ||
         !strcmp(type, @encode(short)) ||
