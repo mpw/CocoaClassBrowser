@@ -39,7 +39,7 @@
     NSAssert([self isEntryValid], @"Only create a class when the class name is acceptable");
     self.createdClass = [[IKBObjectiveCClass alloc] initWithName:self.textEntered superclass:@"NSObject"];
     NSWindow *presentingWindow = [self.window sheetParent];
-    [presentingWindow endSheet:self.window returnCode:NSModalResponseCancel];
+    [presentingWindow endSheet:self.window returnCode:NSModalResponseOK];
 }
 
 @end

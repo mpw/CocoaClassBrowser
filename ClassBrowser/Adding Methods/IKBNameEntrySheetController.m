@@ -14,6 +14,7 @@
 {
     [self setClassName:nil];
     [self setTextEntered:nil];
+    self.entryField.stringValue = @"";
 }
 
 - (void)cancel:(id)sender
