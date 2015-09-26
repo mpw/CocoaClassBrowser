@@ -2,13 +2,17 @@
 
 #import <XCTest/XCTest.h>
 #import <OCMock/OCMock.h>
+
+#import "IKBCodeEditorViewController.h"
 #import "IKBClassBrowserWindowController.h"
 #import "IKBClassBrowserWindowController_ClassExtension.h"
-#import "IKBCodeEditorViewController.h"
 #import "IKBClassBrowserSource.h"
-#import "FakeClassList.h"
+#import "IKBClassNameSheetController.h"
 #import "IKBMethodSignatureSheetController.h"
 #import "IKBObjectiveCMethod.h"
+#import "IKBSourceRepository.h"
+
+#import "FakeClassList.h"
 
 @interface FakeBrowser : NSBrowser
 
@@ -33,6 +37,7 @@
 @property (nonatomic, assign) NSInteger selectedRow;
 @property (nonatomic, assign) NSInteger selectedColumn;
 @property (nonatomic, strong) NSBrowser *actionedBrowser;
+@property (nonatomic, copy) NSString *selectedClass;
 
 @end
 
@@ -184,7 +189,7 @@
     [[[methodSignatureSheet expect] andReturn:createdMethod] method];
     id codeEditor = [OCMockObject mockForClass:[IKBCodeEditorViewController class]];
     controller.codeEditorViewController = codeEditor;
-    [[codeEditor expect] setEditedMethod:createdMethod];
+    [[codeEditor expect] setEditedMethod:OCMOCK_ANY];
 
     [controller addMethodSheetReturnedCode:NSModalResponseOK];
 
@@ -204,11 +209,7 @@
 
 - (void)testMethodSignatureSheetIsToldTheClassToAddTheMethodTo
 {
-    // first, select the Foundation category
-    //[classes selectClassGroupAtIndex:1];
-    // then select the NSString class
-    //[classes selectClassAtIndex:2];
-    XCTFail(@"try to add a method to the NSString class");
+    [source setSelectedClass:@"NSString"];
     controller.classList = classes;
     id methodSignatureSheet = [OCMockObject niceMockForClass:[IKBMethodSignatureSheetController class]];
     [[methodSignatureSheet expect] setClassName:@"NSString"];
@@ -224,6 +225,45 @@
     controller.addMethodSheet = methodSignatureSheet;
     [controller addMethod:[controller addMethodItem]];
     [methodSignatureSheet verify];
+}
+
+- (void)testClassNameSheetIsAskedToDiscardExistingStateOnPresentation
+{
+    id classNameSheet = [OCMockObject niceMockForClass:[IKBClassNameSheetController class]];
+    [[classNameSheet expect] reset];
+    controller.addClassSheet = classNameSheet;
+    [controller addClass:[controller addClassItem]];
+    [classNameSheet verify];
+}
+
+- (void)testAddingClassPresentsASheetForSettingTheClassName
+{
+    id window = [OCMockObject partialMockForObject:[controller window]];
+    controller.window = window;
+    [[window expect] beginSheet:OCMOCK_ANY completionHandler:OCMOCK_ANY];
+    [controller addClass:[controller addClassItem]];
+    [window verify];
+}
+
+- (void)testPassingOKReturnFromClassNameSheetAddsAClassToTheRepository
+{
+    id repository = [OCMockObject mockForClass:[IKBSourceRepository class]];
+    controller.repository = repository;
+    [[repository expect] addClass:OCMOCK_ANY];
+    controller.addClassSheet.textEntered = @"IKBNewClass";
+    [controller addClassSheetReturnedCode:NSModalResponseOK];
+    [repository verify];
+}
+
+- (void)testPassingOKReturnFromClassNameSheetTellsBrowserToReloadDataForClassGroupsAndClasses
+{
+    id mockBrowser = [OCMockObject niceMockForClass:[NSBrowser class]];
+    controller.classBrowser = mockBrowser;
+    [[mockBrowser expect] reloadColumn:0];
+    [[mockBrowser expect] reloadColumn:1];
+    controller.addClassSheet.textEntered = @"IKBNewClass";
+    [controller addClassSheetReturnedCode:NSModalResponseOK];
+    [mockBrowser verify];
 }
 
 @end

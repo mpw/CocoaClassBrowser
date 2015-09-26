@@ -4,11 +4,10 @@
 
 @class IKBObjectiveCMethod;
 
-@interface IKBMethodSignatureSheetController : NSWindowController
+#import "IKBNameEntrySheetController.h"
 
-@property (nonatomic, copy) NSString *className;
+@interface IKBMethodSignatureSheetController : IKBNameEntrySheetController
 
 - (IKBObjectiveCMethod *)method;
-- (void)reset;
 
 @end

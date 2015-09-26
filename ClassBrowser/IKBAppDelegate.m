@@ -6,6 +6,7 @@
 #import "IKBCompileAndRunCodeCommandHandler.h"
 #import "IKBInspectorProvider.h"
 #import "IKBPreferencesWindowController.h"
+#import "IKBSourceRepository.h"
 
 @interface IKBAppDelegate ()
 
@@ -22,6 +23,7 @@
     if (self)
     {
         self.commandBus = [IKBCommandBus applicationCommandBus];
+		self.repository = [IKBSourceRepository new];
     }
     return self;
 }
@@ -30,6 +32,7 @@
 {
     self.windowController = [[IKBClassBrowserWindowController alloc] initWithWindowNibName:@"IKBClassBrowserWindowController"];
     self.windowController.inspectorProvider = [IKBInspectorProvider new];
+	self.windowController.repository = self.repository;
     [self.windowController.window makeKeyAndOrderFront:self];
     [self.commandBus registerCommandHandler:[IKBCompileAndRunCodeCommandHandler new]];
 }

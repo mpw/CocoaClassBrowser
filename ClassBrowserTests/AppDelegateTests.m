@@ -38,4 +38,9 @@
     XCTAssertEqualObjects(_appDelegate.commandBus, [IKBCommandBus applicationCommandBus]);
 }
 
+- (void)testAppDelegateHasASourceRepository
+{
+    XCTAssertNotNil(_appDelegate.repository);
+}
+
 @end

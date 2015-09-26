@@ -4,6 +4,7 @@
 #import <OCMock/OCMock.h>
 #import "IKBMethodSignatureSheetController.h"
 #import "IKBMethodSignatureSheetController_ClassExtension.h"
+#import "IKBNameEntrySheetController.h"
 #import "IKBObjectiveCMethod.h"
 
 @interface NSString (IKBStringValue)
@@ -30,7 +31,7 @@
 
 - (void)setUp
 {
-    _controller = [[IKBMethodSignatureSheetController alloc] initWithWindowNibName:NSStringFromClass([IKBMethodSignatureSheetController class])];
+    _controller = [[IKBMethodSignatureSheetController alloc] initWithWindowNibName:NSStringFromClass([IKBNameEntrySheetController class])];
     _window = _controller.window;
 }
 
@@ -48,29 +49,29 @@
 
 - (void)testEmptyMethodIsNotValid
 {
-    _controller.signatureText = @"";
+    _controller.textEntered = @"";
     XCTAssertFalse([_controller isValidSignature]);
 }
 
 - (void)testMethodsMustStartWithPlusOrMinus
 {
-    _controller.signatureText = @"^ (NSInteger)count";
+    _controller.textEntered = @"^ (NSInteger)count";
     XCTAssertFalse([_controller isValidSignature]);
-    _controller.signatureText = @"- (NSInteger)count";
+    _controller.textEntered = @"- (NSInteger)count";
     XCTAssertTrue([_controller isValidSignature]);
-    _controller.signatureText = @"+ (NSInteger)count";
+    _controller.textEntered = @"+ (NSInteger)count";
     XCTAssertTrue([_controller isValidSignature]);
 }
 
 - (void)testMethodsMustBeRepresentableInASCII
 {
-    _controller.signatureText = @"- (void)addObjéct:(id)objéct";
+    _controller.textEntered = @"- (void)addObjéct:(id)objéct";
     XCTAssertFalse([_controller isValidSignature]);
 }
 
 - (void)testMethodSignaturesEndWithAColon
 {
-    _controller.signatureText = @"- (void)addObject:";
+    _controller.textEntered = @"- (void)addObject:";
     XCTAssertFalse([_controller isValidSignature]);
 }
 
@@ -79,7 +80,7 @@
     NSNotification *notification = [NSNotification notificationWithName:NSControlTintDidChangeNotification
                                                                  object:@"- (id)objectAtIndex:(NSInteger)index"];
     [_controller controlTextDidChange:notification];
-    XCTAssertTrue([_controller.createMethodButton isEnabled]);
+    XCTAssertTrue([_controller.createEntryButton isEnabled]);
     XCTAssertTrue([_controller.problemLabel isHidden]);
 }
 
@@ -88,30 +89,30 @@
     NSNotification *notification = [NSNotification notificationWithName:NSControlTintDidChangeNotification
                                                                  object:@"- (id)objectAtIndex:"];
     [_controller controlTextDidChange:notification];
-    XCTAssertFalse([_controller.createMethodButton isEnabled]);
+    XCTAssertFalse([_controller.createEntryButton isEnabled]);
     XCTAssertFalse([_controller.problemLabel isHidden]);
 }
 
 - (void)testMethodCreationResultsInAMethodWithTheSuppliedSignatureAndEmptyBodyOnTheExpectedClass
 {
-    _controller.signatureText = @"-(void)addObject:(id)anObject";
+    _controller.textEntered = @"-(void)addObject:(id)anObject";
     [_controller setClassName:NSStringFromClass([NSObject class])];
-    [_controller createMethod:_controller.createMethodButton];
+    [_controller createEntry:_controller.createEntryButton];
     IKBObjectiveCMethod *method = _controller.method;
     XCTAssertNotNil(method);
     XCTAssertEqualObjects(method.className, NSStringFromClass([NSObject class]));
-    XCTAssertEqualObjects(method.declaration, _controller.signatureText);
+    XCTAssertEqualObjects(method.declaration, _controller.textEntered);
     XCTAssertEqualObjects(method.body, @"{\n\n}\n");
 }
 
 - (void)testResetMethodDiscardsExistingModelState
 {
-    _controller.signatureText = @"-(void)addObject:(id)anObject";
+    _controller.textEntered = @"-(void)addObject:(id)anObject";
     [_controller setClassName:NSStringFromClass([NSArray class])];
-    [_controller createMethod:_controller.createMethodButton];
+    [_controller createEntry:_controller.createEntryButton];
     [_controller reset];
     XCTAssertNil(_controller.method);
-    XCTAssertNil(_controller.signatureText);
+    XCTAssertNil(_controller.textEntered);
     XCTAssertNil(_controller.className);
 }
 

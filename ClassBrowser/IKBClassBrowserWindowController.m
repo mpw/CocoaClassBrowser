@@ -4,9 +4,15 @@
 #import "IKBClassBrowserWindowController_ClassExtension.h"
 
 #import "IKBClassBrowserSource.h"
-#import "IKBRuntimeClassList.h"
+#import "IKBClassNameSheetController.h"
+#import "IKBCompositeClassList.h"
 #import "IKBCodeEditorViewController.h"
 #import "IKBMethodSignatureSheetController.h"
+#import "IKBNameEntrySheetController.h"
+#import "IKBObjectiveCClass.h"
+#import "IKBRuntimeClassList.h"
+#import "IKBSourceRepository.h"
+#import "IKBSourceRepositoryClassList.h"
 
 @implementation IKBClassBrowserWindowController
 
@@ -15,7 +21,9 @@
     self = [super initWithWindowNibName:windowNibName];
     if (self)
     {
-        _addMethodSheet = [[IKBMethodSignatureSheetController alloc] initWithWindowNibName:@"IKBMethodSignatureSheetController"];
+        NSString *nameEntrySheetController = NSStringFromClass([IKBNameEntrySheetController class]);
+        _addMethodSheet = [[IKBMethodSignatureSheetController alloc] initWithWindowNibName:nameEntrySheetController];
+        _addClassSheet = [[IKBClassNameSheetController alloc] initWithWindowNibName:nameEntrySheetController];
     }
     return self;
 }
@@ -24,9 +32,11 @@
 {
     [super windowDidLoad];
     
-    IKBRuntimeClassList *classList = [IKBRuntimeClassList new];
-    self.classList = classList;
-    self.browserSource = [[IKBClassBrowserSource alloc] initWithClassList:classList];
+    IKBRuntimeClassList *compiledClassList = [IKBRuntimeClassList new];
+    IKBSourceRepositoryClassList *repositoryClassList = [[IKBSourceRepositoryClassList alloc] initWithRepository:self.repository];
+    IKBCompositeClassList *compositeClassList = [IKBCompositeClassList compositeOfClassLists:@[compiledClassList, repositoryClassList]];
+    self.classList = compositeClassList;
+    self.browserSource = [[IKBClassBrowserSource alloc] initWithClassList:compositeClassList];
     self.classBrowser.delegate = self.browserSource;
     [self.classBrowser reloadColumn:0];
     [self.classBrowser setTarget:self];
@@ -49,6 +59,14 @@
     [self.browserSource browser:sender didSelectRow:row inColumn:column];
 }
 
+- (IBAction)addClass:(id)sender
+{
+    [self.addClassSheet reset];
+    [self.window beginSheet:self.addClassSheet.window completionHandler:^(NSModalResponse returnCode) {
+        [self addClassSheetReturnedCode:returnCode];
+    }];
+}
+
 - (IBAction)addMethod:(id)sender
 {
     [self.addMethodSheet reset];
@@ -63,6 +81,15 @@
 {
     if (code == NSModalResponseOK) {
         [self.codeEditorViewController setEditedMethod:self.addMethodSheet.method];
+    }
+}
+
+- (void)addClassSheetReturnedCode:(NSModalResponse)code
+{
+    if (code == NSModalResponseOK) {
+        [self.repository addClass:[[IKBObjectiveCClass alloc] initWithName:self.addClassSheet.className superclass:@"NSObject"]];
+        [self.classBrowser reloadColumn:0];
+        [self.classBrowser reloadColumn:1];
     }
 }
 
